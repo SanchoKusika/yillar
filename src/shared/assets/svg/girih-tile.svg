@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Girih tile — 10-fold star">
+  
+  <defs>
+    
+  </defs>
+  
+  <g transform="translate(100 100)">
+    <polygon class="g" points="&#xA;      0,-60 12,-26 46,-33 24,-8 59,0 24,8 46,33 12,26 0,60&#xA;      -12,26 -46,33 -24,8 -59,0 -24,-8 -46,-33 -12,-26&#xA;    "></polygon>
+    
+    <polygon class="g" points="&#xA;      0,-32 19,-26 31,-10 31,10 19,26 0,32 -19,26 -31,10 -31,-10 -19,-26&#xA;    "></polygon>
+  </g>
+
+  
+  <g transform="translate(0 0)">
+    <polyline class="g" points="0,40 10,35 20,40 14,28 20,18 10,22 0,18"></polyline>
+    <polyline class="g" points="40,0 35,10 40,20 28,14 18,20 22,10 18,0"></polyline>
+  </g>
+  <g transform="translate(200 0) scale(-1 1)">
+    <polyline class="g" points="0,40 10,35 20,40 14,28 20,18 10,22 0,18"></polyline>
+    <polyline class="g" points="40,0 35,10 40,20 28,14 18,20 22,10 18,0"></polyline>
+  </g>
+  <g transform="translate(0 200) scale(1 -1)">
+    <polyline class="g" points="0,40 10,35 20,40 14,28 20,18 10,22 0,18"></polyline>
+    <polyline class="g" points="40,0 35,10 40,20 28,14 18,20 22,10 18,0"></polyline>
+  </g>
+  <g transform="translate(200 200) scale(-1 -1)">
+    <polyline class="g" points="0,40 10,35 20,40 14,28 20,18 10,22 0,18"></polyline>
+    <polyline class="g" points="40,0 35,10 40,20 28,14 18,20 22,10 18,0"></polyline>
+  </g>
+
+  
+  <polygon class="g" points="100,30 120,50 100,70 80,50"></polygon>
+  <polygon class="g" points="100,130 120,150 100,170 80,150"></polygon>
+  <polygon class="g" points="30,100 50,80 70,100 50,120"></polygon>
+  <polygon class="g" points="130,100 150,80 170,100 150,120"></polygon>
+</svg>

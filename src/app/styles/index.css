@@ -1,0 +1,326 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+/* ============================================
+   YILLAR — Open Sans (бренд-шрифт)
+   ============================================ */
+@font-face {
+  font-family: "Open Sans";
+  src: url("../../shared/assets/fonts/OpenSans-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("../../shared/assets/fonts/OpenSans-Italic.ttf") format("truetype");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("../../shared/assets/fonts/OpenSans-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("../../shared/assets/fonts/OpenSans-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("../../shared/assets/fonts/OpenSans-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("../../shared/assets/fonts/OpenSans-ExtraBold.ttf") format("truetype");
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_Condensed-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_Condensed-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_Condensed-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_Condensed-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_Condensed-ExtraBold.ttf") format("truetype");
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans Semi Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_SemiCondensed-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Semi Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_SemiCondensed-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Open Sans Semi Condensed";
+  src: url("../../shared/assets/fonts/OpenSans_SemiCondensed-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* ============================================
+   YILLAR — design tokens (Tailwind v4 @theme)
+   Soviet constructivist × Uzbek girih
+   ============================================ */
+@theme {
+  /* Базовая оболочка */
+  --color-ink: #1A1208;
+  --color-ink-2: #2A1E10;
+  --color-ink-3: #3A2C1C;
+  --color-cream: #F5EFE0;
+  --color-cream-2: #E8DFCA;
+  --color-cream-3: #C9BFA6;
+  --color-paper: #F5EFE0;
+  --color-paper-edge: rgba(26, 18, 8, 0.18);
+  --color-gold: #D4A847;
+  --color-gold-deep: #A8832F;
+  --color-gold-glow: #E8C36A;
+
+  --color-redact: #0E0804;
+  --color-redact-edge: #D4A847;
+
+  /* KLASSIKA — 1960–80s, кирпич/слоновая кость */
+  --color-klassika-primary: #7B3F2A;
+  --color-klassika-deep: #4E271B;
+  --color-klassika-surface: #EDE0C4;
+  --color-klassika-surface-2: #D9C89F;
+  --color-klassika-ink: #1A1208;
+  --color-klassika-accent: #B8763F;
+
+  /* KASSETA — 1990s, жжёный апельсин/тёплый песок */
+  --color-kasseta-primary: #C4572A;
+  --color-kasseta-deep: #8B3A18;
+  --color-kasseta-surface: #E8C892;
+  --color-kasseta-surface-2: #C9A86A;
+  --color-kasseta-ink: #1A1208;
+  --color-kasseta-accent: #4A8080;
+
+  /* TSIFRA — 2000s+, сталь/прохлада */
+  --color-tsifra-primary: #2A5C7B;
+  --color-tsifra-deep: #163A52;
+  --color-tsifra-surface: #E6EEF2;
+  --color-tsifra-surface-2: #C4D4DC;
+  --color-tsifra-ink: #0A1218;
+  --color-tsifra-accent: #00D4E8;
+
+  /* Семантика */
+  --color-success: #6B8E3D;
+  --color-danger: #B23A3A;
+  --color-info: #00D4E8;
+  --color-warn: #D4A847;
+
+  /* Шрифтовые семейства */
+  --font-display: "Playfair Display", "Bodoni 72", "Didot", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-body: "Open Sans", "Helvetica Neue", system-ui, sans-serif;
+  --font-condensed: "Open Sans Condensed", "Open Sans", "Helvetica Neue", sans-serif;
+  --font-semi: "Open Sans Semi Condensed", "Open Sans", "Helvetica Neue", sans-serif;
+
+  /* Размеры — годы всегда огромные */
+  --text-tiny: 11px;
+  --text-small: 13px;
+  --text-body: 15px;
+  --text-h3: 18px;
+  --text-h2: 24px;
+  --text-h1: 32px;
+  --text-display: clamp(44px, 7vw, 80px);
+  --text-year-lg: clamp(64px, 10vw, 120px);
+  --text-year-xl: clamp(80px, 16vw, 180px);
+  --text-score: 22px;
+
+  /* Letter-spacing */
+  --tracking-era: 0.18em;
+  --tracking-label: 0.08em;
+  --tracking-tight: -0.02em;
+  --tracking-mono: 0;
+
+  /* Line-heights */
+  --leading-display: 0.95;
+  --leading-tight: 1.1;
+  --leading-body: 1.45;
+
+  /* Анимации — быстрые, механические */
+  --ease-print: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-slide: cubic-bezier(0.5, 0, 0.1, 1);
+  --ease-burn: cubic-bezier(0.7, 0, 0.3, 1);
+
+  --animate-pulse-redact: pulse-redact 1.2s infinite;
+  --animate-wave: wave 0.8s ease-in-out infinite alternate;
+
+  /* Тени — единственные допустимые: жёсткий офсет, бумажная кромка */
+  --shadow-paper: 0 1px 0 rgba(26, 18, 8, 0.25);
+  --shadow-cut: 2px 2px 0 0 #1A1208;
+
+  /* Радиусы — строгие прямоугольники, и точка */
+  --radius-none: 0px;
+  --radius-tick: 1px;
+}
+
+@keyframes pulse-redact {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes wave {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1); }
+}
+
+/* ============================================
+   LIGHT THEME — token overrides per design.
+   Inverts the ink/cream pair; gold + era palettes
+   stay unchanged.
+   ============================================ */
+:root[data-theme="light"] {
+  --color-ink: #F0EEE9;
+  --color-ink-2: #E6E2DA;
+  --color-ink-3: #CFC9BD;
+  --color-cream: #1A1208;
+  --color-cream-2: #2A1E10;
+  --color-cream-3: #3A2C1C;
+  --color-redact: #1A1208;
+  --color-paper: #DDD6C5;
+  --color-paper-edge: rgba(26, 18, 8, 0.32);
+  --shadow-cut: 2px 2px 0 0 #1A1208;
+}
+
+/* Lift the muted-text opacity tricks in light mode so labels stay readable. */
+:root[data-theme="light"] .opacity-40 { opacity: 0.78; }
+:root[data-theme="light"] .opacity-50 { opacity: 0.82; }
+:root[data-theme="light"] .opacity-55 { opacity: 0.85; }
+:root[data-theme="light"] .opacity-60 { opacity: 0.88; }
+:root[data-theme="light"] .opacity-65 { opacity: 0.9; }
+:root[data-theme="light"] .opacity-70 { opacity: 0.92; }
+:root[data-theme="light"] .opacity-75 { opacity: 0.95; }
+:root[data-theme="light"] .opacity-80 { opacity: 0.97; }
+:root[data-theme="light"] .opacity-85 { opacity: 1; }
+:root[data-theme="light"] .opacity-90 { opacity: 1; }
+
+/* ============================================
+   Базовые правила: тёмный ink-фон, без скруглений
+   ============================================ */
+@layer base {
+  html, body {
+    background: var(--color-ink);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    overscroll-behavior: none;
+  }
+  button, input, select, textarea {
+    border-radius: 0;
+  }
+}
+
+/* ============================================
+   Семантические типографические классы
+   ============================================ */
+@layer components {
+  .type-year-xl {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: var(--text-year-xl);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tight);
+    font-feature-settings: "lnum" 1, "tnum" 1;
+  }
+  .type-year-lg {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: var(--text-year-lg);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tight);
+    font-feature-settings: "lnum" 1, "tnum" 1;
+  }
+  .type-display {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-tight);
+  }
+  .type-wordmark {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: var(--text-display);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-feature-settings: "ss01" 1;
+  }
+  .type-h1 {
+    font-family: var(--font-condensed);
+    font-weight: 800;
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-transform: uppercase;
+  }
+  .type-h2 {
+    font-family: var(--font-condensed);
+    font-weight: 700;
+    font-size: var(--text-h2);
+    line-height: var(--leading-tight);
+    text-transform: uppercase;
+  }
+  .type-era-tag {
+    font-family: var(--font-condensed);
+    font-weight: 700;
+    font-size: var(--text-small);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-era);
+  }
+  .type-label {
+    font-family: var(--font-semi);
+    font-weight: 600;
+    font-size: var(--text-tiny);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+  }
+  .type-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+  .type-score {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-score);
+    font-feature-settings: "tnum" 1, "zero" 1;
+  }
+  .type-mono-small {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: var(--text-small);
+  }
+  .type-catalog {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-tiny);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-feature-settings: "tnum" 1;
+  }
+}

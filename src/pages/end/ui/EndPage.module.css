@@ -1,0 +1,15 @@
+.playerCard {
+  margin-bottom: 10px;
+  background: transparent;
+  border: 1px solid var(--color-ink-3);
+  padding: 10px 12px;
+  position: relative;
+}
+.playerCard[data-winner="true"] { background: var(--color-ink-2); }
+
+.starMark {
+  width: 14px;
+  height: 14px;
+  opacity: 0.9;
+  filter: brightness(0) saturate(100%) invert(70%) sepia(40%) saturate(600%) hue-rotate(5deg);
+}

@@ -1,0 +1,69 @@
+.yearStage {
+  position: relative;
+  height: 112px;
+  border-top: 2px solid var(--color-gold);
+  border-bottom: 2px solid var(--color-gold);
+  overflow: hidden;
+}
+
+.yearText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 104px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transform: scale(1.15);
+  opacity: 0;
+  transition: transform 220ms var(--ease-print), opacity 180ms linear;
+}
+.yearText[data-shown="true"] { transform: scale(1); opacity: 1; }
+
+.redactCover {
+  position: absolute;
+  inset: 0;
+  background: var(--color-redact);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  clip-path: inset(0 0% 0 0);
+  transition: clip-path 800ms var(--ease-burn);
+}
+.redactCover[data-burned="true"] { clip-path: inset(0 100% 0 0); }
+
+.redactBlockBig { width: 38px; height: 64px; background: var(--color-gold); }
+
+.multiplierDrop {
+  transform: translateY(-56px);
+  opacity: 0;
+  transition: transform 180ms var(--ease-print), opacity 120ms linear;
+}
+.multiplierDrop[data-shown="true"] { transform: translateY(0); opacity: 1; }
+
+.pointsValue {
+  font-size: 22px;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0.6);
+  transform-origin: right center;
+  transition: all 200ms var(--ease-print);
+}
+.pointsValue[data-shown="true"] { opacity: 1; transform: scale(1); }
+
+.mathBreakdown {
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+  transition: opacity 200ms linear 100ms;
+}
+.mathBreakdown[data-shown="true"] { opacity: 0.9; }

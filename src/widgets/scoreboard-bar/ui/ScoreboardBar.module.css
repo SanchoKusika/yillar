@@ -1,0 +1,27 @@
+.scoreCell {
+  position: relative;
+  flex: 1;
+  padding: 6px 8px 4px;
+  background: transparent;
+}
+.scoreCell[data-turn="true"] { background: var(--color-ink-2); }
+
+.scoreName {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  opacity: 0.5;
+}
+.scoreName[data-turn="true"] { color: var(--color-gold); opacity: 1; }
+
+.scoreVal {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--color-cream);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+.scoreVal[data-turn="true"] { opacity: 1; }

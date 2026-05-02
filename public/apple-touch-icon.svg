@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <rect width="180" height="180" rx="40" ry="40" fill="#1A1208"/>
+  <g transform="translate(90 90)">
+    <circle r="58" fill="none" stroke="#D4A847" stroke-width="2" opacity="0.4"/>
+    <circle r="44" fill="none" stroke="#D4A847" stroke-width="1" opacity="0.5"/>
+  </g>
+  <text x="90" y="118" text-anchor="middle" fill="#D4A847"
+        font-family="'OpenSans', serif" font-weight="900" font-size="110"
+        letter-spacing="-4">Y</text>
+</svg>
