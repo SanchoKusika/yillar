@@ -755,8 +755,3 @@ const en: TranslationDict = {
 
 export const TRANSLATIONS: Record<Language, TranslationDict> = { ru, uz, en };
 
-export const LANGUAGE_LABEL: Record<Language, string> = {
-  ru: "RU · РУССКИЙ",
-  uz: "UZ · O'ZBEKCHA",
-  en: "EN · ENGLISH",
-};

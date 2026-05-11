@@ -8,12 +8,6 @@ export const ERA_LABEL: Record<Era, string> = {
   tsifra: "2000+",
 };
 
-export const ERA_LABEL_SHORT: Record<Era, string> = {
-  klassika: "KLASS",
-  kasseta: "KASS",
-  tsifra: "TSIF",
-};
-
 export function eraForYear(year: number): Era {
   if (year <= 1989) return "klassika";
   if (year <= 1999) return "kasseta";

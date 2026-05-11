@@ -27,23 +27,6 @@
   letter-spacing: -0.02em;
 }
 
-.editLink {
-  background: transparent;
-  border: none;
-  padding: 0;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  color: var(--color-gold);
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.editLink:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 .tabBtn {
   flex: 1;
   padding: 10px 2px;
@@ -60,13 +43,6 @@
   text-transform: uppercase;
   box-shadow: none;
   transition: background 160ms linear, color 160ms linear, opacity 160ms linear;
-}
-
-.settingRow {
-  display: flex;
-  align-items: stretch;
-  padding: 12px 12px;
-  border-bottom: 1px solid var(--color-ink-3);
 }
 
 .sectionHeader {
@@ -108,13 +84,6 @@
   text-transform: uppercase;
   color: var(--color-gold);
   margin-bottom: 6px;
-}
-
-.avatarBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
 }
 
 .avatarSquare {

@@ -32,19 +32,3 @@ export function PaperGrain({ opacity = 0.35 }: PaperGrainProps) {
     />
   );
 }
-
-type ScanlinesProps = { opacity?: number };
-
-export function Scanlines({ opacity = 0.22 }: ScanlinesProps) {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0"
-      style={{
-        backgroundImage:
-          "repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,0.18) 3px 4px)",
-        opacity,
-      }}
-    />
-  );
-}

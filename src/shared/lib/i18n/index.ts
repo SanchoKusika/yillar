@@ -1,9 +1,8 @@
 import { usePreferencesStore } from "@entities/preferences";
 import type { Language } from "@entities/preferences";
-import { TRANSLATIONS, LANGUAGE_LABEL, type TranslationKey } from "./translations";
+import { TRANSLATIONS, type TranslationKey } from "./translations";
 
 export type { TranslationKey };
-export { LANGUAGE_LABEL };
 
 export function t(key: TranslationKey, lang: Language, params?: Record<string, string | number>): string {
   let str = TRANSLATIONS[lang][key] ?? TRANSLATIONS.en[key] ?? key;
