@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CatalogLine, GirihOverlay, PaperGrain } from "@shared/ui";
+import { GirihOverlay, PaperGrain } from "@shared/ui";
 import { ERA_LABEL, useT } from "@shared/lib";
 import type { Placement } from "@entities/placement";
 import type { Player } from "@entities/player";
@@ -49,17 +49,6 @@ export function RevealPerfect({ last, player, cardIdx, totalCards, nextPlayer, o
     <div className={styles.root}>
       <PaperGrain opacity={0.4} />
       <GirihOverlay size={240} opacity={0.12} />
-
-      <div className={styles.header}>
-        <CatalogLine
-          left={t("reveal.perfectHeader", { name: player.name })}
-          right={t("reveal.cardOfTotal", {
-            idx: String(cardIdx + 1).padStart(2, "0"),
-            total: String(totalCards).padStart(2, "0"),
-          })}
-          color="var(--color-ink)"
-        />
-      </div>
 
       <div className={styles.meta}>
         <span className={styles.eraTag}>

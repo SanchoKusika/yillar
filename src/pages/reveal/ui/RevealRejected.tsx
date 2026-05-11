@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CatalogLine, GirihOverlay, PaperGrain, YButton } from "@shared/ui";
+import { GirihOverlay, PaperGrain, YButton } from "@shared/ui";
 import { ERA_LABEL, useT } from "@shared/lib";
 import type { Placement } from "@entities/placement";
 import type { Player } from "@entities/player";
@@ -31,17 +31,6 @@ export function RevealRejected({ last, player, cardIdx, totalCards, nextPlayer, 
     <div className={styles.root}>
       <PaperGrain opacity={0.35} />
       <GirihOverlay size={220} opacity={0.06} />
-
-      <div className={styles.header}>
-        <CatalogLine
-          left={t("reveal.rejectedHeader", { name: player.name })}
-          right={t("reveal.cardOfTotal", {
-            idx: String(cardIdx + 1).padStart(2, "0"),
-            total: String(totalCards).padStart(2, "0"),
-          })}
-          color="var(--color-danger)"
-        />
-      </div>
 
       <div className={styles.meta}>
         <span className={styles.eraTag}>

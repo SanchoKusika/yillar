@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CatalogLine, EraTag, GirihOverlay, PhoneFrame, YButton } from "@shared/ui";
 import { env } from "@shared/config";
 import { ERAS, ERA_LABEL, useT, LANGUAGE_LABEL, type Era } from "@shared/lib";
-import { signOut, updateProfile, uploadAvatar, useSessionStore } from "@entities/session";
+import { signOut, updatePassword, updateProfile, uploadAvatar, useSessionStore } from "@entities/session";
 import { useHistory, useProfileStats } from "@entities/game-history";
 import type { EraBreakdownEntry } from "@entities/game-history";
 import { usePreferencesStore, type Language, type Theme } from "@entities/preferences";
@@ -41,9 +41,6 @@ export function ProfilePage() {
       <PhoneFrame>
         <div className="relative flex h-full flex-col">
           <GirihOverlay size={200} opacity={0.05} />
-          <div className="relative border-b border-gold px-[18px] py-[14px]">
-            <CatalogLine left={t("profile.headerLeft")} right={t("profile.notSignedIn")} />
-          </div>
           <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
             <div className="font-condensed text-[22px] font-extrabold uppercase tracking-[0.08em] text-cream">
               {t("profile.signedOut.title")}
@@ -70,13 +67,6 @@ export function ProfilePage() {
     <PhoneFrame>
       <div className="relative flex h-full flex-col bg-ink text-cream overflow-hidden">
         <GirihOverlay size={220} opacity={0.05} />
-
-        <div className="relative border-b border-gold px-[18px] py-[14px]">
-          <CatalogLine
-            left={t("profile.headerLeft")}
-            right={isAnon ? t("profile.statusGuest") : t("profile.statusMember")}
-          />
-        </div>
 
         <div className="relative border-b border-ink-3 px-4 py-4">
           <div className="flex items-center gap-[14px]">
@@ -183,12 +173,6 @@ export function ProfilePage() {
               {t("profile.demoMode")}
             </div>
           )}
-        </div>
-
-        <div className="flex h-[6px]">
-          <div className="flex-1 bg-klassika-primary" />
-          <div className="flex-1 bg-kasseta-primary" />
-          <div className="flex-1 bg-tsifra-primary" />
         </div>
 
         <BottomNav />
@@ -449,6 +433,12 @@ function SettingsTab({
   const [avatarError, setAvatarError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
+  const [pwOpen, setPwOpen] = useState(false);
+  const [newPw, setNewPw] = useState("");
+  const [pwBusy, setPwBusy] = useState(false);
+  const [pwError, setPwError] = useState<string | null>(null);
+  const [pwSaved, setPwSaved] = useState(false);
+
   useEffect(() => {
     setName(initialName);
     setEra(initialEra);
@@ -640,6 +630,67 @@ function SettingsTab({
             ? t("profile.settings.save")
             : t("profile.settings.saved")}
       </YButton>
+
+      {!isAnon && (
+        <div className={styles.settingRow}>
+          <div className="flex w-full flex-col gap-[6px]">
+            <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
+              {t("profile.settings.changePassword")}
+            </span>
+            {!pwOpen ? (
+              <button
+                type="button"
+                onClick={() => { setPwOpen(true); setPwError(null); setPwSaved(false); setNewPw(""); }}
+                className="w-full border border-ink-3 bg-transparent px-3 py-2 font-condensed text-[12px] font-bold uppercase tracking-[0.14em] text-cream text-left"
+              >
+                ••••••••
+              </button>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <input
+                  type="password"
+                  value={newPw}
+                  onChange={(e) => setNewPw(e.target.value)}
+                  placeholder="NEW PASSWORD"
+                  autoComplete="new-password"
+                  className="border border-ink-3 bg-ink px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream outline-none focus:border-gold"
+                />
+                {pwError && (
+                  <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
+                    {pwError}
+                  </div>
+                )}
+                {pwSaved && (
+                  <div className="border border-gold px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gold">
+                    {t("profile.settings.saved")}
+                  </div>
+                )}
+                <YButton
+                  disabled={pwBusy || newPw.length < 6}
+                  onClick={async () => {
+                    if (pwBusy || newPw.length < 6) return;
+                    setPwBusy(true);
+                    setPwError(null);
+                    setPwSaved(false);
+                    try {
+                      await updatePassword(newPw);
+                      setPwSaved(true);
+                      setPwOpen(false);
+                      setNewPw("");
+                    } catch (err) {
+                      setPwError(err instanceof Error ? err.message : t("profile.saveFailed"));
+                    } finally {
+                      setPwBusy(false);
+                    }
+                  }}
+                >
+                  {pwBusy ? t("profile.settings.saving") : t("profile.settings.savePassword")}
+                </YButton>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="mt-2">
         {isAnon ? (

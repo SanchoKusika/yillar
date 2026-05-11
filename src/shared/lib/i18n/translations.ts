@@ -149,6 +149,8 @@ export type TranslationKey =
   | "profile.settings.save"
   | "profile.settings.saved"
   | "profile.settings.saving"
+  | "profile.settings.changePassword"
+  | "profile.settings.savePassword"
   | "profile.tabs.stats"
   | "profile.tabs.history"
   | "profile.tabs.friends"
@@ -170,6 +172,7 @@ export type TranslationKey =
   | "end.saveFailed"
   | "end.preparing"
   | "end.placeBadge"
+  | "end.newRecord"
   | "pwa.newVersion"
   | "pwa.update"
   | "pwa.dismiss"
@@ -332,6 +335,8 @@ const ru: TranslationDict = {
   "profile.settings.save": "СОХРАНИТЬ",
   "profile.settings.saved": "СОХРАНЕНО",
   "profile.settings.saving": "СОХРАНЯЕМ…",
+  "profile.settings.changePassword": "СМЕНИТЬ ПАРОЛЬ",
+  "profile.settings.savePassword": "СОХРАНИТЬ ПАРОЛЬ →",
   "profile.tabs.stats": "СТАТЫ",
   "profile.tabs.history": "ИСТОРИЯ",
   "profile.tabs.friends": "ДРУЗЬЯ",
@@ -353,6 +358,7 @@ const ru: TranslationDict = {
   "end.saveFailed": "● ОШИБКА СОХР",
   "end.preparing": "● ПОДГОТОВКА",
   "end.placeBadge": "{n} МЕСТО",
+  "end.newRecord": "★ НОВЫЙ РЕКОРД",
   "pwa.newVersion": "НОВАЯ ВЕРСИЯ ГОТОВА",
   "pwa.update": "ОБНОВИТЬ",
   "pwa.dismiss": "Скрыть",
@@ -516,6 +522,8 @@ const uz: TranslationDict = {
   "profile.settings.save": "SAQLASH",
   "profile.settings.saved": "SAQLANDI",
   "profile.settings.saving": "SAQLANMOQDA…",
+  "profile.settings.changePassword": "PAROLNI O'ZGARTIRISH",
+  "profile.settings.savePassword": "PAROLNI SAQLASH →",
   "profile.tabs.stats": "STATISTIKA",
   "profile.tabs.history": "TARIX",
   "profile.tabs.friends": "DO'STLAR",
@@ -537,6 +545,7 @@ const uz: TranslationDict = {
   "end.saveFailed": "● SAQLASH XATOSI",
   "end.preparing": "● TAYYORLANMOQDA",
   "end.placeBadge": "{n}-O'RIN",
+  "end.newRecord": "★ YANGI REKORD",
   "pwa.newVersion": "YANGI VERSIYA TAYYOR",
   "pwa.update": "YANGILASH",
   "pwa.dismiss": "Yopish",
@@ -698,6 +707,8 @@ const en: TranslationDict = {
   "profile.settings.save": "SAVE",
   "profile.settings.saved": "SAVED",
   "profile.settings.saving": "SAVING…",
+  "profile.settings.changePassword": "CHANGE PASSWORD",
+  "profile.settings.savePassword": "SAVE PASSWORD →",
   "profile.tabs.stats": "STATS",
   "profile.tabs.history": "HISTORY",
   "profile.tabs.friends": "FRIENDS",
@@ -705,6 +716,7 @@ const en: TranslationDict = {
   "profile.placeBadge": "PLACE {n}",
   "end.headerFinal": "FINAL · {placed} / {total}",
   "end.winner": "★ WINNER",
+  "end.newRecord": "★ NEW RECORD",
   "end.points": "POINTS",
   "end.gen": "GEN ·",
   "end.perPlayer": "PER-PLAYER BREAKDOWN",

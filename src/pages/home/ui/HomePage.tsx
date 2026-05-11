@@ -1,13 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CatalogLine, GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
+import { GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
 import { env } from "@shared/config";
-import { useT } from "@shared/lib";
+import { useT, haptic } from "@shared/lib";
 import { useGameStore } from "@entities/game";
 import { useSessionStore } from "@entities/session";
 import { useTracks } from "@entities/track";
 import { PlayerRoster } from "@widgets/player-roster";
 import { BottomNav } from "@widgets/bottom-nav";
+import styles from "./HomePage.module.css";
 
 export function HomePage() {
   const navigate = useNavigate();
@@ -38,10 +39,23 @@ export function HomePage() {
   const activeCount = named.length;
   const canStart = activeCount >= 2 && named.every((p) => p.era) && (tracks?.length ?? 0) > 0;
 
+  const [countdown, setCountdown] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown === 0) {
+      navigate("/game");
+      return;
+    }
+    const t = setTimeout(() => setCountdown((c) => (c ?? 1) - 1), 1000);
+    return () => clearTimeout(t);
+  }, [countdown, navigate]);
+
   const onBegin = () => {
     if (!canStart || !tracks) return;
     startGame(tracks);
-    navigate("/game");
+    haptic("medium");
+    setCountdown(3);
   };
 
   const buttonLabel = (() => {
@@ -55,14 +69,12 @@ export function HomePage() {
   return (
     <PhoneFrame>
       <div className="relative flex h-full flex-col">
+        {countdown !== null && countdown > 0 && (
+          <div className={styles.countOverlay}>
+            <div key={countdown} className={styles.countNum}>{countdown}</div>
+          </div>
+        )}
         <GirihOverlay size={200} opacity={0.05} />
-
-        <div className="relative border-b border-gold px-[18px] py-[14px]">
-          <CatalogLine
-            left={t("home.headerLeft")}
-            right={env.hasSupabase ? t("home.live") : t("home.demo")}
-          />
-        </div>
 
         <div className="relative px-5 pt-6 pb-[18px] text-center">
           <div className="inline-block">
@@ -79,11 +91,6 @@ export function HomePage() {
           <PlayerRoster players={players} onName={setPlayerName} onEra={setPlayerEra} hostLockedAt={hostLockedAt} />
         </div>
 
-        <div className="flex h-7">
-          <div className="flex-1 bg-klassika-primary" />
-          <div className="flex-1 bg-kasseta-primary" />
-          <div className="flex-1 bg-tsifra-primary" />
-        </div>
         <div className="border-t border-gold bg-ink p-[14px]">
           <YButton disabled={!canStart} onClick={onBegin}>
             {buttonLabel}
