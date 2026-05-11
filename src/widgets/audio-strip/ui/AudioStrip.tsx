@@ -20,20 +20,20 @@ export function AudioStrip({
 }: AudioStripProps) {
   const t = useT();
   return (
-    <div className="relative mx-[14px] mt-3 border border-ink-3 bg-ink-2 px-3 pb-3 pt-[10px]">
+    <div className={styles.strip}>
       <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-[6px] font-mono text-[9px] uppercase tracking-[0.2em] text-gold">
+        <div className={styles.label}>
           <span className={styles.redLed} data-on={playing} />
           {t("audio.muted")}
         </div>
-        <span className="font-mono text-[10px] tabular-nums text-cream opacity-80">{timeLabel}</span>
+        <span className={styles.timeLabel}>{timeLabel}</span>
       </div>
 
       <div className="flex items-center gap-[10px]">
         <button
           type="button"
           onClick={onToggle}
-          className="flex h-9 w-9 shrink-0 items-center justify-center border-0 bg-gold text-ink"
+          className={styles.playBtn}
         >
           {playing ? (
             <svg width="14" height="14" viewBox="0 0 14 14">

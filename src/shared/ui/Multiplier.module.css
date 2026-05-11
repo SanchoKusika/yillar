@@ -1,0 +1,5 @@
+@reference "../../app/styles/index.css";
+
+.badge {
+  @apply inline-block bg-ink text-gold font-display font-black leading-none;
+}

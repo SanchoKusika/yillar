@@ -44,12 +44,8 @@ export function ProfilePage() {
         <div className="relative flex h-full flex-col">
           <GirihOverlay size={200} opacity={0.05} />
           <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-            <div className="font-condensed text-[22px] font-extrabold uppercase tracking-[0.08em] text-cream">
-              {t("profile.signedOut.title")}
-            </div>
-            <div className="max-w-[280px] text-[13px] italic text-cream opacity-65">
-              {t("profile.signedOut.body")}
-            </div>
+            <div className={styles.signedOutTitle}>{t("profile.signedOut.title")}</div>
+            <div className={styles.signedOutBody}>{t("profile.signedOut.body")}</div>
             <YButton onClick={() => navigate("/auth")}>{t("profile.signedOut.cta")}</YButton>
           </div>
           <BottomNav />

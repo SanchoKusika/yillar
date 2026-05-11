@@ -80,9 +80,7 @@ export function HomePage() {
           <div className="inline-block">
             <Wordmark color="var(--color-gold)" size={56} />
           </div>
-          <div className="mt-3 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75">
-            {t("tagline")}
-          </div>
+          <div className={styles.tagline}>{t("tagline")}</div>
         </header>
 
         <div className="h-px bg-gold/50" />

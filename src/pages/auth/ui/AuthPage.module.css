@@ -42,3 +42,11 @@
 .linkBtnMuted {
   @apply self-start font-mono text-[10px] uppercase tracking-[0.14em] text-cream opacity-50 transition-opacity hover:opacity-80;
 }
+
+.demoNotice {
+  @apply max-w-[280px] font-condensed text-[14px] uppercase tracking-[0.12em] text-cream opacity-80;
+}
+
+.guestHint {
+  @apply text-center text-[11px] italic text-cream opacity-55;
+}

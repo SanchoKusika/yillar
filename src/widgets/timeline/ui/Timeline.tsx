@@ -22,9 +22,9 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
         style={{ marginBottom: 10 }}
       />
 
-      <div className="relative flex items-stretch gap-[6px] overflow-x-auto">
+      <ul className="relative flex items-stretch gap-[6px] overflow-x-auto">
         {placements.map((p, i) => (
-          <div
+          <li
             key={i}
             className={styles.placementCard}
             style={{
@@ -45,17 +45,17 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
               {p.title}
             </div>
             {!p.correct && <div className={styles.placementDelta}>−{p.delta}Y</div>}
-          </div>
+          </li>
         ))}
 
-        <div className={styles.dropZone}>
+        <li className={styles.dropZone}>
           <div className={styles.dropHint}>
             {t("timeline.drop")}<br />{t("timeline.here")}
           </div>
           <div className={styles.dropYear}>{guessYear}</div>
           <div className={styles.dropIdx}>{String(placements.length + 1).padStart(2, "0")}</div>
-        </div>
-      </div>
+        </li>
+      </ul>
 
       <div className="mt-2">
         <input

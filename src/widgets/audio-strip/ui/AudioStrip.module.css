@@ -1,3 +1,21 @@
+@reference "../../../app/styles/index.css";
+
+.strip {
+  @apply relative mx-[14px] mt-3 border border-ink-3 bg-ink-2 px-3 pb-3 pt-[10px];
+}
+
+.label {
+  @apply flex items-center gap-[6px] font-mono text-[9px] uppercase tracking-[0.2em] text-gold;
+}
+
+.timeLabel {
+  @apply font-mono text-[10px] tabular-nums text-cream opacity-80;
+}
+
+.playBtn {
+  @apply flex h-9 w-9 shrink-0 items-center justify-center border-0 bg-gold text-ink;
+}
+
 .redLed {
   width: 6px;
   height: 6px;

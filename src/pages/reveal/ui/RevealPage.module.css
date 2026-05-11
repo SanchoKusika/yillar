@@ -1,3 +1,21 @@
+@reference "../../../app/styles/index.css";
+
+.eraBadge {
+  @apply inline-block px-2 py-1 font-condensed text-[10px] font-bold uppercase tracking-[0.22em];
+}
+
+.trackTitle {
+  @apply mt-[10px] mb-[2px] font-condensed text-[32px] font-extrabold uppercase leading-none;
+}
+
+.trackSub {
+  @apply font-body text-[13px] italic opacity-90;
+}
+
+.multiplierLabel {
+  @apply font-mono text-[10px] uppercase tracking-[0.2em] opacity-85;
+}
+
 .yearStage {
   position: relative;
   height: 112px;

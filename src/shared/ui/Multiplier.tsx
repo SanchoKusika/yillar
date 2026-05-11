@@ -1,9 +1,11 @@
+import styles from "./Multiplier.module.css";
+
 type MultiplierProps = { n?: number };
 
 export function Multiplier({ n = 1 }: MultiplierProps) {
   return (
     <span
-      className="inline-block bg-ink text-gold font-display font-black leading-none"
+      className={styles.badge}
       style={{
         fontSize: 28,
         letterSpacing: "-0.02em",

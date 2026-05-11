@@ -1,3 +1,9 @@
+@reference "../../../app/styles/index.css";
+
+.tagline {
+  @apply mt-3 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75;
+}
+
 @keyframes countTick {
   0%   { opacity: 0; transform: scale(1.6); }
   15%  { opacity: 1; transform: scale(1); }

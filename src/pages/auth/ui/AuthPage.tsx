@@ -93,9 +93,7 @@ export function AuthPage() {
         <div className="relative flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
             <Wordmark size={48} />
-            <div className="max-w-[280px] font-condensed text-[14px] uppercase tracking-[0.12em] text-cream opacity-80">
-              {t("auth.demoNotice")}
-            </div>
+            <div className={styles.demoNotice}>{t("auth.demoNotice")}</div>
           </div>
           <BottomNav />
         </div>
@@ -218,9 +216,7 @@ export function AuthPage() {
                 {t("auth.btnGuest")}
               </YButton>
 
-              <div className="text-center text-[11px] italic text-cream opacity-55">
-                {t("auth.guestHint")}
-              </div>
+              <div className={styles.guestHint}>{t("auth.guestHint")}</div>
             </>
           )}
         </div>

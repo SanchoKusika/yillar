@@ -39,15 +39,13 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
 
       <header className="relative px-5 pt-[18px]">
         <span
-          className="inline-block px-2 py-1 font-condensed text-[10px] font-bold uppercase tracking-[0.22em]"
+          className={styles.eraBadge}
           style={{ color: eraVar(era, "surface"), border: `1px solid ${eraVar(era, "surface")}` }}
         >
           {t(`era.${era}` as const)} · {ERA_LABEL[era]}
         </span>
-        <h1 className="mt-[10px] mb-[2px] font-condensed text-[32px] font-extrabold uppercase leading-none">
-          {last.title}
-        </h1>
-        <div className="font-body text-[13px] italic opacity-90">{t("reveal.trackNo", { id: last.trackId })}</div>
+        <h1 className={styles.trackTitle}>{last.title}</h1>
+        <div className={styles.trackSub}>{t("reveal.trackNo", { id: last.trackId })}</div>
       </header>
 
       <div className="relative flex flex-1 flex-col justify-center gap-[14px] px-5">
@@ -67,9 +65,7 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="font-mono text-[10px] uppercase tracking-[0.2em] opacity-85">
-            {t("reveal.eraMultiplier")}
-          </div>
+          <div className={styles.multiplierLabel}>{t("reveal.eraMultiplier")}</div>
           <div className={styles.multiplierDrop} data-shown={stage >= 3}>
             <Multiplier n={last.multiplier} />
           </div>

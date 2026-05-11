@@ -115,7 +115,7 @@ export function EndPage() {
             {winner.name}
           </div>
           {isNewRecord && <div className={styles.newRecord}>{t("end.newRecord")}</div>}
-          <div className="mt-[6px] flex items-baseline justify-between font-mono text-[11px] tracking-[0.14em] text-gold">
+          <div className={styles.winnerMeta}>
             <span className={styles.winnerPoints}>{winner.total} {t("end.points")}</span>
             <span className={styles.winnerGen}>
               {t("end.gen")} {winner.era ? t(`era.${winner.era}` as const) : "—"}

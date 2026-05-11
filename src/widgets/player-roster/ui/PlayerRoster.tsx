@@ -22,11 +22,12 @@ export function PlayerRoster({ players, onName, onEra, hostLockedAt = null }: Pl
         style={{ marginBottom: 10 }}
       />
 
+      <ul>
       {players.map((p, i) => {
         const filled = p.name.length > 0;
         const isLocked = hostLockedAt === i;
         return (
-          <div
+          <li
             key={p.id}
             className={styles.playerRow}
             data-filled={filled}
@@ -54,9 +55,10 @@ export function PlayerRoster({ players, onName, onEra, hostLockedAt = null }: Pl
             </div>
 
             <EraSelect value={p.era ?? null} onChange={(era) => onEra(i, era)} />
-          </div>
+          </li>
         );
       })}
+      </ul>
 
       <div className={styles.hint}>{t("roster.hint")}</div>
     </div>

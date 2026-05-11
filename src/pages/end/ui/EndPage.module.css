@@ -11,6 +11,10 @@
   @apply font-mono text-[10px] uppercase tracking-[0.26em] text-gold;
 }
 
+.winnerMeta {
+  @apply mt-[6px] flex items-baseline justify-between font-mono text-[11px] tracking-[0.14em] text-gold;
+}
+
 .winnerPoints {
   @apply text-[16px] font-medium text-cream;
 }
