@@ -1,0 +1,25 @@
+@reference "../../../../app/styles/index.css";
+
+.loading {
+  @apply font-mono text-[11px] uppercase tracking-[0.2em] text-cream opacity-60;
+}
+
+.row {
+  @apply flex items-center justify-between border border-ink-3 bg-ink-2 px-3 py-[10px];
+}
+
+.rowMeta {
+  @apply font-mono text-[9px] uppercase tracking-[0.2em] text-gold opacity-80;
+}
+
+.rowRank {
+  @apply font-condensed text-sm font-bold uppercase tracking-[0.1em] text-cream;
+}
+
+.rowScore {
+  @apply font-display text-[26px] font-black leading-none tracking-tight;
+}
+
+.empty {
+  @apply border border-ink-3 px-3 py-4 text-center text-[12px] italic text-cream opacity-55;
+}

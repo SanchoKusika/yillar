@@ -26,53 +26,34 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
         {placements.map((p, i) => (
           <div
             key={i}
-            className="relative flex h-[86px] w-[72px] shrink-0 flex-col justify-between p-[6px] pl-2 text-ink"
+            className={styles.placementCard}
             style={{
               background: eraVar(p.era, "surface"),
               borderLeft: `3px solid ${p.correct ? eraVar(p.era, "primary") : "var(--color-danger)"}`,
             }}
           >
-            <div
-              className="font-mono text-[7px] uppercase tracking-[0.2em]"
-              style={{ color: eraVar(p.era, "primary") }}
-            >
+            <div className={styles.placementEra} style={{ color: eraVar(p.era, "primary") }}>
               {t(`era.short.${p.era}` as const)}
             </div>
-            <div
-              className="font-display text-[24px] font-black leading-[0.95]"
-              style={{ letterSpacing: "-0.02em", color: eraVar(p.era, "primary") }}
-            >
+            <div className={styles.placementYear} style={{ color: eraVar(p.era, "primary") }}>
               {p.truth}
             </div>
             <div
-              className="pt-[2px] font-condensed text-[8px] font-bold uppercase tracking-[0.14em]"
+              className={styles.placementTitle}
               style={{ borderTop: `1px solid ${eraVar(p.era, "primary")}`, color: eraVar(p.era, "primary") }}
             >
               {p.title}
             </div>
-            {!p.correct && (
-              <div className="absolute right-1 top-1 font-mono text-[8px] uppercase tracking-[0.1em] text-danger">
-                −{p.delta}Y
-              </div>
-            )}
+            {!p.correct && <div className={styles.placementDelta}>−{p.delta}Y</div>}
           </div>
         ))}
 
         <div className={styles.dropZone}>
-          <div className="text-center font-mono text-[7px] uppercase tracking-[0.22em] text-gold">
-            {t("timeline.drop")}
-            <br />
-            {t("timeline.here")}
+          <div className={styles.dropHint}>
+            {t("timeline.drop")}<br />{t("timeline.here")}
           </div>
-          <div
-            className="font-display text-[22px] font-black leading-none text-gold"
-            style={{ letterSpacing: "-0.02em" }}
-          >
-            {guessYear}
-          </div>
-          <div className="absolute left-1 top-1 font-mono text-[7px] uppercase tracking-[0.18em] text-gold opacity-60">
-            {String(placements.length + 1).padStart(2, "0")}
-          </div>
+          <div className={styles.dropYear}>{guessYear}</div>
+          <div className={styles.dropIdx}>{String(placements.length + 1).padStart(2, "0")}</div>
         </div>
       </div>
 
@@ -92,7 +73,7 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
         {DECADE_SCALE.map((y, i, arr) => (
           <div
             key={y}
-            className="absolute top-0 font-mono text-[8px] tracking-[0.08em] text-gold opacity-70"
+            className={styles.decadeLabel}
             style={{ left: `${(i / (arr.length - 1)) * 100}%`, transform: "translateX(-50%)" }}
           >
             <div className="mx-auto mb-px h-1 w-px bg-gold" />

@@ -76,14 +76,14 @@ export function HomePage() {
         )}
         <GirihOverlay size={200} opacity={0.05} />
 
-        <div className="relative px-5 pt-6 pb-[18px] text-center">
+        <header className="relative px-5 pt-6 pb-[18px] text-center">
           <div className="inline-block">
             <Wordmark color="var(--color-gold)" size={56} />
           </div>
           <div className="mt-3 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75">
             {t("tagline")}
           </div>
-        </div>
+        </header>
 
         <div className="h-px bg-gold/50" />
 
@@ -91,11 +91,11 @@ export function HomePage() {
           <PlayerRoster players={players} onName={setPlayerName} onEra={setPlayerEra} hostLockedAt={hostLockedAt} />
         </div>
 
-        <div className="border-t border-gold bg-ink p-[14px]">
+        <footer className="border-t border-gold bg-ink p-[14px]">
           <YButton disabled={!canStart} onClick={onBegin}>
             {buttonLabel}
           </YButton>
-        </div>
+        </footer>
 
         <BottomNav />
       </div>

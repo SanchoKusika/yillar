@@ -1,0 +1,16 @@
+@reference "../../../../app/styles/index.css";
+
+.grid {
+  @apply grid grid-cols-2 gap-[6px];
+}
+
+.btn {
+  @apply border-0 p-2 cursor-pointer font-mono text-[10px] uppercase tracking-era bg-transparent text-cream;
+  box-shadow: inset 0 0 0 1px var(--color-ink-3);
+  transition: background 120ms linear, color 120ms linear, box-shadow 120ms linear;
+}
+
+.btn[data-active="true"] {
+  @apply bg-gold text-ink;
+  box-shadow: none;
+}

@@ -13,24 +13,22 @@ type ScoreboardBarProps = {
 export function ScoreboardBar({ currentName, cardIdx, totalCards, entries }: ScoreboardBarProps) {
   const t = useT();
   return (
-    <div className="border-b border-gold bg-ink px-[14px] py-[10px]">
-      <div className="mb-2 flex items-center justify-between">
+    <header className={styles.header}>
+      <div className={styles.headerTop}>
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[9px] tracking-[0.2em] text-gold">{t("game.turn")}</span>
-          <span className="font-condensed text-[17px] font-extrabold uppercase tracking-[0.12em] text-cream">
-            {currentName}
-          </span>
+          <span className={styles.turnLabel}>{t("game.turn")}</span>
+          <span className={styles.turnName}>{currentName}</span>
         </div>
-        <span className="font-mono text-[9px] tracking-[0.2em] text-gold">
+        <span className={styles.cardCount}>
           {t("game.cardOf", {
             idx: String(cardIdx + 1).padStart(2, "0"),
             total: String(totalCards).padStart(2, "0"),
           })}
         </span>
       </div>
-      <div className="flex border-t border-ink-3">
+      <ul className={styles.cells}>
         {entries.map((p, i) => (
-          <div
+          <li
             key={p.id}
             className={styles.scoreCell}
             data-turn={p.turn}
@@ -41,9 +39,9 @@ export function ScoreboardBar({ currentName, cardIdx, totalCards, entries }: Sco
             <div className={styles.scoreVal} data-turn={p.turn}>
               {String(p.score).padStart(3, "0")}
             </div>
-          </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </header>
   );
 }

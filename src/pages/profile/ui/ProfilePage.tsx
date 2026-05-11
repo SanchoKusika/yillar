@@ -1,20 +1,20 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CatalogLine, EraTag, GirihOverlay, PhoneFrame, YButton } from "@shared/ui";
-import FlagRU from "@shared/assets/svg/flags/ru.svg?react";
-import FlagUZ from "@shared/assets/svg/flags/uz.svg?react";
-import FlagEN from "@shared/assets/svg/flags/en.svg?react";
+import { Banner, GirihOverlay, PhoneFrame, YButton } from "@shared/ui";
 import { env } from "@shared/config";
-import { ERAS, ERA_LABEL, useT, type Era } from "@shared/lib";
-import { signOut, updatePassword, updateProfile, uploadAvatar, useSessionStore } from "@entities/session";
+import { useT } from "@shared/lib";
+import { signOut, updateProfile, uploadAvatar, useSessionStore } from "@entities/session";
 import { useHistory, useProfileStats } from "@entities/game-history";
-import type { EraBreakdownEntry } from "@entities/game-history";
-import { usePreferencesStore, type Language, type Theme } from "@entities/preferences";
 import { BottomNav } from "@widgets/bottom-nav";
+import { ProfileHeader } from "./ProfileHeader";
+import { TopStats } from "./TopStats";
+import { StatsTab } from "./tabs/StatsTab";
+import { HistoryTab } from "./tabs/HistoryTab";
+import { FriendsTab } from "./tabs/FriendsTab";
+import { SettingsTab } from "./tabs/SettingsTab";
 import styles from "./ProfilePage.module.css";
 
 type Tab = "stats" | "history" | "friends" | "settings";
-
 const TAB_KEYS: Tab[] = ["stats", "history", "friends", "settings"];
 
 export function ProfilePage() {
@@ -26,7 +26,6 @@ export function ProfilePage() {
   const loading = useSessionStore((s) => s.loading);
   const stats = useProfileStats(user?.id);
   const history = useHistory(user?.id, 10);
-
   const [tab, setTab] = useState<Tab>("stats");
 
   if (loading) {
@@ -71,51 +70,22 @@ export function ProfilePage() {
       <div className="relative flex h-full flex-col bg-ink text-cream overflow-hidden">
         <GirihOverlay size={220} opacity={0.05} />
 
-        <div className="relative border-b border-ink-3 px-4 py-4">
-          <div className="flex items-center gap-[14px]">
-            <div className={styles.avatarWrap}>
-              {profile?.avatarUrl ? (
-                <img src={profile.avatarUrl} alt="" className={styles.avatarImg} />
-              ) : (
-                <div
-                  className={styles.avatarLetter}
-                  style={{
-                    background: era ? `var(--color-${era}-primary)` : "var(--color-gold)",
-                    color: era ? `var(--color-${era}-surface)` : "var(--color-ink)",
-                  }}
-                >
-                  {initial}
-                </div>
-              )}
-            </div>
+        <ProfileHeader
+          displayName={displayName}
+          initial={initial}
+          era={era}
+          avatarUrl={profile?.avatarUrl ?? null}
+          email={user.email ?? null}
+          isAnon={isAnon}
+        />
 
-            <div className="flex min-w-0 flex-1 flex-col">
-              <div className="font-condensed text-[26px] font-extrabold uppercase tracking-[0.06em] leading-none text-cream">
-                {displayName}
-              </div>
-              <div className="mt-[6px]">
-                {era ? (
-                  <EraTag era={era} boxed onDark />
-                ) : (
-                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-gold opacity-60">
-                    {t("profile.noGeneration")}
-                  </span>
-                )}
-              </div>
-              <div className="mt-[6px] truncate font-mono text-[9px] uppercase tracking-[0.18em] text-cream opacity-50">
-                {isAnon ? t("profile.guestSubtitle") : user.email ? user.email : t("profile.memberSubtitle")}
-              </div>
-            </div>
-          </div>
-        </div>
+        <TopStats
+          bestScore={stats.data?.bestScore}
+          averageScore={stats.data?.averageScore}
+          gamesPlayed={stats.data?.gamesPlayed}
+        />
 
-        <div className="relative grid grid-cols-3 border-b border-gold">
-          <TopStat label={t("profile.statBest")} value={stats.data?.bestScore} />
-          <TopStat label={t("profile.statAvg")} value={stats.data?.averageScore} bordered />
-          <TopStat label={t("profile.statPlayed")} value={stats.data?.gamesPlayed} bordered />
-        </div>
-
-        <div className="relative flex border-b border-ink-3">
+        <nav className="relative flex border-b border-ink-3" aria-label="profile tabs">
           {TAB_KEYS.map((id) => (
             <button
               key={id}
@@ -127,9 +97,9 @@ export function ProfilePage() {
               {t(`profile.tabs.${id}` as const)}
             </button>
           ))}
-        </div>
+        </nav>
 
-        <div className="relative flex-1 overflow-auto px-[14px] pb-2 pt-[14px]">
+        <section className="relative flex-1 overflow-auto px-[14px] pb-2 pt-[14px]">
           {tab === "stats" && (
             <StatsTab
               eraBreakdown={stats.data?.eraBreakdown}
@@ -138,15 +108,12 @@ export function ProfilePage() {
               loading={stats.isLoading}
             />
           )}
-
           {tab === "history" && <HistoryTab entries={history.data} loading={history.isLoading} />}
-
           {tab === "friends" && <FriendsTab />}
-
           {tab === "settings" && (
             <SettingsTab
               initialName={profile?.displayName ?? ""}
-              initialEra={profile?.generation ?? null}
+              initialEra={era}
               avatarUrl={profile?.avatarUrl ?? null}
               initial={initial}
               isAnon={isAnon}
@@ -157,14 +124,10 @@ export function ProfilePage() {
               }}
               onSave={async (name, gen) => {
                 await updateProfile({ displayName: name, generation: gen });
-                if (profile) setProfile({ ...profile, displayName: name, generation: gen });
+                if (profile) setProfile({ ...profile, displayName: name ?? undefined, generation: gen ?? undefined });
               }}
               onSignOut={async () => {
-                try {
-                  await signOut();
-                } catch (err) {
-                  console.warn("[YILLAR] sign out failed:", err);
-                }
+                try { await signOut(); } catch (err) { console.warn("[YILLAR] sign out failed:", err); }
                 navigate("/auth", { replace: true });
               }}
               onCreateAccount={() => navigate("/auth")}
@@ -172,549 +135,14 @@ export function ProfilePage() {
           )}
 
           {!env.hasSupabase && (
-            <div className="mt-4 border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
-              {t("profile.demoMode")}
+            <div className="mt-4">
+              <Banner variant="error">{t("profile.demoMode")}</Banner>
             </div>
           )}
-        </div>
+        </section>
 
         <BottomNav />
       </div>
     </PhoneFrame>
   );
-}
-
-function TopStat({
-  label,
-  value,
-  bordered,
-}: {
-  label: string;
-  value: number | null | undefined;
-  bordered?: boolean;
-}) {
-  const v = value == null ? "—" : value;
-  return (
-    <div className={`px-[10px] py-3 text-center ${bordered ? "border-l border-ink-3" : ""}`}>
-      <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">{label}</div>
-      <div
-        className="mt-1 font-display text-[28px] font-black leading-none text-cream"
-        style={{ letterSpacing: "-0.02em" }}
-      >
-        {v}
-      </div>
-    </div>
-  );
-}
-
-function StatsTab({
-  eraBreakdown,
-  bestDecade,
-  wins,
-  loading,
-}: {
-  eraBreakdown: EraBreakdownEntry[] | undefined;
-  bestDecade:
-    | { decade: number; correct: number; total: number; accuracy: number }
-    | null
-    | undefined;
-  wins: number | undefined;
-  loading: boolean;
-}) {
-  const t = useT();
-  if (loading) {
-    return (
-      <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream opacity-60">
-        {t("profile.loading")}
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <CatalogLine
-          left={t("profile.eraBreakdown")}
-          right={t("profile.uniqueGuessed")}
-          style={{ marginBottom: 10 }}
-        />
-        {(eraBreakdown ?? []).map((r) => {
-          const pct = r.total > 0 ? (r.correct / r.total) * 100 : 0;
-          return (
-            <div key={r.era} className="mb-3 last:mb-0">
-              <div className="mb-[4px] flex justify-between font-mono text-[10px] uppercase tracking-[0.18em]">
-                <span style={{ color: `var(--color-${r.era}-primary)` }}>{ERA_LABEL[r.era]}</span>
-                <span className="opacity-70 tabular-nums">
-                  {r.correct} / {r.total} {t("profile.tracksWord")} · {Math.round(pct)}%
-                </span>
-              </div>
-              <div className="flex h-[14px] border border-ink-3 bg-ink-2">
-                <div
-                  className="transition-[width] duration-500"
-                  style={{
-                    width: `${pct}%`,
-                    background: `var(--color-${r.era}-primary)`,
-                  }}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="border border-ink-3 bg-ink-2 px-3 py-[10px]">
-        <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">{t("profile.bestDecade")}</div>
-        {bestDecade ? (
-          <>
-            <div
-              className="mt-1 font-display text-[36px] font-black leading-none text-cream"
-              style={{ letterSpacing: "-0.02em" }}
-            >
-              {t("profile.decadeFormat", { n: bestDecade.decade })}
-            </div>
-            <div className="mt-[2px] font-mono text-[10px] uppercase tracking-[0.1em] text-cream opacity-60">
-              {bestDecade.correct}/{bestDecade.total} {t("profile.songsWord")} · {Math.round(bestDecade.accuracy * 100)}%
-            </div>
-          </>
-        ) : (
-          <div className="mt-1 font-mono text-[12px] italic text-cream opacity-55">
-            {t("profile.bestDecade.empty")}
-          </div>
-        )}
-      </div>
-
-      <div className="border border-ink-3 bg-ink-2 px-3 py-[10px]">
-        <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">{t("profile.wins")}</div>
-        <div
-          className="mt-1 font-display text-[28px] font-black leading-none text-cream"
-          style={{ letterSpacing: "-0.02em" }}
-        >
-          {wins ?? "—"}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HistoryTab({
-  entries,
-  loading,
-}: {
-  entries:
-    | {
-        id: string;
-        startedAt: string;
-        totalCards: number;
-        hostScore: number;
-        hostRank: number | null;
-        isWinner: boolean;
-        playerCount: number;
-      }[]
-    | undefined;
-  loading: boolean;
-}) {
-  const t = useT();
-  return (
-    <div>
-      <CatalogLine
-        left={t("profile.lastSessions")}
-        right={`${entries?.length ?? 0}`}
-        style={{ marginBottom: 10 }}
-      />
-      {loading ? (
-        <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-cream opacity-60">
-          {t("profile.loading")}
-        </div>
-      ) : entries && entries.length > 0 ? (
-        <div className="flex flex-col gap-[6px]">
-          {entries.map((g) => (
-            <div
-              key={g.id}
-              className="flex items-center justify-between border border-ink-3 bg-ink-2 px-3 py-[10px]"
-              style={{
-                borderLeft: `3px solid ${g.isWinner ? "var(--color-gold)" : "var(--color-ink-3)"}`,
-              }}
-            >
-              <div className="flex flex-col gap-[2px]">
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold opacity-80">
-                  {formatDate(g.startedAt)} · {g.playerCount} {t("profile.players")}
-                </span>
-                <span className="font-condensed text-[14px] font-bold uppercase tracking-[0.1em] text-cream">
-                  {g.isWinner
-                    ? t("profile.winnerStar")
-                    : g.hostRank
-                      ? `# ${t("profile.placeBadge", { n: g.hostRank })}`
-                      : "—"}
-                </span>
-              </div>
-              <div
-                className="font-display text-[26px] font-black leading-none"
-                style={{
-                  letterSpacing: "-0.02em",
-                  color: g.isWinner ? "var(--color-gold)" : "var(--color-cream)",
-                }}
-              >
-                {g.hostScore}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="border border-ink-3 px-3 py-4 text-center text-[12px] italic text-cream opacity-55">
-          {t("profile.history.empty")}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function FriendsTab() {
-  const t = useT();
-  return (
-    <div>
-      <CatalogLine
-        left={t("profile.leaderboardWeek")}
-        right={t("profile.zeroFriends")}
-        style={{ marginBottom: 10 }}
-      />
-
-      <div className="border border-ink-3 bg-ink-2 px-4 py-6 text-center">
-        <div className="font-condensed text-[16px] font-bold uppercase tracking-[0.1em] text-cream">
-          {t("profile.friends.emptyTitle")}
-        </div>
-        <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-cream opacity-55">
-          {t("profile.friends.emptySoon")}
-        </div>
-        <div className="mt-3 font-body text-[12px] italic text-cream opacity-65">
-          {t("profile.friends.emptyBody")}
-        </div>
-      </div>
-
-      <button
-        type="button"
-        disabled
-        className="mt-3 w-full cursor-not-allowed border-0 bg-transparent px-3 py-[10px] font-condensed text-[11px] font-bold uppercase tracking-[0.2em] text-cream opacity-40 outline outline-1 outline-cream"
-      >
-        {t("profile.friends.invite")}
-      </button>
-    </div>
-  );
-}
-
-function SettingsTab({
-  initialName,
-  initialEra,
-  avatarUrl,
-  initial,
-  isAnon,
-  onAvatarUpload,
-  onSave,
-  onSignOut,
-  onCreateAccount,
-}: {
-  initialName: string;
-  initialEra: Era | null;
-  avatarUrl: string | null;
-  initial: string;
-  isAnon: boolean;
-  onAvatarUpload: (file: File) => Promise<void>;
-  onSave: (name: string | null, era: Era | null) => Promise<void>;
-  onSignOut: () => Promise<void>;
-  onCreateAccount: () => void;
-}) {
-  const t = useT();
-  const theme = usePreferencesStore((s) => s.theme);
-  const setTheme = usePreferencesStore((s) => s.setTheme);
-  const language = usePreferencesStore((s) => s.language);
-  const setLanguage = usePreferencesStore((s) => s.setLanguage);
-
-  const [name, setName] = useState(initialName);
-  const [era, setEra] = useState<Era | null>(initialEra);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [avatarBusy, setAvatarBusy] = useState(false);
-  const [avatarError, setAvatarError] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement | null>(null);
-
-  const [pwOpen, setPwOpen] = useState(false);
-  const [newPw, setNewPw] = useState("");
-  const [pwBusy, setPwBusy] = useState(false);
-  const [pwError, setPwError] = useState<string | null>(null);
-  const [pwSaved, setPwSaved] = useState(false);
-
-  useEffect(() => {
-    setName(initialName);
-    setEra(initialEra);
-  }, [initialName, initialEra]);
-
-  const dirty = (name.trim() || null) !== (initialName.trim() || null) || era !== initialEra;
-
-  const onPickAvatar = () => fileRef.current?.click();
-
-  const onAvatarChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    setAvatarBusy(true);
-    setAvatarError(null);
-    try {
-      await onAvatarUpload(file);
-    } catch (err) {
-      setAvatarError(err instanceof Error ? err.message : t("profile.uploadFailed"));
-    } finally {
-      setAvatarBusy(false);
-    }
-  };
-
-  const handleSave = async () => {
-    if (busy) return;
-    setBusy(true);
-    setError(null);
-    try {
-      const trimmed = name.trim();
-      const next = trimmed.length > 0 ? trimmed.toUpperCase().slice(0, 20) : null;
-      await onSave(next, era);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("profile.saveFailed"));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-3">
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/png,image/jpeg,image/webp"
-        className="hidden"
-        onChange={onAvatarChange}
-      />
-
-      {/* ── ПРОФИЛЬ ── */}
-      <div className={styles.sectionHeader}>
-        <span className={styles.sectionHeaderText}>{t("profile.settings.sectionProfile")}</span>
-        <div className={styles.sectionHeaderLine} />
-      </div>
-
-      <div className={styles.sectionBody}>
-        <div className="flex items-stretch gap-3">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt="" className={styles.avatarSquare} onClick={onPickAvatar} />
-          ) : (
-            <div className={styles.avatarSquareLetter} onClick={onPickAvatar}>{initial}</div>
-          )}
-          <YButton variant="ghost" className="flex-1" onClick={onPickAvatar} disabled={avatarBusy}>
-            {avatarBusy
-              ? t("profile.settings.uploading")
-              : avatarUrl
-                ? t("profile.settings.replace")
-                : t("profile.settings.upload")}
-          </YButton>
-        </div>
-        {avatarError && (
-          <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
-            {avatarError}
-          </div>
-        )}
-
-        <label className="flex flex-col">
-          <span className={styles.fieldLabel}>{t("profile.settings.displayName")}</span>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={20}
-            placeholder="DILNOZA"
-            className="border border-ink-3 bg-ink px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream outline-none focus:border-gold"
-          />
-        </label>
-
-        <div>
-          <span className={styles.fieldLabel}>{t("profile.settings.generation")}</span>
-          <div className="grid grid-cols-3 gap-[6px]">
-            {ERAS.map((e) => (
-              <button
-                key={e}
-                type="button"
-                onClick={() => setEra(e)}
-                className="border px-2 py-2 font-mono text-[10px] uppercase tracking-[0.18em]"
-                style={{
-                  borderColor: era === e ? `var(--color-${e}-primary)` : "var(--color-ink-3)",
-                  background: era === e ? `var(--color-${e}-primary)` : "transparent",
-                  color: era === e ? "var(--color-ink)" : "var(--color-cream)",
-                }}
-              >
-                <div className="opacity-80">{ERA_LABEL[e]}</div>
-                <div>{t(`era.${e}` as const)}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {error && (
-          <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
-            {error}
-          </div>
-        )}
-
-        <YButton onClick={handleSave} disabled={busy || !dirty}>
-          {busy
-            ? t("profile.settings.saving")
-            : dirty
-              ? t("profile.settings.save")
-              : t("profile.settings.saved")}
-        </YButton>
-      </div>
-
-      {/* ── ПРИЛОЖЕНИЕ ── */}
-      <div className={styles.sectionHeader}>
-        <span className={styles.sectionHeaderText}>{t("profile.settings.sectionApp")}</span>
-        <div className={styles.sectionHeaderLine} />
-      </div>
-
-      <div className={styles.sectionBody}>
-        <div>
-          <span className={styles.fieldLabel}>{t("profile.settings.theme")}</span>
-          <div className="grid grid-cols-2 gap-[6px]">
-            {(["dark", "light"] as Theme[]).map((th) => (
-              <button
-                key={th}
-                type="button"
-                onClick={() => setTheme(th)}
-                className="border px-2 py-2 font-mono text-[10px] uppercase tracking-[0.18em]"
-                style={{
-                  borderColor: theme === th ? "var(--color-gold)" : "var(--color-ink-3)",
-                  background: theme === th ? "var(--color-gold)" : "transparent",
-                  color: theme === th ? "var(--color-ink)" : "var(--color-cream)",
-                }}
-              >
-                {th === "dark" ? t("profile.settings.themeDark") : t("profile.settings.themeLight")}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <span className={styles.fieldLabel}>{t("profile.settings.language")}</span>
-          <div className="grid grid-cols-3 gap-[6px]">
-            {(
-              [
-                { lng: "ru", code: "RU", Flag: FlagRU },
-                { lng: "uz", code: "O'Z", Flag: FlagUZ },
-                { lng: "en", code: "EN", Flag: FlagEN },
-              ] as { lng: Language; code: string; Flag: typeof FlagRU }[]
-            ).map(({ lng, code, Flag }) => (
-              <button
-                key={lng}
-                type="button"
-                onClick={() => setLanguage(lng)}
-                className="flex flex-col items-center gap-[6px] border px-2 py-2"
-                style={{
-                  borderColor: language === lng ? "var(--color-gold)" : "var(--color-ink-3)",
-                  background: language === lng ? "var(--color-ink-2)" : "transparent",
-                }}
-              >
-                <Flag className="w-[30px] h-[20px] block" aria-hidden />
-                <span
-                  className="font-mono text-[9px] uppercase tracking-[0.18em]"
-                  style={{ color: language === lng ? "var(--color-gold)" : "var(--color-cream)" }}
-                >
-                  {code}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── АККАУНТ ── */}
-      <div className={styles.sectionHeader}>
-        <span className={styles.sectionHeaderText}>{t("profile.settings.sectionAccount")}</span>
-        <div className={styles.sectionHeaderLine} />
-      </div>
-
-      <div className={styles.sectionBody}>
-        {!isAnon && (
-          <div>
-            <span className={styles.fieldLabel}>{t("profile.settings.changePassword")}</span>
-            {!pwOpen ? (
-              <button
-                type="button"
-                onClick={() => { setPwOpen(true); setPwError(null); setPwSaved(false); setNewPw(""); }}
-                className="w-full border border-ink-3 bg-transparent px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream text-left opacity-50"
-              >
-                ••••••••
-              </button>
-            ) : (
-              <div className="flex flex-col gap-2">
-                <input
-                  type="password"
-                  value={newPw}
-                  onChange={(e) => setNewPw(e.target.value)}
-                  placeholder={t("profile.settings.newPasswordPlaceholder")}
-                  autoComplete="new-password"
-                  className="border border-ink-3 bg-ink px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream outline-none focus:border-gold"
-                />
-                {pwError && (
-                  <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
-                    {pwError}
-                  </div>
-                )}
-                {pwSaved && (
-                  <div className="border border-gold px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gold">
-                    {t("profile.settings.saved")}
-                  </div>
-                )}
-                <YButton
-                  disabled={pwBusy || newPw.length < 6}
-                  onClick={async () => {
-                    if (pwBusy || newPw.length < 6) return;
-                    setPwBusy(true);
-                    setPwError(null);
-                    setPwSaved(false);
-                    try {
-                      await updatePassword(newPw);
-                      setPwSaved(true);
-                      setPwOpen(false);
-                      setNewPw("");
-                    } catch (err) {
-                      setPwError(err instanceof Error ? err.message : t("profile.saveFailed"));
-                    } finally {
-                      setPwBusy(false);
-                    }
-                  }}
-                >
-                  {pwBusy ? t("profile.settings.saving") : t("profile.settings.savePassword")}
-                </YButton>
-              </div>
-            )}
-          </div>
-        )}
-
-        {isAnon ? (
-          <div className="flex flex-col gap-2">
-            <div className="border border-gold px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gold">
-              {t("profile.guestBanner")}
-            </div>
-            <YButton onClick={onCreateAccount}>{t("profile.createAccount")}</YButton>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={onSignOut}
-            className="w-full border-0 bg-transparent px-3 py-[10px] font-condensed text-[11px] font-bold uppercase tracking-[0.2em] text-danger outline outline-1 outline-danger"
-          >
-            {t("profile.signOut")}
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  return `${dd}.${mm}`;
 }

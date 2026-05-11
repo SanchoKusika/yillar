@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { CatalogLine, GirihOverlay, PhoneFrame, YButton } from "@shared/ui";
-import { ERAS, eraVar, useT, type TranslationKey } from "@shared/lib";
+import { ERAS, eraVar, useT } from "@shared/lib";
 import { useGameStore, useActivePlayers } from "@entities/game";
 import { useSessionStore } from "@entities/session";
 import { useSaveGame } from "@features/save-game";
@@ -23,7 +23,7 @@ export function EndPage() {
   const resetSaveFlag = useGameStore((s) => s.resetSaveFlag);
   const user = useSessionStore((s) => s.user);
   const profile = useSessionStore((s) => s.profile);
-  const { mutate: persist, status: saveStatus } = useSaveGame();
+  const { mutate: persist } = useSaveGame();
 
   const hostPlayerId = activePlayers[0]?.id ?? null;
   const stats = useProfileStats(user?.id);
@@ -31,11 +31,7 @@ export function EndPage() {
   const ranked = useMemo(
     () =>
       activePlayers
-        .map((p) => ({
-          ...p,
-          total: scores[p.id] ?? 0,
-          placements: placements[p.id] ?? [],
-        }))
+        .map((p) => ({ ...p, total: scores[p.id] ?? 0, placements: placements[p.id] ?? [] }))
         .sort((a, b) => b.total - a.total),
     [activePlayers, scores, placements],
   );
@@ -84,40 +80,30 @@ export function EndPage() {
     );
   }, [savedGameId, user, winner, ranked, persist, totalCards, profile?.displayName, hostPlayerId, activePlayers, beginSave, markGameSaved, resetSaveFlag]);
 
-  const onReplay = () => {
-    reset();
-    navigate("/", { replace: true });
-  };
-
   if (!winner) {
     return (
       <PhoneFrame>
-        <div className="flex flex-1 items-center justify-center p-6">
+        <main className="flex flex-1 items-center justify-center p-6">
           <YButton onClick={() => navigate("/")}>{t("end.back")}</YButton>
-        </div>
+        </main>
       </PhoneFrame>
     );
   }
 
   return (
     <PhoneFrame>
-      <div className="relative flex h-full flex-col overflow-hidden bg-ink text-cream">
+      <main className="relative flex h-full flex-col overflow-hidden bg-ink text-cream">
         <GirihOverlay size={200} opacity={0.05} />
 
-        <div className="relative border-b border-gold px-5 pt-[18px] pb-[14px] overflow-hidden">
+        <header className="relative border-b border-gold px-5 pt-[18px] pb-[14px] overflow-hidden">
           {PARTICLES.map((p, i) => (
             <div
               key={i}
               className={styles.particle}
-              style={{
-                left: p.left,
-                top: p.top,
-                ["--dur" as string]: p.dur,
-                ["--delay" as string]: p.delay,
-              }}
+              style={{ left: p.left, top: p.top, ["--dur" as string]: p.dur, ["--delay" as string]: p.delay }}
             />
           ))}
-          <div className="font-mono text-[10px] uppercase tracking-[0.26em] text-gold">{t("end.winner")}</div>
+          <div className={styles.winnerLabel}>{t("end.winner")}</div>
           <div
             className="mt-1 truncate font-display font-black leading-[0.92] text-cream"
             style={{
@@ -128,16 +114,14 @@ export function EndPage() {
           >
             {winner.name}
           </div>
-          {isNewRecord && (
-            <div className={styles.newRecord}>{t("end.newRecord")}</div>
-          )}
+          {isNewRecord && <div className={styles.newRecord}>{t("end.newRecord")}</div>}
           <div className="mt-[6px] flex items-baseline justify-between font-mono text-[11px] tracking-[0.14em] text-gold">
-            <span className="text-[16px] font-medium text-cream">{winner.total} {t("end.points")}</span>
-            <span className="opacity-60">
+            <span className={styles.winnerPoints}>{winner.total} {t("end.points")}</span>
+            <span className={styles.winnerGen}>
               {t("end.gen")} {winner.era ? t(`era.${winner.era}` as const) : "—"}
             </span>
           </div>
-        </div>
+        </header>
 
         <div className="flex-1 overflow-auto px-4 pb-2 pt-[14px]">
           <CatalogLine
@@ -146,34 +130,26 @@ export function EndPage() {
             style={{ marginBottom: 10 }}
           />
 
+          <ol>
           {ranked.map((p, i) => {
             const eraStats = ERAS.map((era) => {
               const ofEra = p.placements.filter((pl) => pl.era === era);
-              return {
-                era,
-                correct: ofEra.filter((pl) => pl.correct).length,
-                total: ofEra.length,
-              };
+              return { era, correct: ofEra.filter((pl) => pl.correct).length, total: ofEra.length };
             });
 
             return (
-              <div key={p.id} className={styles.playerCard} data-winner={i === 0}>
+              <li key={p.id} className={styles.playerCard} data-winner={i === 0}>
                 <div className="mb-2 flex items-baseline justify-between">
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold whitespace-nowrap">
-                      # {t("end.placeBadge", { n: i + 1 })}
-                    </span>
-                    <span
-                      className="font-condensed text-[20px] font-extrabold uppercase tracking-[0.08em] text-cream"
-                      style={{ opacity: i === 0 ? 1 : 0.85 }}
-                    >
+                    <span className={styles.placeBadge}>#{t("end.placeBadge", { n: i + 1 })}</span>
+                    <span className={styles.playerName} style={{ opacity: i === 0 ? 1 : 0.85 }}>
                       {p.name}
                     </span>
                     {i === 0 && <StarMark className={styles.starMark} aria-hidden />}
                   </div>
                   <span
-                    className="font-display text-[26px] font-black leading-none"
-                    style={{ letterSpacing: "-0.02em", color: i === 0 ? "var(--color-gold)" : "var(--color-cream)" }}
+                    className={styles.playerScore}
+                    style={{ color: i === 0 ? "var(--color-gold)" : "var(--color-cream)" }}
                   >
                     {p.total}
                   </span>
@@ -182,11 +158,9 @@ export function EndPage() {
                 <div className="grid grid-cols-3 gap-1">
                   {eraStats.map(({ era, correct, total }) => (
                     <div key={era}>
-                      <div className="mb-[2px] flex justify-between font-mono text-[8px] uppercase tracking-[0.18em]">
+                      <div className={`mb-[2px] flex justify-between ${styles.eraLabel}`}>
                         <span style={{ color: eraVar(era, "primary") }}>{t(`era.short.${era}` as const)}</span>
-                        <span className="opacity-60">
-                          {correct}/{total || 0}
-                        </span>
+                        <span className="opacity-60">{correct}/{total || 0}</span>
                       </div>
                       <div className="flex h-2 gap-px bg-ink">
                         {[...Array(Math.max(total, 1))].map((_, j) => (
@@ -202,40 +176,21 @@ export function EndPage() {
                 </div>
 
                 {p.era && (
-                  <div className="mt-[6px] font-mono text-[8px] uppercase tracking-[0.2em] text-gold opacity-70">
+                  <div className={styles.bonusGen}>
                     {t("end.bonusGen", { era: t(`era.${p.era}` as const) })}
                   </div>
                 )}
-              </div>
+              </li>
             );
           })}
+          </ol>
         </div>
 
-        <div className="flex gap-2 border-t border-gold bg-ink p-3">
-          <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }}>
-            {t("end.share")}
-          </YButton>
-          <YButton onClick={onReplay}>{t("end.replay")}</YButton>
-        </div>
-      </div>
+        <footer className="flex gap-2 border-t border-gold bg-ink p-3">
+          <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }}>{t("end.share")}</YButton>
+          <YButton onClick={() => { reset(); navigate("/", { replace: true }); }}>{t("end.replay")}</YButton>
+        </footer>
+      </main>
     </PhoneFrame>
   );
-}
-
-function saveLabel(
-  t: (key: TranslationKey, params?: Record<string, string | number>) => string,
-  status: "idle" | "pending" | "success" | "error",
-  hasUser: boolean,
-  done: boolean,
-): string {
-  if (!hasUser) return t("end.notSaved");
-  if (done) return t("end.saved");
-  switch (status) {
-    case "pending":
-      return t("end.saving");
-    case "error":
-      return t("end.saveFailed");
-    default:
-      return t("end.preparing");
-  }
 }

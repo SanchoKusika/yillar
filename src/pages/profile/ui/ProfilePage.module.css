@@ -1,118 +1,55 @@
+@reference "../../../app/styles/index.css";
+
 .avatarWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+  @apply flex flex-col items-center gap-[6px] shrink-0;
 }
 
 .avatarImg {
-  width: 68px;
-  height: 68px;
-  object-fit: cover;
+  @apply w-[68px] h-[68px] object-cover;
   border: 1.5px solid var(--color-gold);
 }
 
 .avatarLetter {
-  width: 68px;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply w-[68px] h-[68px] flex items-center justify-center font-display font-black text-[38px] leading-none tracking-tight;
   border: 1.5px solid var(--color-gold);
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 38px;
-  line-height: 1;
-  letter-spacing: -0.02em;
+}
+
+.avatarSquare {
+  @apply w-[60px] h-[60px] shrink-0 object-cover cursor-pointer;
+  border: 1.5px solid var(--color-gold);
+}
+
+.avatarSquareLetter {
+  @apply w-[60px] h-[60px] shrink-0 flex items-center justify-center bg-gold font-display font-black text-[28px] text-ink cursor-pointer;
+}
+
+.displayName {
+  @apply font-condensed text-[26px] font-extrabold uppercase tracking-[0.06em] leading-none text-cream;
+}
+
+.noGeneration {
+  @apply font-mono text-[10px] uppercase tracking-[0.22em] text-gold opacity-60;
+}
+
+.subtitle {
+  @apply mt-[6px] font-mono text-[9px] uppercase tracking-era text-cream opacity-50 truncate;
+}
+
+.statLabel {
+  @apply font-mono text-[9px] uppercase tracking-[0.22em] text-gold;
+}
+
+.statValue {
+  @apply mt-1 font-display text-[28px] font-black leading-none tracking-tight text-cream;
 }
 
 .tabBtn {
-  flex: 1;
-  padding: 10px 2px;
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  background: transparent;
-  color: var(--color-cream);
-  opacity: 0.55;
-  font-family: var(--font-condensed);
-  font-weight: 700;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  @apply flex-1 py-[10px] px-[2px] border-0 cursor-pointer bg-transparent text-cream opacity-55 font-condensed font-bold text-[10px] uppercase tracking-era;
   box-shadow: none;
   transition: background 160ms linear, color 160ms linear, opacity 160ms linear;
 }
 
-.sectionHeader {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 0 10px;
-}
-
-.sectionHeaderText {
-  font-family: var(--font-condensed);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  white-space: nowrap;
-}
-
-.sectionHeaderLine {
-  flex: 1;
-  height: 1px;
-  background: var(--color-gold);
-  opacity: 0.2;
-}
-
-.sectionBody {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-bottom: 6px;
-}
-
-.fieldLabel {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-bottom: 6px;
-}
-
-.avatarSquare {
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  object-fit: cover;
-  border: 1.5px solid var(--color-gold);
-  cursor: pointer;
-}
-
-.avatarSquareLetter {
-  width: 60px;
-  height: 60px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-gold);
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 28px;
-  color: var(--color-ink);
-  cursor: pointer;
-}
-
 .tabBtn[data-active="true"] {
-  background: var(--color-ink-2);
-  color: var(--color-gold);
-  opacity: 1;
+  @apply bg-ink-2 text-gold opacity-100;
   box-shadow: inset 0 2px 0 0 var(--color-gold);
 }

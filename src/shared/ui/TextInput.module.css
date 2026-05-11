@@ -1,0 +1,14 @@
+@reference "../../app/styles/index.css";
+
+.input {
+  @apply w-full border border-ink-3 bg-ink px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-label text-cream outline-none;
+  transition: border-color 120ms linear;
+}
+
+.input:focus {
+  @apply border-gold;
+}
+
+.input::placeholder {
+  @apply text-cream opacity-30;
+}

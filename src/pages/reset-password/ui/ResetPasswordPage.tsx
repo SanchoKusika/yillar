@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@shared/api";
 import { updatePassword } from "@entities/session";
 import { useT } from "@shared/lib";
-import { GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
+import { GirihOverlay, PhoneFrame, Wordmark, YButton, Banner, FieldLabel } from "@shared/ui";
 import { BottomNav } from "@widgets/bottom-nav";
-import styles from "../../auth/ui/AuthPage.module.css";
+import styles from "./ResetPasswordPage.module.css";
 
 type Stage = "waiting" | "ready" | "done" | "invalid";
 
@@ -24,15 +24,10 @@ export function ResetPasswordPage() {
       return;
     }
 
-    // Supabase SDK automatically parses the recovery token from the URL hash
-    // and fires PASSWORD_RECOVERY via onAuthStateChange.
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setStage("ready");
-      }
+      if (event === "PASSWORD_RECOVERY") setStage("ready");
     });
 
-    // Fallback: if no hash is present at all, mark as invalid after a short delay
     const timer = setTimeout(() => {
       setStage((s) => (s === "waiting" ? "invalid" : s));
     }, 3000);
@@ -70,35 +65,22 @@ export function ResetPasswordPage() {
         <div className="relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4">
           <div className="text-center">
             <Wordmark size={44} />
-            <div className="mt-2 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75">
+            <div className={styles.subtitle}>
               {t("auth.resetHeader")}
             </div>
           </div>
 
           {stage === "waiting" && (
-            <div className="flex flex-1 items-center justify-center font-mono text-[11px] uppercase tracking-[0.18em] text-cream opacity-50">
-              …
-            </div>
+            <div className={styles.waiting}>…</div>
           )}
 
-          {stage === "invalid" && (
-            <div className="border border-danger px-3 py-3 font-mono text-[11px] uppercase tracking-[0.1em] text-danger">
-              {t("auth.resetInvalidLink")}
-            </div>
-          )}
-
-          {stage === "done" && (
-            <div className="border border-gold px-3 py-3 font-mono text-[11px] uppercase tracking-[0.1em] text-gold">
-              {t("auth.passwordUpdated")}
-            </div>
-          )}
+          {stage === "invalid" && <Banner variant="error">{t("auth.resetInvalidLink")}</Banner>}
+          {stage === "done" && <Banner variant="gold">{t("auth.passwordUpdated")}</Banner>}
 
           {stage === "ready" && (
             <form onSubmit={onSubmit} className="flex flex-col gap-4">
               <label className="flex flex-col gap-[6px]">
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-gold">
-                  {t("auth.newPassword")}
-                </span>
+                <FieldLabel>{t("auth.newPassword")}</FieldLabel>
                 <input
                   type="password"
                   value={password}
@@ -112,9 +94,7 @@ export function ResetPasswordPage() {
               </label>
 
               <label className="flex flex-col gap-[6px]">
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-gold">
-                  {t("auth.confirmPassword")}
-                </span>
+                <FieldLabel>{t("auth.confirmPassword")}</FieldLabel>
                 <input
                   type="password"
                   value={confirm}
@@ -127,11 +107,7 @@ export function ResetPasswordPage() {
                 />
               </label>
 
-              {error && (
-                <div className="border border-danger px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-danger">
-                  {error}
-                </div>
-              )}
+              {error && <Banner variant="error">{error}</Banner>}
 
               <YButton disabled={busy}>
                 {busy ? "…" : t("auth.btnSetPassword")}
@@ -143,7 +119,7 @@ export function ResetPasswordPage() {
             <button
               type="button"
               onClick={() => navigate("/auth", { replace: true })}
-              className="self-start font-mono text-[10px] uppercase tracking-[0.14em] text-cream opacity-50 hover:opacity-80 transition-opacity"
+              className={styles.linkBtn}
             >
               {t("auth.backToSignIn")}
             </button>
