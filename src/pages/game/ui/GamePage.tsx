@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { PhoneFrame, YButton } from "@shared/ui";
-import { useT, useYouTubeAudio } from "@shared/lib";
+import { useT, useYouTubeAudio, haptic } from "@shared/lib";
 import {
   useGameStore,
   useActivePlayers,
@@ -56,12 +56,14 @@ export function GamePage() {
   const onLock = () => {
     audio.pause();
     if (guess == null) setGuess(guessYear);
+    haptic("medium");
     const result = lockIn();
     if (result) navigate("/reveal");
   };
 
   const onSkip = () => {
     audio.pause();
+    haptic("light");
     const result = skipTurn();
     if (result) navigate("/reveal");
   };

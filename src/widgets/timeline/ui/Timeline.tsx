@@ -46,7 +46,7 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
             </div>
             <div
               className="pt-[2px] font-condensed text-[8px] font-bold uppercase tracking-[0.14em]"
-              style={{ borderTop: `1px solid ${eraVar(p.era, "primary")}` }}
+              style={{ borderTop: `1px solid ${eraVar(p.era, "primary")}`, color: eraVar(p.era, "primary") }}
             >
               {p.title}
             </div>

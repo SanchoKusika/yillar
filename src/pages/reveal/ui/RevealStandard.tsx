@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CatalogLine, GirihOverlay, Multiplier, PaperGrain, YButton } from "@shared/ui";
+import { GirihOverlay, Multiplier, PaperGrain, YButton } from "@shared/ui";
 import { ERA_LABEL, eraVar, useT } from "@shared/lib";
 import type { Placement } from "@entities/placement";
 import type { Player } from "@entities/player";
@@ -36,17 +36,6 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
     >
       <PaperGrain opacity={0.4} />
       <GirihOverlay size={220} opacity={0.1} />
-
-      <div
-        className="relative border-b px-[18px] py-[14px]"
-        style={{ borderColor: eraVar(era, "surface") }}
-      >
-        <CatalogLine
-          left={t("reveal.declassified")}
-          right={t("reveal.cardLabel", { name: player.name })}
-          color={eraVar(era, "surface")}
-        />
-      </div>
 
       <div className="relative px-5 pt-[18px]">
         <span

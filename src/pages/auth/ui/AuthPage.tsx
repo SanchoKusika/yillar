@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { CatalogLine, GirihOverlay, GoldRule, PhoneFrame, Wordmark, YButton } from "@shared/ui";
+import { GirihOverlay, GoldRule, PhoneFrame, Wordmark, YButton } from "@shared/ui";
 import { env } from "@shared/config";
 import { useT } from "@shared/lib";
 import {
@@ -91,9 +91,6 @@ export function AuthPage() {
     return (
       <PhoneFrame>
         <div className="relative flex h-full flex-col">
-          <div className="relative border-b border-gold px-[18px] py-[14px]">
-            <CatalogLine left={t("auth.headerLeft")} right={t("home.demo")} />
-          </div>
           <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
             <Wordmark size={48} />
             <div className="max-w-[280px] font-condensed text-[14px] uppercase tracking-[0.12em] text-cream opacity-80">
@@ -110,19 +107,6 @@ export function AuthPage() {
     <PhoneFrame>
       <div className="relative flex h-full flex-col">
         <GirihOverlay size={200} opacity={0.05} />
-
-        <div className="relative border-b border-gold px-[18px] py-[14px]">
-          <CatalogLine
-            left={t("auth.headerLeft")}
-            right={
-              isAuthed
-                ? isAnon
-                  ? t("auth.guest")
-                  : t("auth.signedIn")
-                : t("auth.signIn")
-            }
-          />
-        </div>
 
         <div className="relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4">
           <div className="text-center">

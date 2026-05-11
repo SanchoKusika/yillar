@@ -5,6 +5,7 @@ import { ERAS, eraVar, useT, type TranslationKey } from "@shared/lib";
 import { useGameStore, useActivePlayers } from "@entities/game";
 import { useSessionStore } from "@entities/session";
 import { useSaveGame } from "@features/save-game";
+import { useProfileStats } from "@entities/game-history";
 import starMark from "@shared/assets/svg/star-mark.svg";
 import styles from "./EndPage.module.css";
 
@@ -25,6 +26,7 @@ export function EndPage() {
   const { mutate: persist, status: saveStatus } = useSaveGame();
 
   const hostPlayerId = activePlayers[0]?.id ?? null;
+  const stats = useProfileStats(user?.id);
 
   const ranked = useMemo(
     () =>
@@ -39,6 +41,19 @@ export function EndPage() {
   );
 
   const winner = ranked[0];
+  const isNewRecord =
+    winner?.id === hostPlayerId &&
+    stats.data?.bestScore != null &&
+    winner.total > stats.data.bestScore;
+
+  const PARTICLES = [
+    { left: "12%", top: "60%", dur: "1.8s", delay: "0s" },
+    { left: "28%", top: "75%", dur: "2.2s", delay: "0.15s" },
+    { left: "50%", top: "55%", dur: "1.9s", delay: "0.3s" },
+    { left: "68%", top: "70%", dur: "2.1s", delay: "0.1s" },
+    { left: "82%", top: "62%", dur: "2.0s", delay: "0.25s" },
+    { left: "38%", top: "80%", dur: "1.7s", delay: "0.4s" },
+  ];
 
   useEffect(() => {
     if (savedGameId) return;
@@ -89,14 +104,19 @@ export function EndPage() {
       <div className="relative flex h-full flex-col overflow-hidden bg-ink text-cream">
         <GirihOverlay size={200} opacity={0.05} />
 
-        <div className="relative border-b border-gold px-[18px] py-[14px]">
-          <CatalogLine
-            left={t("end.headerFinal", { placed: winner.placements.length, total: totalCards })}
-            right={saveLabel(t, saveStatus, !!user, !!savedGameId)}
-          />
-        </div>
-
-        <div className="relative border-b border-gold px-5 pt-[18px] pb-[14px]">
+        <div className="relative border-b border-gold px-5 pt-[18px] pb-[14px] overflow-hidden">
+          {PARTICLES.map((p, i) => (
+            <div
+              key={i}
+              className={styles.particle}
+              style={{
+                left: p.left,
+                top: p.top,
+                ["--dur" as string]: p.dur,
+                ["--delay" as string]: p.delay,
+              }}
+            />
+          ))}
           <div className="font-mono text-[10px] uppercase tracking-[0.26em] text-gold">{t("end.winner")}</div>
           <div
             className="mt-1 truncate font-display font-black leading-[0.92] text-cream"
@@ -108,6 +128,9 @@ export function EndPage() {
           >
             {winner.name}
           </div>
+          {isNewRecord && (
+            <div className={styles.newRecord}>{t("end.newRecord")}</div>
+          )}
           <div className="mt-[6px] flex items-baseline justify-between font-mono text-[11px] tracking-[0.14em] text-gold">
             <span className="text-[16px] font-medium text-cream">{winner.total} {t("end.points")}</span>
             <span className="opacity-60">
@@ -186,12 +209,6 @@ export function EndPage() {
               </div>
             );
           })}
-        </div>
-
-        <div className="flex h-6">
-          <div className="flex-1 bg-klassika-primary" />
-          <div className="flex-1 bg-kasseta-primary" />
-          <div className="flex-1 bg-tsifra-primary" />
         </div>
 
         <div className="flex gap-2 border-t border-gold bg-ink p-3">

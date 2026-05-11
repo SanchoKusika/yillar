@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@shared/api";
 import { updatePassword } from "@entities/session";
 import { useT } from "@shared/lib";
-import { CatalogLine, GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
+import { GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
 import { BottomNav } from "@widgets/bottom-nav";
 import styles from "../../auth/ui/AuthPage.module.css";
 
@@ -66,10 +66,6 @@ export function ResetPasswordPage() {
     <PhoneFrame>
       <div className="relative flex h-full flex-col">
         <GirihOverlay size={200} opacity={0.05} />
-
-        <div className="relative border-b border-gold px-[18px] py-[14px]">
-          <CatalogLine left={t("auth.headerLeft")} right={`● ${t("auth.resetHeader")}`} />
-        </div>
 
         <div className="relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4">
           <div className="text-center">
