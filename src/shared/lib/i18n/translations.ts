@@ -46,6 +46,20 @@ export type TranslationKey =
   | "auth.successConfirmed"
   | "auth.emailSentPrefix"
   | "auth.emailSentSuffix"
+  | "auth.migrationNotice"
+  | "auth.forgotPassword"
+  | "auth.forgotHint"
+  | "auth.btnSendReset"
+  | "auth.resetSentPrefix"
+  | "auth.resetSentSuffix"
+  | "auth.backToSignIn"
+  | "auth.resetHeader"
+  | "auth.newPassword"
+  | "auth.confirmPassword"
+  | "auth.passwordMismatch"
+  | "auth.btnSetPassword"
+  | "auth.passwordUpdated"
+  | "auth.resetInvalidLink"
   | "game.skip"
   | "game.lockIn"
   | "game.turn"
@@ -212,6 +226,20 @@ const ru: TranslationDict = {
   "auth.successConfirmed": "АККАУНТ СОЗДАН · ДОБРО ПОЖАЛОВАТЬ",
   "auth.emailSentPrefix": "ПИСЬМО ОТПРАВЛЕНО НА",
   "auth.emailSentSuffix": "· ПЕРЕЙДИТЕ ПО ССЫЛКЕ ДЛЯ ПОДТВЕРЖДЕНИЯ",
+  "auth.migrationNotice": "ИСТОРИЯ ПАРТИЙ ПЕРЕНЕСЕНА · ВЫ В СИСТЕМЕ",
+  "auth.forgotPassword": "Забыли пароль?",
+  "auth.forgotHint": "Введите email — мы отправим ссылку для сброса пароля.",
+  "auth.btnSendReset": "ОТПРАВИТЬ ССЫЛКУ →",
+  "auth.resetSentPrefix": "ССЫЛКА ОТПРАВЛЕНА НА",
+  "auth.resetSentSuffix": "· ПРОВЕРЬТЕ ПОЧТУ",
+  "auth.backToSignIn": "← ВЕРНУТЬСЯ КО ВХОДУ",
+  "auth.resetHeader": "Сброс пароля",
+  "auth.newPassword": "НОВЫЙ ПАРОЛЬ",
+  "auth.confirmPassword": "ПОДТВЕРДИТЬ ПАРОЛЬ",
+  "auth.passwordMismatch": "Пароли не совпадают",
+  "auth.btnSetPassword": "СОХРАНИТЬ ПАРОЛЬ →",
+  "auth.passwordUpdated": "ПАРОЛЬ ОБНОВЛЁН · ДОБРО ПОЖАЛОВАТЬ",
+  "auth.resetInvalidLink": "Ссылка недействительна или устарела — запросите новую.",
   "game.skip": "ПРОПУСК",
   "game.lockIn": "ЗАФИКСИРОВАТЬ · {year} →",
   "game.turn": "ХОД",
@@ -380,6 +408,20 @@ const uz: TranslationDict = {
   "auth.successConfirmed": "HISOB OCHILDI · XUSH KELIBSIZ",
   "auth.emailSentPrefix": "XAT YUBORILDI:",
   "auth.emailSentSuffix": "· TASDIQLASH UCHUN HAVOLAGA O'TING",
+  "auth.migrationNotice": "O'YIN TARIXI KO'CHIRILDI · TIZIMDASIZ",
+  "auth.forgotPassword": "Parolni unutdingizmi?",
+  "auth.forgotHint": "Email kiriting — tiklash havolasini yuboramiz.",
+  "auth.btnSendReset": "HAVOLA YUBORISH →",
+  "auth.resetSentPrefix": "HAVOLA YUBORILDI:",
+  "auth.resetSentSuffix": "· POCHTANGIZNI TEKSHIRING",
+  "auth.backToSignIn": "← KIRISHGA QAYTISH",
+  "auth.resetHeader": "Parolni tiklash",
+  "auth.newPassword": "YANGI PAROL",
+  "auth.confirmPassword": "PAROLNI TASDIQLASH",
+  "auth.passwordMismatch": "Parollar mos emas",
+  "auth.btnSetPassword": "PAROLNI SAQLASH →",
+  "auth.passwordUpdated": "PAROL YANGILANDI · XUSH KELIBSIZ",
+  "auth.resetInvalidLink": "Havola yaroqsiz yoki eskirgan — yangisini so'rang.",
   "game.skip": "O'TKAZIB YUBOR",
   "game.lockIn": "TASDIQLASH · {year} →",
   "game.turn": "NAVBAT",
@@ -550,6 +592,20 @@ const en: TranslationDict = {
   "auth.successConfirmed": "ACCOUNT CREATED · WELCOME",
   "auth.emailSentPrefix": "EMAIL SENT TO",
   "auth.emailSentSuffix": "· FOLLOW THE LINK TO CONFIRM",
+  "auth.migrationNotice": "GAME HISTORY MIGRATED · YOU ARE SIGNED IN",
+  "auth.forgotPassword": "Forgot password?",
+  "auth.forgotHint": "Enter your email — we'll send a reset link.",
+  "auth.btnSendReset": "SEND RESET LINK →",
+  "auth.resetSentPrefix": "RESET LINK SENT TO",
+  "auth.resetSentSuffix": "· CHECK YOUR INBOX",
+  "auth.backToSignIn": "← BACK TO SIGN IN",
+  "auth.resetHeader": "Reset password",
+  "auth.newPassword": "NEW PASSWORD",
+  "auth.confirmPassword": "CONFIRM PASSWORD",
+  "auth.passwordMismatch": "Passwords do not match",
+  "auth.btnSetPassword": "SAVE PASSWORD →",
+  "auth.passwordUpdated": "PASSWORD UPDATED · WELCOME BACK",
+  "auth.resetInvalidLink": "Link is invalid or expired — request a new one.",
   "game.skip": "SKIP",
   "game.lockIn": "LOCK IN · {year} →",
   "game.turn": "TURN",

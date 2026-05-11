@@ -9,5 +9,7 @@ export {
   signInWithEmail,
   signUpWithEmail,
   signOut,
+  resetPasswordForEmail,
+  updatePassword,
 } from "./api/sessionApi";
 export { useIsAuthenticated, useIsAnonymous, useDisplayName } from "./lib/selectors";
