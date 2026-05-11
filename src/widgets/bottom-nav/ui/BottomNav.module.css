@@ -30,19 +30,14 @@
   opacity: 0.9;
 }
 
-.tick {
-  width: 4px;
-  height: 4px;
-  background: currentColor;
-  opacity: 0;
-  transition: opacity 120ms linear;
+.icon {
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .active {
   background: var(--color-ink-2);
   color: var(--color-gold);
-  opacity: 1;
-}
-.active .tick {
   opacity: 1;
 }

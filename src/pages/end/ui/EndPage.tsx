@@ -6,7 +6,7 @@ import { useGameStore, useActivePlayers } from "@entities/game";
 import { useSessionStore } from "@entities/session";
 import { useSaveGame } from "@features/save-game";
 import { useProfileStats } from "@entities/game-history";
-import starMark from "@shared/assets/svg/star-mark.svg";
+import StarMark from "@shared/assets/svg/star-mark.svg?react";
 import styles from "./EndPage.module.css";
 
 export function EndPage() {
@@ -169,7 +169,7 @@ export function EndPage() {
                     >
                       {p.name}
                     </span>
-                    {i === 0 && <img src={starMark} alt="" className={styles.starMark} />}
+                    {i === 0 && <StarMark className={styles.starMark} aria-hidden />}
                   </div>
                   <span
                     className="font-display text-[26px] font-black leading-none"

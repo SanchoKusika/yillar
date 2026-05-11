@@ -1,31 +1,35 @@
+import type { ComponentType } from "react";
 import { NavLink } from "react-router-dom";
-import { useT } from "@shared/lib";
+import { IconHome, IconProfile, IconAuth } from "@shared/ui";
 import { useSessionStore } from "@entities/session";
 import styles from "./BottomNav.module.css";
 
-type Tab = { to: string; label: string; key: string };
+type Tab = {
+  to: string;
+  key: string;
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+};
 
 export function BottomNav() {
-  const t = useT();
   const isRegistered = useSessionStore((s) => s.user !== null && !s.user.isAnonymous);
 
   const tabs: Tab[] = [
-    { to: "/", label: t("nav.home"), key: "home" },
-    { to: "/profile", label: t("nav.profile"), key: "profile" },
-    ...(isRegistered ? [] : [{ to: "/auth", label: t("nav.auth"), key: "auth" }]),
+    { to: "/", key: "home", icon: IconHome, label: "home" },
+    { to: "/profile", key: "profile", icon: IconProfile, label: "profile" },
+    ...(isRegistered ? [] : [{ to: "/auth", key: "auth", icon: IconAuth, label: "auth" }]),
   ];
 
   return (
     <nav className={styles.nav} style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
-      {tabs.map((tab) => (
+      {tabs.map(({ to, key, icon: Icon }) => (
         <NavLink
-          key={tab.key}
-          to={tab.to}
-          end={tab.to === "/"}
+          key={key}
+          to={to}
+          end={to === "/"}
           className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ""}`}
         >
-          <span className={styles.label}>{tab.label}</span>
-          <span className={styles.tick} aria-hidden />
+          <Icon className={styles.icon} />
         </NavLink>
       ))}
     </nav>

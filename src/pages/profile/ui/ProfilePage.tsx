@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { CatalogLine, EraTag, GirihOverlay, PhoneFrame, YButton } from "@shared/ui";
+import FlagRU from "@shared/assets/svg/flags/ru.svg?react";
+import FlagUZ from "@shared/assets/svg/flags/uz.svg?react";
+import FlagEN from "@shared/assets/svg/flags/en.svg?react";
 import { env } from "@shared/config";
-import { ERAS, ERA_LABEL, useT, LANGUAGE_LABEL, type Era } from "@shared/lib";
+import { ERAS, ERA_LABEL, useT, type Era } from "@shared/lib";
 import { signOut, updatePassword, updateProfile, uploadAvatar, useSessionStore } from "@entities/session";
 import { useHistory, useProfileStats } from "@entities/game-history";
 import type { EraBreakdownEntry } from "@entities/game-history";
@@ -594,19 +597,30 @@ function SettingsTab({
         <div>
           <span className={styles.fieldLabel}>{t("profile.settings.language")}</span>
           <div className="grid grid-cols-3 gap-[6px]">
-            {(["ru", "uz", "en"] as Language[]).map((lng) => (
+            {(
+              [
+                { lng: "ru", code: "RU", Flag: FlagRU },
+                { lng: "uz", code: "O'Z", Flag: FlagUZ },
+                { lng: "en", code: "EN", Flag: FlagEN },
+              ] as { lng: Language; code: string; Flag: typeof FlagRU }[]
+            ).map(({ lng, code, Flag }) => (
               <button
                 key={lng}
                 type="button"
                 onClick={() => setLanguage(lng)}
-                className="border px-2 py-2 font-mono text-[10px] uppercase tracking-[0.14em]"
+                className="flex flex-col items-center gap-[6px] border px-2 py-2"
                 style={{
                   borderColor: language === lng ? "var(--color-gold)" : "var(--color-ink-3)",
-                  background: language === lng ? "var(--color-gold)" : "transparent",
-                  color: language === lng ? "var(--color-ink)" : "var(--color-cream)",
+                  background: language === lng ? "var(--color-ink-2)" : "transparent",
                 }}
               >
-                {LANGUAGE_LABEL[lng]}
+                <Flag className="w-[30px] h-[20px] block" aria-hidden />
+                <span
+                  className="font-mono text-[9px] uppercase tracking-[0.18em]"
+                  style={{ color: language === lng ? "var(--color-gold)" : "var(--color-cream)" }}
+                >
+                  {code}
+                </span>
               </button>
             ))}
           </div>
