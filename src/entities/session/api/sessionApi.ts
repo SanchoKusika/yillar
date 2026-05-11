@@ -146,6 +146,20 @@ export async function signOut(): Promise<void> {
   if (error) throw error;
 }
 
+export async function resetPasswordForEmail(email: string): Promise<void> {
+  const sb = requireSupabase();
+  const redirectTo =
+    typeof window !== "undefined" ? `${window.location.origin}/reset-password` : undefined;
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
+  if (error) throw error;
+}
+
+export async function updatePassword(newPassword: string): Promise<void> {
+  const sb = requireSupabase();
+  const { error } = await sb.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+}
+
 const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 const AVATAR_MIME: Record<string, string> = {
   "image/png": "png",

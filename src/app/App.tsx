@@ -5,6 +5,7 @@ import { RevealPage } from "@pages/reveal";
 import { EndPage } from "@pages/end";
 import { AuthPage } from "@pages/auth";
 import { ProfilePage } from "@pages/profile";
+import { ResetPasswordPage } from "@pages/reset-password";
 import { PWAPrompt } from "@widgets/pwa-prompt";
 
 export function App() {
@@ -17,6 +18,7 @@ export function App() {
         <Route path="/end" element={<EndPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <PWAPrompt />

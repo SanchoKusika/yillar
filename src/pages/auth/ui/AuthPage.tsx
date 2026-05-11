@@ -7,12 +7,13 @@ import {
   signInAnonymously,
   signInWithEmail,
   signUpWithEmail,
+  resetPasswordForEmail,
   useSessionStore,
 } from "@entities/session";
 import { BottomNav } from "@widgets/bottom-nav";
 import styles from "./AuthPage.module.css";
 
-type Mode = "signin" | "signup";
+type Mode = "signin" | "signup" | "forgot";
 
 export function AuthPage() {
   const navigate = useNavigate();
@@ -34,18 +35,27 @@ export function AuthPage() {
     setError(null);
     setNotice(null);
     try {
+      if (mode === "forgot") {
+        await resetPasswordForEmail(email.trim());
+        setNotice(
+          `${t("auth.resetSentPrefix")} ${email.trim().toUpperCase()} ${t("auth.resetSentSuffix")}`,
+        );
+        setEmail("");
+        return;
+      }
       if (mode === "signin") {
         await signInWithEmail(email.trim(), password);
         navigate("/", { replace: true });
       } else {
+        const wasAnon = isAnon;
         const outcome = await signUpWithEmail({
           email: email.trim(),
           password,
           displayName: displayName.trim() || undefined,
         });
         if (outcome.status === "confirmed") {
-          setNotice(t("auth.successConfirmed"));
-          setTimeout(() => navigate("/", { replace: true }), 800);
+          setNotice(wasAnon ? t("auth.migrationNotice") : t("auth.successConfirmed"));
+          setTimeout(() => navigate("/", { replace: true }), 900);
         } else {
           setNotice(
             `${t("auth.emailSentPrefix")} ${outcome.email.toUpperCase()} ${t("auth.emailSentSuffix")}`,
@@ -118,28 +128,34 @@ export function AuthPage() {
           <div className="text-center">
             <Wordmark size={44} />
             <div className="mt-2 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75">
-              {mode === "signin" ? t("auth.headerSignIn") : t("auth.headerSignUp")}
+              {mode === "signin"
+                ? t("auth.headerSignIn")
+                : mode === "signup"
+                  ? t("auth.headerSignUp")
+                  : t("auth.resetHeader")}
             </div>
           </div>
 
-          <div className={styles.tabs}>
-            <button
-              type="button"
-              onClick={() => setMode("signin")}
-              data-active={mode === "signin"}
-              className={styles.tab}
-            >
-              {t("auth.tabSignIn")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("signup")}
-              data-active={mode === "signup"}
-              className={styles.tab}
-            >
-              {t("auth.tabSignUp")}
-            </button>
-          </div>
+          {mode !== "forgot" && (
+            <div className={styles.tabs}>
+              <button
+                type="button"
+                onClick={() => { setMode("signin"); setError(null); setNotice(null); }}
+                data-active={mode === "signin"}
+                className={styles.tab}
+              >
+                {t("auth.tabSignIn")}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMode("signup"); setError(null); setNotice(null); }}
+                data-active={mode === "signup"}
+                className={styles.tab}
+              >
+                {t("auth.tabSignUp")}
+              </button>
+            </div>
+          )}
 
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
             {mode === "signup" && (
@@ -150,6 +166,13 @@ export function AuthPage() {
                 placeholder="DILNOZA"
               />
             )}
+
+            {mode === "forgot" && (
+              <div className="font-mono text-[11px] text-cream opacity-60 tracking-[0.1em]">
+                {t("auth.forgotHint")}
+              </div>
+            )}
+
             <Field
               label={t("auth.fieldEmail")}
               type="email"
@@ -158,15 +181,38 @@ export function AuthPage() {
               required
               placeholder="you@example.com"
             />
-            <Field
-              label={t("auth.fieldPassword")}
-              type="password"
-              value={password}
-              onChange={setPassword}
-              required
-              minLength={6}
-              placeholder="••••••••"
-            />
+
+            {mode !== "forgot" && (
+              <Field
+                label={t("auth.fieldPassword")}
+                type="password"
+                value={password}
+                onChange={setPassword}
+                required
+                minLength={6}
+                placeholder="••••••••"
+              />
+            )}
+
+            {mode === "signin" && (
+              <button
+                type="button"
+                onClick={() => { setMode("forgot"); setError(null); setNotice(null); }}
+                className="self-start font-mono text-[10px] uppercase tracking-[0.14em] text-gold opacity-70 hover:opacity-100 transition-opacity"
+              >
+                {t("auth.forgotPassword")}
+              </button>
+            )}
+
+            {mode === "forgot" && (
+              <button
+                type="button"
+                onClick={() => { setMode("signin"); setError(null); setNotice(null); }}
+                className="self-start font-mono text-[10px] uppercase tracking-[0.14em] text-cream opacity-50 hover:opacity-80 transition-opacity"
+              >
+                {t("auth.backToSignIn")}
+              </button>
+            )}
 
             {error && (
               <div className="border border-danger px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-danger">
@@ -180,19 +226,29 @@ export function AuthPage() {
             )}
 
             <YButton disabled={busy}>
-              {busy ? "…" : mode === "signin" ? t("auth.btnSignIn") : t("auth.btnSignUp")}
+              {busy
+                ? "…"
+                : mode === "signin"
+                  ? t("auth.btnSignIn")
+                  : mode === "signup"
+                    ? t("auth.btnSignUp")
+                    : t("auth.btnSendReset")}
             </YButton>
           </form>
 
-          <GoldRule style={{ opacity: 0.3 }} />
+          {mode !== "forgot" && (
+            <>
+              <GoldRule style={{ opacity: 0.3 }} />
 
-          <YButton variant="ghost" onClick={onGuest} disabled={busy}>
-            {t("auth.btnGuest")}
-          </YButton>
+              <YButton variant="ghost" onClick={onGuest} disabled={busy}>
+                {t("auth.btnGuest")}
+              </YButton>
 
-          <div className="text-center text-[11px] italic text-cream opacity-55">
-            {t("auth.guestHint")}
-          </div>
+              <div className="text-center text-[11px] italic text-cream opacity-55">
+                {t("auth.guestHint")}
+              </div>
+            </>
+          )}
         </div>
 
         <BottomNav />
