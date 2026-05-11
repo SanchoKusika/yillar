@@ -149,8 +149,12 @@ export type TranslationKey =
   | "profile.settings.save"
   | "profile.settings.saved"
   | "profile.settings.saving"
+  | "profile.settings.sectionProfile"
+  | "profile.settings.sectionApp"
+  | "profile.settings.sectionAccount"
   | "profile.settings.changePassword"
   | "profile.settings.savePassword"
+  | "profile.settings.newPasswordPlaceholder"
   | "profile.tabs.stats"
   | "profile.tabs.history"
   | "profile.tabs.friends"
@@ -335,8 +339,12 @@ const ru: TranslationDict = {
   "profile.settings.save": "СОХРАНИТЬ",
   "profile.settings.saved": "СОХРАНЕНО",
   "profile.settings.saving": "СОХРАНЯЕМ…",
+  "profile.settings.sectionProfile": "ПРОФИЛЬ",
+  "profile.settings.sectionApp": "ПРИЛОЖЕНИЕ",
+  "profile.settings.sectionAccount": "АККАУНТ",
   "profile.settings.changePassword": "СМЕНИТЬ ПАРОЛЬ",
   "profile.settings.savePassword": "СОХРАНИТЬ ПАРОЛЬ →",
+  "profile.settings.newPasswordPlaceholder": "НОВЫЙ ПАРОЛЬ",
   "profile.tabs.stats": "СТАТЫ",
   "profile.tabs.history": "ИСТОРИЯ",
   "profile.tabs.friends": "ДРУЗЬЯ",
@@ -522,8 +530,12 @@ const uz: TranslationDict = {
   "profile.settings.save": "SAQLASH",
   "profile.settings.saved": "SAQLANDI",
   "profile.settings.saving": "SAQLANMOQDA…",
+  "profile.settings.sectionProfile": "PROFIL",
+  "profile.settings.sectionApp": "ILOVA",
+  "profile.settings.sectionAccount": "HISOB",
   "profile.settings.changePassword": "PAROLNI O'ZGARTIRISH",
   "profile.settings.savePassword": "PAROLNI SAQLASH →",
+  "profile.settings.newPasswordPlaceholder": "YANGI PAROL",
   "profile.tabs.stats": "STATISTIKA",
   "profile.tabs.history": "TARIX",
   "profile.tabs.friends": "DO'STLAR",
@@ -707,8 +719,12 @@ const en: TranslationDict = {
   "profile.settings.save": "SAVE",
   "profile.settings.saved": "SAVED",
   "profile.settings.saving": "SAVING…",
+  "profile.settings.sectionProfile": "PROFILE",
+  "profile.settings.sectionApp": "APP",
+  "profile.settings.sectionAccount": "ACCOUNT",
   "profile.settings.changePassword": "CHANGE PASSWORD",
   "profile.settings.savePassword": "SAVE PASSWORD →",
+  "profile.settings.newPasswordPlaceholder": "NEW PASSWORD",
   "profile.tabs.stats": "STATS",
   "profile.tabs.history": "HISTORY",
   "profile.tabs.friends": "FRIENDS",

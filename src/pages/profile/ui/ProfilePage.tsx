@@ -488,47 +488,35 @@ function SettingsTab({
         onChange={onAvatarChange}
       />
 
-      <div className={styles.settingRow}>
-        <div className="flex-1">
-          <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
-            {t("profile.settings.avatar")}
-          </div>
-          <div className="mt-[6px] flex items-center gap-3">
-            {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt=""
-                className="aspect-square w-12 shrink-0 border border-gold object-cover"
-              />
-            ) : (
-              <div className="flex aspect-square w-12 shrink-0 items-center justify-center bg-gold font-display text-[20px] font-black text-ink">
-                {initial}
-              </div>
-            )}
-            <YButton variant="ghost" onClick={onPickAvatar} disabled={avatarBusy}>
-              {avatarBusy
-                ? t("profile.settings.uploading")
-                : avatarUrl
-                  ? t("profile.settings.replace")
-                  : t("profile.settings.upload")}
-            </YButton>
-          </div>
-          <span className="mt-[6px] block font-mono text-[9px] uppercase tracking-[0.18em] text-cream opacity-55">
-            {t("profile.settings.avatarHint")}
-          </span>
-          {avatarError && (
-            <div className="mt-2 border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
-              {avatarError}
-            </div>
-          )}
-        </div>
+      {/* ── ПРОФИЛЬ ── */}
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionHeaderText}>{t("profile.settings.sectionProfile")}</span>
+        <div className={styles.sectionHeaderLine} />
       </div>
 
-      <div className={styles.settingRow}>
-        <label className="flex w-full flex-col gap-[6px]">
-          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
-            {t("profile.settings.displayName")}
-          </span>
+      <div className={styles.sectionBody}>
+        <div className="flex items-stretch gap-3">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt="" className={styles.avatarSquare} onClick={onPickAvatar} />
+          ) : (
+            <div className={styles.avatarSquareLetter} onClick={onPickAvatar}>{initial}</div>
+          )}
+          <YButton variant="ghost" className="flex-1" onClick={onPickAvatar} disabled={avatarBusy}>
+            {avatarBusy
+              ? t("profile.settings.uploading")
+              : avatarUrl
+                ? t("profile.settings.replace")
+                : t("profile.settings.upload")}
+          </YButton>
+        </div>
+        {avatarError && (
+          <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
+            {avatarError}
+          </div>
+        )}
+
+        <label className="flex flex-col">
+          <span className={styles.fieldLabel}>{t("profile.settings.displayName")}</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -537,13 +525,9 @@ function SettingsTab({
             className="border border-ink-3 bg-ink px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream outline-none focus:border-gold"
           />
         </label>
-      </div>
 
-      <div className={styles.settingRow}>
-        <div className="flex w-full flex-col gap-[6px]">
-          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
-            {t("profile.settings.generation")}
-          </span>
+        <div>
+          <span className={styles.fieldLabel}>{t("profile.settings.generation")}</span>
           <div className="grid grid-cols-3 gap-[6px]">
             {ERAS.map((e) => (
               <button
@@ -563,13 +547,31 @@ function SettingsTab({
             ))}
           </div>
         </div>
+
+        {error && (
+          <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
+            {error}
+          </div>
+        )}
+
+        <YButton onClick={handleSave} disabled={busy || !dirty}>
+          {busy
+            ? t("profile.settings.saving")
+            : dirty
+              ? t("profile.settings.save")
+              : t("profile.settings.saved")}
+        </YButton>
       </div>
 
-      <div className={styles.settingRow}>
-        <div className="flex w-full flex-col gap-[6px]">
-          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
-            {t("profile.settings.theme")}
-          </span>
+      {/* ── ПРИЛОЖЕНИЕ ── */}
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionHeaderText}>{t("profile.settings.sectionApp")}</span>
+        <div className={styles.sectionHeaderLine} />
+      </div>
+
+      <div className={styles.sectionBody}>
+        <div>
+          <span className={styles.fieldLabel}>{t("profile.settings.theme")}</span>
           <div className="grid grid-cols-2 gap-[6px]">
             {(["dark", "light"] as Theme[]).map((th) => (
               <button
@@ -583,20 +585,14 @@ function SettingsTab({
                   color: theme === th ? "var(--color-ink)" : "var(--color-cream)",
                 }}
               >
-                {th === "dark"
-                  ? t("profile.settings.themeDark")
-                  : t("profile.settings.themeLight")}
+                {th === "dark" ? t("profile.settings.themeDark") : t("profile.settings.themeLight")}
               </button>
             ))}
           </div>
         </div>
-      </div>
 
-      <div className={styles.settingRow}>
-        <div className="flex w-full flex-col gap-[6px]">
-          <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
-            {t("profile.settings.language")}
-          </span>
+        <div>
+          <span className={styles.fieldLabel}>{t("profile.settings.language")}</span>
           <div className="grid grid-cols-3 gap-[6px]">
             {(["ru", "uz", "en"] as Language[]).map((lng) => (
               <button
@@ -617,31 +613,21 @@ function SettingsTab({
         </div>
       </div>
 
-      {error && (
-        <div className="border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger">
-          {error}
-        </div>
-      )}
+      {/* ── АККАУНТ ── */}
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionHeaderText}>{t("profile.settings.sectionAccount")}</span>
+        <div className={styles.sectionHeaderLine} />
+      </div>
 
-      <YButton onClick={handleSave} disabled={busy || !dirty}>
-        {busy
-          ? t("profile.settings.saving")
-          : dirty
-            ? t("profile.settings.save")
-            : t("profile.settings.saved")}
-      </YButton>
-
-      {!isAnon && (
-        <div className={styles.settingRow}>
-          <div className="flex w-full flex-col gap-[6px]">
-            <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-gold">
-              {t("profile.settings.changePassword")}
-            </span>
+      <div className={styles.sectionBody}>
+        {!isAnon && (
+          <div>
+            <span className={styles.fieldLabel}>{t("profile.settings.changePassword")}</span>
             {!pwOpen ? (
               <button
                 type="button"
                 onClick={() => { setPwOpen(true); setPwError(null); setPwSaved(false); setNewPw(""); }}
-                className="w-full border border-ink-3 bg-transparent px-3 py-2 font-condensed text-[12px] font-bold uppercase tracking-[0.14em] text-cream text-left"
+                className="w-full border border-ink-3 bg-transparent px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream text-left opacity-50"
               >
                 ••••••••
               </button>
@@ -651,7 +637,7 @@ function SettingsTab({
                   type="password"
                   value={newPw}
                   onChange={(e) => setNewPw(e.target.value)}
-                  placeholder="NEW PASSWORD"
+                  placeholder={t("profile.settings.newPasswordPlaceholder")}
                   autoComplete="new-password"
                   className="border border-ink-3 bg-ink px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-[0.08em] text-cream outline-none focus:border-gold"
                 />
@@ -689,10 +675,8 @@ function SettingsTab({
               </div>
             )}
           </div>
-        </div>
-      )}
+        )}
 
-      <div className="mt-2">
         {isAnon ? (
           <div className="flex flex-col gap-2">
             <div className="border border-gold px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gold">
