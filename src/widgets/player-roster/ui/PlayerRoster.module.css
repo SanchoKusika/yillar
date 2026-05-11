@@ -1,64 +1,28 @@
+@reference "../../../app/styles/index.css";
+
 .playerRow {
-  margin-bottom: 10px;
-  background: transparent;
-  border: 1px solid var(--color-ink-3);
+  @apply mb-[10px] bg-transparent border border-ink-3 px-3 pb-3 pt-[10px];
   border-left: 4px solid var(--color-ink-3);
-  padding: 10px 12px 12px;
   transition: border-color 120ms linear, background 120ms linear;
 }
-.playerRow[data-filled="true"] { background: var(--color-ink-2); }
+.playerRow[data-filled="true"] {
+  @apply bg-ink-2;
+}
 
 .nameInput {
-  flex: 1;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--color-ink-3);
-  color: var(--color-cream);
-  padding: 6px 2px;
-  font-family: var(--font-condensed);
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  outline: none;
+  @apply flex-1 bg-transparent border-0 border-b border-ink-3 text-cream py-[6px] px-[2px] font-condensed font-bold text-[18px] uppercase tracking-label outline-none;
 }
-.nameInput[data-filled="true"] { border-bottom-color: var(--color-gold); }
-.nameInput::placeholder { color: var(--color-cream); opacity: 0.35; }
+.nameInput[data-filled="true"] {
+  @apply border-b-gold;
+}
+.nameInput::placeholder {
+  @apply text-cream opacity-35;
+}
 
-.eraToggle {
-  padding: 8px 4px;
-  border: 0;
-  border-radius: 0;
-  cursor: pointer;
-  font-family: var(--font-condensed);
-  font-weight: 700;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  background: transparent;
-  transition: background 120ms linear, color 120ms linear;
+.playerLabel {
+  @apply w-[26px] font-mono text-[10px] tracking-[0.2em] text-gold;
 }
-.eraToggle[data-era="klassika"] {
-  color: var(--color-klassika-primary);
-  box-shadow: inset 0 0 0 1px var(--color-klassika-primary);
-}
-.eraToggle[data-era="klassika"][data-active="true"] {
-  background: var(--color-klassika-primary);
-  color: var(--color-klassika-surface);
-}
-.eraToggle[data-era="kasseta"] {
-  color: var(--color-kasseta-primary);
-  box-shadow: inset 0 0 0 1px var(--color-kasseta-primary);
-}
-.eraToggle[data-era="kasseta"][data-active="true"] {
-  background: var(--color-kasseta-primary);
-  color: var(--color-kasseta-surface);
-}
-.eraToggle[data-era="tsifra"] {
-  color: var(--color-tsifra-primary);
-  box-shadow: inset 0 0 0 1px var(--color-tsifra-primary);
-}
-.eraToggle[data-era="tsifra"][data-active="true"] {
-  background: var(--color-tsifra-primary);
-  color: var(--color-tsifra-surface);
+
+.hint {
+  @apply mt-2 text-center text-[12px] italic leading-[1.45] text-cream opacity-55;
 }

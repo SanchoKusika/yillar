@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { GirihOverlay, GoldRule, PhoneFrame, Wordmark, YButton } from "@shared/ui";
+import { GirihOverlay, GoldRule, PhoneFrame, Wordmark, YButton, Banner, FieldLabel } from "@shared/ui";
 import { env } from "@shared/config";
 import { useT } from "@shared/lib";
 import {
@@ -111,7 +111,7 @@ export function AuthPage() {
         <div className="relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4">
           <div className="text-center">
             <Wordmark size={44} />
-            <div className="mt-2 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75">
+            <div className={styles.subtitle}>
               {mode === "signin"
                 ? t("auth.headerSignIn")
                 : mode === "signup"
@@ -152,9 +152,7 @@ export function AuthPage() {
             )}
 
             {mode === "forgot" && (
-              <div className="font-mono text-[11px] text-cream opacity-60 tracking-[0.1em]">
-                {t("auth.forgotHint")}
-              </div>
+              <div className={styles.hint}>{t("auth.forgotHint")}</div>
             )}
 
             <Field
@@ -182,7 +180,7 @@ export function AuthPage() {
               <button
                 type="button"
                 onClick={() => { setMode("forgot"); setError(null); setNotice(null); }}
-                className="self-start font-mono text-[10px] uppercase tracking-[0.14em] text-gold opacity-70 hover:opacity-100 transition-opacity"
+                className={`${styles.linkBtn} text-gold`}
               >
                 {t("auth.forgotPassword")}
               </button>
@@ -192,22 +190,14 @@ export function AuthPage() {
               <button
                 type="button"
                 onClick={() => { setMode("signin"); setError(null); setNotice(null); }}
-                className="self-start font-mono text-[10px] uppercase tracking-[0.14em] text-cream opacity-50 hover:opacity-80 transition-opacity"
+                className={styles.linkBtnMuted}
               >
                 {t("auth.backToSignIn")}
               </button>
             )}
 
-            {error && (
-              <div className="border border-danger px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-danger">
-                {error}
-              </div>
-            )}
-            {notice && (
-              <div className="border border-gold px-3 py-2 font-mono text-[11px] uppercase tracking-[0.1em] text-gold">
-                {notice}
-              </div>
-            )}
+            {error && <Banner variant="error">{error}</Banner>}
+            {notice && <Banner variant="gold">{notice}</Banner>}
 
             <YButton disabled={busy}>
               {busy
@@ -260,7 +250,7 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-[6px]">
-      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-gold">{label}</span>
+      <FieldLabel>{label}</FieldLabel>
       <input
         type={type}
         value={value}

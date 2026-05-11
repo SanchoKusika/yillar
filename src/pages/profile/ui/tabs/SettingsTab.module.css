@@ -1,0 +1,9 @@
+@reference "../../../../app/styles/index.css";
+
+.signOutBtn {
+  @apply w-full border-0 bg-transparent px-3 py-[10px] font-condensed text-[11px] font-bold uppercase tracking-[0.2em] text-danger outline outline-1 outline-danger;
+}
+
+.pwDots {
+  @apply w-full border border-ink-3 bg-transparent px-3 py-2 font-condensed text-[16px] font-bold uppercase tracking-label text-cream text-left opacity-50;
+}

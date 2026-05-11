@@ -30,14 +30,14 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
   }, []);
 
   return (
-    <div
+    <main
       className="relative flex h-full flex-col overflow-hidden"
       style={{ background: eraVar(era, "primary"), color: eraVar(era, "surface") }}
     >
       <PaperGrain opacity={0.4} />
       <GirihOverlay size={220} opacity={0.1} />
 
-      <div className="relative px-5 pt-[18px]">
+      <header className="relative px-5 pt-[18px]">
         <span
           className="inline-block px-2 py-1 font-condensed text-[10px] font-bold uppercase tracking-[0.22em]"
           style={{ color: eraVar(era, "surface"), border: `1px solid ${eraVar(era, "surface")}` }}
@@ -48,7 +48,7 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
           {last.title}
         </h1>
         <div className="font-body text-[13px] italic opacity-90">{t("reveal.trackNo", { id: last.trackId })}</div>
-      </div>
+      </header>
 
       <div className="relative flex flex-1 flex-col justify-center gap-[14px] px-5">
         <div className={styles.yearStage} style={{ background: eraVar(era, "primary") }}>
@@ -108,12 +108,12 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
         </div>
       </div>
 
-      <div className="relative border-t p-[14px]" style={{ borderColor: eraVar(era, "surface") }}>
+      <footer className="relative border-t p-[14px]" style={{ borderColor: eraVar(era, "surface") }}>
         <YButton variant="era" era={era} onClick={onNext}>
           {t("reveal.nextCard", { name: nextPlayer.name })}
         </YButton>
-      </div>
-    </div>
+      </footer>
+    </main>
   );
 }
 

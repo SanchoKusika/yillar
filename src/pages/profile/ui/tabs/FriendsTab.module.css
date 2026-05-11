@@ -1,0 +1,21 @@
+@reference "../../../../app/styles/index.css";
+
+.emptyCard {
+  @apply border border-ink-3 bg-ink-2 px-4 py-6 text-center;
+}
+
+.emptyTitle {
+  @apply font-condensed text-[16px] font-bold uppercase tracking-[0.1em] text-cream;
+}
+
+.emptySoon {
+  @apply mt-2 font-mono text-[10px] uppercase tracking-era text-cream opacity-55;
+}
+
+.emptyBody {
+  @apply mt-3 font-body text-[12px] italic text-cream opacity-65;
+}
+
+.inviteBtn {
+  @apply mt-3 w-full cursor-not-allowed border-0 bg-transparent px-3 py-[10px] font-condensed text-[11px] font-bold uppercase tracking-[0.2em] text-cream opacity-40 outline outline-1 outline-cream;
+}

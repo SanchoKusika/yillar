@@ -1,23 +1,49 @@
+@reference "../../../app/styles/index.css";
+
+.placementCard {
+  @apply relative flex h-[86px] w-[72px] shrink-0 flex-col justify-between p-[6px] pl-2 text-ink;
+}
+
+.placementEra {
+  @apply font-mono text-[7px] uppercase tracking-[0.2em];
+}
+
+.placementYear {
+  @apply font-display text-[24px] font-black leading-[0.95] tracking-tight;
+}
+
+.placementTitle {
+  @apply font-condensed text-[8px] font-bold uppercase tracking-[0.14em] pt-[2px];
+}
+
+.placementDelta {
+  @apply absolute right-1 top-1 font-mono text-[8px] uppercase tracking-[0.1em] text-danger;
+}
+
 .dropZone {
-  flex-shrink: 0;
-  width: 72px;
-  height: 86px;
+  @apply shrink-0 w-[72px] h-[86px] relative flex flex-col justify-center items-center gap-1;
   border: 2px dashed var(--color-gold);
   background: rgba(212, 168, 71, 0.08);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
+}
+
+.dropHint {
+  @apply text-center font-mono text-[7px] uppercase tracking-[0.22em] text-gold;
+}
+
+.dropYear {
+  @apply font-display text-[22px] font-black leading-none tracking-tight text-gold;
+}
+
+.dropIdx {
+  @apply absolute left-1 top-1 font-mono text-[7px] uppercase tracking-era text-gold opacity-60;
+}
+
+.decadeLabel {
+  @apply absolute top-0 font-mono text-[8px] tracking-[0.08em] text-gold opacity-70;
 }
 
 .yearSlider {
-  width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  height: 18px;
+  @apply w-full appearance-none bg-transparent h-[18px];
 }
 .yearSlider::-webkit-slider-runnable-track {
   height: 2px;

@@ -1,5 +1,5 @@
-import { CatalogLine } from "@shared/ui";
-import { ERAS, ERA_LABEL, useT, type Era } from "@shared/lib";
+import { CatalogLine, EraSelect } from "@shared/ui";
+import { useT, type Era } from "@shared/lib";
 import type { Player } from "@entities/player";
 import styles from "./PlayerRoster.module.css";
 
@@ -30,12 +30,10 @@ export function PlayerRoster({ players, onName, onEra, hostLockedAt = null }: Pl
             key={p.id}
             className={styles.playerRow}
             data-filled={filled}
-            style={{
-              borderLeftColor: filled && p.era ? `var(--color-${p.era}-primary)` : undefined,
-            }}
+            style={{ borderLeftColor: filled && p.era ? `var(--color-${p.era}-primary)` : undefined }}
           >
             <div className="mb-[10px] flex items-center gap-[10px]">
-              <span className="w-[26px] font-mono text-[10px] tracking-[0.2em] text-gold">
+              <span className={styles.playerLabel}>
                 {isLocked
                   ? t("roster.you")
                   : `${t("roster.playerPrefix")}${String(i + 1).padStart(2, "0")}`}
@@ -55,34 +53,12 @@ export function PlayerRoster({ players, onName, onEra, hostLockedAt = null }: Pl
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-[6px]">
-              {ERAS.map((e) => (
-                <EraToggle key={e} era={e} active={p.era === e} onClick={() => onEra(i, e)} />
-              ))}
-            </div>
+            <EraSelect value={p.era ?? null} onChange={(era) => onEra(i, era)} />
           </div>
         );
       })}
 
-      <div className="mt-2 text-center text-[12px] italic leading-[1.45] text-cream opacity-55">
-        {t("roster.hint")}
-      </div>
+      <div className={styles.hint}>{t("roster.hint")}</div>
     </div>
-  );
-}
-
-function EraToggle({ era, active, onClick }: { era: Era; active: boolean; onClick: () => void }) {
-  const t = useT();
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={styles.eraToggle}
-      data-era={era}
-      data-active={active}
-    >
-      <div className="text-[9px] tracking-[0.12em] opacity-80">{ERA_LABEL[era]}</div>
-      <div>{t(`era.${era}` as const)}</div>
-    </button>
   );
 }

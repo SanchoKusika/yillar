@@ -70,7 +70,7 @@ export function GamePage() {
 
   return (
     <PhoneFrame>
-      <div className="relative flex h-full flex-col overflow-hidden">
+      <main className="relative flex h-full flex-col overflow-hidden">
         <ScoreboardBar
           currentName={currentPlayer.name}
           cardIdx={currentCardIdx}
@@ -99,15 +99,15 @@ export function GamePage() {
           onGuessChange={setGuess}
         />
 
-        <div className="flex gap-2 border-t border-gold bg-ink p-3">
+        <footer className="flex gap-2 border-t border-gold bg-ink p-3">
           <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }} onClick={onSkip}>
             {t("game.skip")}
           </YButton>
           <YButton onClick={onLock}>{t("game.lockIn", { year: guessYear })}</YButton>
-        </div>
+        </footer>
 
         <audio.PlayerHost />
-      </div>
+      </main>
     </PhoneFrame>
   );
 }

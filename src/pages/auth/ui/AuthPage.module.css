@@ -1,49 +1,44 @@
+@reference "../../../app/styles/index.css";
+
 .tabs {
-  display: grid;
+  @apply grid border border-ink-3;
   grid-template-columns: 1fr 1fr;
-  border: 1px solid var(--color-ink-3);
 }
 
 .tab {
-  background: transparent;
-  border: 0;
-  padding: 10px 0;
-  cursor: pointer;
-  font-family: var(--font-condensed);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-cream);
-  opacity: 0.5;
+  @apply bg-transparent border-0 py-[10px] cursor-pointer font-condensed font-bold text-[11px] uppercase tracking-[0.22em] text-cream opacity-50;
   transition: background 120ms linear, color 120ms linear, opacity 120ms linear;
 }
 .tab:first-child {
-  border-right: 1px solid var(--color-ink-3);
+  @apply border-r border-ink-3;
 }
 .tab[data-active="true"] {
-  background: var(--color-ink-2);
-  color: var(--color-gold);
-  opacity: 1;
+  @apply bg-ink-2 text-gold opacity-100;
 }
 
 .input {
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--color-ink-3);
-  color: var(--color-cream);
-  padding: 8px 2px;
-  font-family: var(--font-condensed);
-  font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 0.04em;
-  outline: none;
+  @apply bg-transparent border-0 border-b border-ink-3 text-cream py-2 px-[2px] font-condensed font-semibold text-[16px] tracking-[0.04em] outline-none;
   transition: border-color 120ms linear;
 }
 .input:focus {
-  border-bottom-color: var(--color-gold);
+  @apply border-b-gold;
 }
 .input::placeholder {
-  color: var(--color-cream);
-  opacity: 0.3;
+  @apply text-cream opacity-30;
+}
+
+.subtitle {
+  @apply mt-2 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75;
+}
+
+.hint {
+  @apply font-mono text-[11px] text-cream opacity-60 tracking-[0.1em];
+}
+
+.linkBtn {
+  @apply self-start font-mono text-[10px] uppercase tracking-[0.14em] opacity-70 transition-opacity hover:opacity-100;
+}
+
+.linkBtnMuted {
+  @apply self-start font-mono text-[10px] uppercase tracking-[0.14em] text-cream opacity-50 transition-opacity hover:opacity-80;
 }

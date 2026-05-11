@@ -1,17 +1,46 @@
+@reference "../../../app/styles/index.css";
+
 .playerCard {
-  margin-bottom: 10px;
-  background: transparent;
-  border: 1px solid var(--color-ink-3);
-  padding: 10px 12px;
-  position: relative;
+  @apply mb-[10px] bg-transparent border border-ink-3 px-3 py-[10px] relative;
 }
-.playerCard[data-winner="true"] { background: var(--color-ink-2); }
+.playerCard[data-winner="true"] {
+  @apply bg-ink-2;
+}
+
+.winnerLabel {
+  @apply font-mono text-[10px] uppercase tracking-[0.26em] text-gold;
+}
+
+.winnerPoints {
+  @apply text-[16px] font-medium text-cream;
+}
+
+.winnerGen {
+  @apply opacity-60;
+}
+
+.placeBadge {
+  @apply font-mono text-[10px] uppercase tracking-era text-gold whitespace-nowrap;
+}
+
+.playerName {
+  @apply font-condensed text-[20px] font-extrabold uppercase tracking-label text-cream;
+}
+
+.playerScore {
+  @apply font-display text-[26px] font-black leading-none tracking-tight;
+}
+
+.eraLabel {
+  @apply font-mono text-[8px] uppercase tracking-era;
+}
+
+.bonusGen {
+  @apply mt-[6px] font-mono text-[8px] uppercase tracking-[0.2em] text-gold opacity-70;
+}
 
 .starMark {
-  width: 14px;
-  height: 14px;
-  opacity: 0.9;
-  color: var(--color-gold);
+  @apply w-[14px] h-[14px] opacity-90 text-gold;
 }
 
 @keyframes floatParticle {
@@ -21,24 +50,13 @@
 }
 
 .particle {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  background: var(--color-gold);
+  @apply absolute w-[9px] h-[9px] bg-gold pointer-events-none;
   clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
-  pointer-events: none;
   animation: floatParticle var(--dur, 2s) ease-out var(--delay, 0s) forwards;
 }
 
 .newRecord {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: bold;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  background: var(--color-gold);
-  padding: 2px 8px;
-  margin-top: 8px;
+  @apply inline-block font-mono text-[9px] font-bold tracking-[0.24em] uppercase text-ink bg-gold px-2 mt-2;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
