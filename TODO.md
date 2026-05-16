@@ -77,13 +77,14 @@
 ### Профиль
 
 - [ ] Удаление аккаунта (`supabase.auth.admin.deleteUser` через Edge Function)
-- [ ] Смена email / пароля из Settings
+- [x] Смена пароля из Settings (`PasswordChange.tsx` — полностью реализован)
+- [ ] Смена email из Settings
 - [ ] Публичный профиль — страница `/u/:username` (для шаринга)
 
 ### End Screen
 
-- [ ] Анимация confetti / гирих-частицы для победителя
-- [ ] Показывать рекорд — побит ли личный рекорд
+- [x] Анимация гирих-частицы для победителя (PARTICLES + `styles.particle` в EndPage)
+- [x] Показывать рекорд — побит ли личный рекорд (`isNewRecord` + `end.newRecord` banner в EndPage)
 
 ---
 
@@ -104,7 +105,7 @@
 ### Инфраструктура
 
 - [ ] CI/CD: GitHub Actions → `npm run build` на каждый PR
-- [ ] Supabase migrations в репозитории (`supabase/migrations/`)
+- [x] Supabase migrations в репозитории (`supabase/migrations/` — 3 файла: init, auth_history, grants)
 - [ ] Seed-скрипт для тестового каталога треков
 - [ ] Настроить Supabase Edge Function для опасных операций (удаление аккаунта)
 
@@ -128,3 +129,7 @@
 - [x] SongCard: era-neutral дизайн (не раскрывает эпоху)
 - [x] Гирих-звезда и PaperGrain текстуры
 - [x] EraTag с цветом первичной эпохи
+- [x] Анимация гирих-частицы для победителя (EndPage)
+- [x] Показывать рекорд — побит ли личный рекорд (EndPage)
+- [x] Смена пароля из Settings (`PasswordChange.tsx`)
+- [x] Supabase migrations в репозитории (`supabase/migrations/`)
