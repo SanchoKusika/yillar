@@ -109,7 +109,8 @@ export function useYouTubeAudio(videoId: string | undefined): YouTubeAudioApi {
       player = new YTApi.Player(hostRef.current, {
         width: "1",
         height: "1",
-        videoId: videoIdRef.current,
+        // videoId intentionally omitted: SDK stringifies undefined → "Invalid video id".
+        // Video is loaded via cueVideoById once the player is ready.
         playerVars: {
           autoplay: 0,
           controls: 0,
@@ -239,8 +240,13 @@ export function useYouTubeAudio(videoId: string | undefined): YouTubeAudioApi {
     }
   }, []);
 
+  // Outer wrapper is stable for React reconciliation; inner div is replaced by YouTube SDK.
   const PlayerHost = useCallback(
-    () => <div ref={hostRef} aria-hidden style={HOST_STYLE} />,
+    () => (
+      <div aria-hidden style={HOST_STYLE}>
+        <div ref={hostRef} />
+      </div>
+    ),
     [],
   );
 

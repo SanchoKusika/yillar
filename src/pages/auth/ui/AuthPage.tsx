@@ -25,7 +25,6 @@ export function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const isAuthed = useSessionStore((s) => s.user !== null);
   const isAnon = useSessionStore((s) => s.user?.isAnonymous ?? false);
 
   const onSubmit = async (e: FormEvent) => {

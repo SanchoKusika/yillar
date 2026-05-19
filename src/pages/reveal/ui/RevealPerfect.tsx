@@ -27,7 +27,7 @@ type Props = {
   onNext: () => void;
 };
 
-export function RevealPerfect({ last, player, cardIdx, totalCards, nextPlayer, onNext }: Props) {
+export function RevealPerfect({ last, player: _player, cardIdx: _cardIdx, totalCards: _totalCards, nextPlayer, onNext }: Props) {
   const t = useT();
   const [stage, setStage] = useState(0);
 

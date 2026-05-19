@@ -1,0 +1,88 @@
+@reference "../../../app/styles/index.css";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 25%, transparent);
+  flex-shrink: 0;
+}
+
+.cardProgress {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  opacity: 0.7;
+}
+
+.playerName {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-cream);
+  opacity: 0.5;
+}
+
+/* ── Waiting overlay after submit ── */
+.waitingFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+}
+
+.waitingLabel {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+}
+
+.waitingPips {
+  display: flex;
+  gap: 6px;
+}
+
+.pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-cream) 20%, transparent);
+}
+
+.pipDone {
+  background: var(--color-gold);
+}
+
+/* ── Timer bar ── */
+.timerBarWrap {
+  height: 3px;
+  background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.timerBar {
+  height: 100%;
+  transition: width 1s linear, background-color 0.4s linear;
+}
+
+/* ── Timer label in footer ── */
+.timerLabel {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+  min-width: 28px;
+  text-align: right;
+  transition: color 0.3s linear;
+}

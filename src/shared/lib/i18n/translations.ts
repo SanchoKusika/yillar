@@ -180,7 +180,50 @@ export type TranslationKey =
   | "pwa.newVersion"
   | "pwa.update"
   | "pwa.dismiss"
-  | "pwa.offlineReady";
+  | "pwa.offlineReady"
+  | "home.mode.passPlay"
+  | "home.mode.online"
+  | "home.mode.passPlayLabel"
+  | "home.mode.onlineLabel"
+  | "home.mode.passPlaySub"
+  | "home.mode.onlineSub"
+  | "online.soon"
+  | "online.soonSub"
+  | "online.create"
+  | "online.createLabel"
+  | "online.joinLabel"
+  | "online.joinBtn"
+  | "online.creating"
+  | "online.joining"
+  | "online.roomNotFound"
+  | "online.roomFull"
+  | "online.waitBack"
+  | "online.waitCode"
+  | "online.waitCopy"
+  | "online.waitCopied"
+  | "online.waitPlayers"
+  | "online.waitReady"
+  | "online.waitNotReady"
+  | "online.waitNamePh"
+  | "online.waitStart"
+  | "online.waitNeedEra"
+  | "online.waitNeedPlayers"
+  | "online.waitHost"
+  | "online.waitYou"
+  | "online.waitWaiting"
+  | "online.waitLoading"
+  | "online.gameWaiting"
+  | "online.revealTitle"
+  | "online.revealWaitHost"
+  | "online.revealNext"
+  | "online.revealFinish"
+  | "online.revealYou"
+  | "online.revealDelta"
+  | "online.revealRoundPts"
+  | "online.revealTotal"
+  | "online.endTitle"
+  | "online.endBack"
+  | "online.endPlayAgain";
 
 type TranslationDict = Record<TranslationKey, string>;
 
@@ -371,6 +414,49 @@ const ru: TranslationDict = {
   "pwa.update": "ОБНОВИТЬ",
   "pwa.dismiss": "Скрыть",
   "pwa.offlineReady": "ГОТОВО К ОФЛАЙН-ИГРЕ",
+  "home.mode.passPlay": "PASS & PLAY",
+  "home.mode.online": "ONLINE",
+  "home.mode.passPlayLabel": "● ОДИН ТЕЛЕФОН",
+  "home.mode.onlineLabel": "● У КАЖДОГО СВОЁ",
+  "home.mode.passPlaySub": "Все вместе — один телефон",
+  "home.mode.onlineSub": "Каждый на своём устройстве",
+  "online.soon": "СКОРО",
+  "online.soonSub": "Онлайн-режим в разработке",
+  "online.create": "СОЗДАТЬ КОМНАТУ",
+  "online.createLabel": "● НОВАЯ ИГРА",
+  "online.joinLabel": "● ЕСТЬ КОД?",
+  "online.joinBtn": "ВОЙТИ →",
+  "online.creating": "СОЗДАЁМ…",
+  "online.joining": "ВХОДИМ…",
+  "online.roomNotFound": "Комната не найдена",
+  "online.roomFull": "Игра уже идёт",
+  "online.waitBack": "← ВЫЙТИ",
+  "online.waitCode": "КОД КОМНАТЫ",
+  "online.waitCopy": "СКОПИРОВАТЬ",
+  "online.waitCopied": "СКОПИРОВАНО ✓",
+  "online.waitPlayers": "ИГРОКИ · {n}",
+  "online.waitReady": "ГОТОВ",
+  "online.waitNotReady": "НЕ ГОТОВ",
+  "online.waitNamePh": "ИМЯ",
+  "online.waitStart": "НАЧАТЬ · {n} ИГРОКОВ →",
+  "online.waitNeedEra": "ВЫБЕРИТЕ ЭПОХИ",
+  "online.waitNeedPlayers": "НУЖНО ≥ 2 ИГРОКОВ",
+  "online.waitHost": "ХОСТ",
+  "online.waitYou": "ВЫ",
+  "online.waitWaiting": "● ОЖИДАНИЕ ХОСТА",
+  "online.waitLoading": "ЗАГРУЗКА…",
+  "online.gameWaiting": "ПРИНЯТО · {n} / {m}",
+  "online.revealTitle": "РЕЗУЛЬТАТЫ · {n} / {m}",
+  "online.revealWaitHost": "● ОЖИДАНИЕ ХОСТА",
+  "online.revealNext": "СЛЕД. ТРЕК →",
+  "online.revealFinish": "ФИНАЛ →",
+  "online.revealYou": "ВЫ",
+  "online.revealDelta": "РАЗРЫВ",
+  "online.revealRoundPts": "В ТУРЕ",
+  "online.revealTotal": "ИТОГО",
+  "online.endTitle": "ФИНАЛ",
+  "online.endBack": "НА ГЛАВНУЮ",
+  "online.endPlayAgain": "ЕЩЁ РАЗ",
 };
 
 const uz: TranslationDict = {
@@ -562,6 +648,49 @@ const uz: TranslationDict = {
   "pwa.update": "YANGILASH",
   "pwa.dismiss": "Yopish",
   "pwa.offlineReady": "OFFLINE REJIMGA TAYYOR",
+  "home.mode.passPlay": "PASS & PLAY",
+  "home.mode.online": "ONLINE",
+  "home.mode.passPlayLabel": "● BIR TELEFON",
+  "home.mode.onlineLabel": "● HAR BIRI O'ZIDA",
+  "home.mode.passPlaySub": "Birgalikda — bir qurilma",
+  "home.mode.onlineSub": "Har biri o'z qurilmasida",
+  "online.soon": "TEZDA",
+  "online.soonSub": "Onlayn rejim ishlab chiqilmoqda",
+  "online.create": "XONA YARATISH",
+  "online.createLabel": "● YANGI O'YIN",
+  "online.joinLabel": "● KOD BORMI?",
+  "online.joinBtn": "KIRISH →",
+  "online.creating": "YARATILMOQDA…",
+  "online.joining": "KIRILMOQDA…",
+  "online.roomNotFound": "Xona topilmadi",
+  "online.roomFull": "O'yin boshlangan",
+  "online.waitBack": "← CHIQISH",
+  "online.waitCode": "XONA KODI",
+  "online.waitCopy": "NUSXA",
+  "online.waitCopied": "NUSXALANDI ✓",
+  "online.waitPlayers": "O'YINCHILAR · {n}",
+  "online.waitReady": "TAYYOR",
+  "online.waitNotReady": "TAYYOR EMAS",
+  "online.waitNamePh": "ISM",
+  "online.waitStart": "BOSHLASH · {n} O'YINCHI →",
+  "online.waitNeedEra": "AVLODNI TANLANG",
+  "online.waitNeedPlayers": "≥ 2 O'YINCHI KERAK",
+  "online.waitHost": "XOST",
+  "online.waitYou": "SIZ",
+  "online.waitWaiting": "● XOST KUTILMOQDA",
+  "online.waitLoading": "YUKLANMOQDA…",
+  "online.gameWaiting": "QABUL QILINDI · {n} / {m}",
+  "online.revealTitle": "NATIJALAR · {n} / {m}",
+  "online.revealWaitHost": "● XOST KUTILMOQDA",
+  "online.revealNext": "KEYINGI TREK →",
+  "online.revealFinish": "FINAL →",
+  "online.revealYou": "SIZ",
+  "online.revealDelta": "FARQ",
+  "online.revealRoundPts": "TURDA",
+  "online.revealTotal": "JAMI",
+  "online.endTitle": "FINAL",
+  "online.endBack": "BOSH SAHIFA",
+  "online.endPlayAgain": "YANA O'YNASH",
 };
 
 const en: TranslationDict = {
@@ -751,6 +880,49 @@ const en: TranslationDict = {
   "pwa.update": "UPDATE",
   "pwa.dismiss": "Dismiss",
   "pwa.offlineReady": "READY TO PLAY OFFLINE",
+  "home.mode.passPlay": "PASS & PLAY",
+  "home.mode.online": "ONLINE",
+  "home.mode.passPlayLabel": "● ONE DEVICE",
+  "home.mode.onlineLabel": "● EACH DEVICE",
+  "home.mode.passPlaySub": "Together on one device",
+  "home.mode.onlineSub": "Everyone on their own device",
+  "online.soon": "COMING SOON",
+  "online.soonSub": "Online mode is in development",
+  "online.create": "CREATE ROOM",
+  "online.createLabel": "● NEW GAME",
+  "online.joinLabel": "● HAVE A CODE?",
+  "online.joinBtn": "JOIN →",
+  "online.creating": "CREATING…",
+  "online.joining": "JOINING…",
+  "online.roomNotFound": "Room not found",
+  "online.roomFull": "Game already started",
+  "online.waitBack": "← LEAVE",
+  "online.waitCode": "ROOM CODE",
+  "online.waitCopy": "COPY",
+  "online.waitCopied": "COPIED ✓",
+  "online.waitPlayers": "PLAYERS · {n}",
+  "online.waitReady": "READY",
+  "online.waitNotReady": "NOT READY",
+  "online.waitNamePh": "NAME",
+  "online.waitStart": "START · {n} PLAYERS →",
+  "online.waitNeedEra": "PICK ERAS",
+  "online.waitNeedPlayers": "NEED ≥ 2 PLAYERS",
+  "online.waitHost": "HOST",
+  "online.waitYou": "YOU",
+  "online.waitWaiting": "● WAITING FOR HOST",
+  "online.waitLoading": "LOADING…",
+  "online.gameWaiting": "LOCKED IN · {n} / {m}",
+  "online.revealTitle": "RESULTS · {n} / {m}",
+  "online.revealWaitHost": "● WAITING FOR HOST",
+  "online.revealNext": "NEXT TRACK →",
+  "online.revealFinish": "FINAL →",
+  "online.revealYou": "YOU",
+  "online.revealDelta": "DELTA",
+  "online.revealRoundPts": "ROUND",
+  "online.revealTotal": "TOTAL",
+  "online.endTitle": "FINAL",
+  "online.endBack": "HOME",
+  "online.endPlayAgain": "PLAY AGAIN",
 };
 
 export const TRANSLATIONS: Record<Language, TranslationDict> = { ru, uz, en };

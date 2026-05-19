@@ -120,7 +120,7 @@ export function ProfilePage() {
               }}
               onSave={async (name, gen) => {
                 await updateProfile({ displayName: name, generation: gen });
-                if (profile) setProfile({ ...profile, displayName: name ?? undefined, generation: gen ?? undefined });
+                if (profile) setProfile({ ...profile, displayName: name ?? null, generation: gen ?? null });
               }}
               onSignOut={async () => {
                 try { await signOut(); } catch (err) { console.warn("[YILLAR] sign out failed:", err); }

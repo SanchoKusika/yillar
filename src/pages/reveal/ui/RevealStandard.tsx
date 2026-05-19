@@ -14,7 +14,7 @@ type Props = {
   onNext: () => void;
 };
 
-export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
+export function RevealStandard({ last, player: _player, nextPlayer, onNext }: Props) {
   const t = useT();
   const era = last.era;
   const [stage, setStage] = useState<Stage>(0);

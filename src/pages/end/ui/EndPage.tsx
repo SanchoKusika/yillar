@@ -139,13 +139,15 @@ export function EndPage() {
 
             return (
               <li key={p.id} className={styles.playerCard} data-winner={i === 0}>
-                <div className="mb-2 flex items-baseline justify-between">
-                  <div className="flex items-baseline gap-2">
+                <div className="mb-2 flex items-start justify-between">
+                  <div className="flex flex-col gap-[2px]">
                     <span className={styles.placeBadge}>#{t("end.placeBadge", { n: i + 1 })}</span>
-                    <span className={styles.playerName} style={{ opacity: i === 0 ? 1 : 0.85 }}>
-                      {p.name}
-                    </span>
-                    {i === 0 && <StarMark className={styles.starMark} aria-hidden />}
+                    <div className="flex items-baseline gap-2">
+                      <span className={styles.playerName} style={{ opacity: i === 0 ? 1 : 0.85 }}>
+                        {p.name}
+                      </span>
+                      {i === 0 && <StarMark className={styles.starMark} aria-hidden />}
+                    </div>
                   </div>
                   <span
                     className={styles.playerScore}

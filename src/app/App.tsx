@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HomePage } from "@pages/home";
+import { LobbyPage } from "@pages/lobby";
+import { OnlinePage, WaitingRoomPage, OnlineGamePage, OnlineRevealPage, OnlineEndPage } from "@pages/online";
 import { GamePage } from "@pages/game";
 import { RevealPage } from "@pages/reveal";
 import { EndPage } from "@pages/end";
@@ -13,6 +15,12 @@ export function App() {
     <div className="min-h-dvh bg-ink text-cream font-body">
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/lobby" element={<LobbyPage />} />
+        <Route path="/online" element={<OnlinePage />} />
+        <Route path="/online/room/:code" element={<WaitingRoomPage />} />
+        <Route path="/online/game/:code" element={<OnlineGamePage />} />
+        <Route path="/online/reveal/:code/:trackIdx" element={<OnlineRevealPage />} />
+        <Route path="/online/end/:code" element={<OnlineEndPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/reveal" element={<RevealPage />} />
         <Route path="/end" element={<EndPage />} />
