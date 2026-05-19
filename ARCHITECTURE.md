@@ -33,14 +33,29 @@
 
 **YILLAR** (узб. «Годы») — мобильная музыкальная викторина в стиле советского конструктивизма с визуальным языком узбекского орнамента **гирих**.
 
-### Игровой процесс
+### Режимы игры
 
-1. На главном экране регистрируются **2–4 игрока** (имя + выбор эпохи-поколения).
-2. Из базы загружается **12 случайных треков** (по умолчанию).
-3. Ходы идут по кругу: каждый игрок видит **карточку** с названием и исполнителем, слышит отрывок, перемещает **ползунок** на шкале 1960–2025 и нажимает **ЗАФИКСИРОВАТЬ**.
+**Pass & Play** — на одном устройстве, 2–4 игрока ходят по кругу.
+
+**Online** — синхронный мультиплеер. Каждый на своём устройстве, ходы одновременные (60 секунд на тур), результаты видны всем в реальном времени через Supabase Realtime.
+
+### Игровой процесс (Pass & Play)
+
+1. На главном экране выбирают режим. В лобби регистрируются **2–4 игрока** (имя + эпоха).
+2. Из базы загружается **12 случайных треков**.
+3. Ходы идут по кругу: игрок видит **карточку**, слышит отрывок, перемещает **ползунок** на шкале 1960–2025 и нажимает **ЗАФИКСИРОВАТЬ**.
 4. Открывается **экран результата** (RevealStandard / RevealPerfect / RevealRejected).
 5. После последней карточки — **экран итогов** с рейтингом и разбивкой по эпохам.
 6. Партия автоматически сохраняется в Supabase для авторизованных пользователей.
+
+### Игровой процесс (Online)
+
+1. Хост создаёт комнату → получает 4-символьный код. Остальные вводят код.
+2. В **WaitingRoom** все задают имя + эпоху. Хост нажимает старт.
+3. На каждом треке все угадывают **одновременно**. Таймер 60 с — по истечении авто-сабмит.
+4. После сабмита всех игроков — **OnlineReveal** с таблицей очков за раунд и нарастающим итогом.
+5. Хост нажимает «следующий трек». После последнего — **OnlineEnd** с итоговым лидербордом.
+6. Хост может нажать **ЕЩЁ РАЗ** — комната сбрасывается (`resetRoom`), все возвращаются в WaitingRoom.
 
 ### Карточка песни
 
@@ -84,10 +99,12 @@ src/
 │   └── styles/index.css       — @theme токены, шрифты, глобальные утилиты
 │
 ├── pages/
-│   ├── home/                  — лобби: состав, старт
+│   ├── home/                  — выбор режима (Pass & Play / Online)
+│   ├── lobby/                 — Pass & Play лобби: состав, старт
 │   ├── game/                  — игровой экран
 │   ├── reveal/                — Standard / Perfect / Rejected
 │   ├── end/                   — итоги партии
+│   ├── online/                — Online лобби, waiting room, game, reveal, end
 │   ├── auth/                  — вход / регистрация / гость
 │   └── profile/               — статы, история, друзья, настройки
 │
@@ -109,6 +126,7 @@ src/
 │   ├── placement/             — тип Placement
 │   ├── player/                — тип Player
 │   ├── preferences/           — usePreferencesStore (тема, язык)
+│   ├── room/                  — roomsApi, useRoom/Players/Guesses (Realtime)
 │   ├── session/               — useSessionStore, auth API
 │   └── track/                 — тип Track, useTracks (запрос к Supabase)
 │
@@ -367,6 +385,12 @@ type Placement = {
 
 ### `pages/home` (HomePage)
 
+Экран выбора режима: два блока — **PASS & PLAY** и **ONLINE**.
+- PASS & PLAY → navigate `/lobby`
+- ONLINE → navigate `/online`
+
+### `pages/lobby` (LobbyPage)
+
 - Монтирует `PlayerRoster` + `BottomNav`
 - Если пользователь авторизован — блокирует слот 0 и заполняет его из `profile.displayName`
 - Кнопка «СТАРТ» активна только когда: треки загружены + ≥2 игроков с именем + все с эпохой
@@ -408,6 +432,24 @@ RevealPage
 - Сохранение партии срабатывает один раз через `useEffect` + `beginSave()` guard
 - Статус сохранения в строке CatalogLine (`● СОХРАНЯЕМ… → ● СОХРАНЕНО`)
 - Кнопки: ПОДЕЛИТЬСЯ (заглушка) / ПОВТОР → (reset + navigate `/`)
+
+### `pages/online`
+
+Пять компонентов:
+
+| Компонент         | Маршрут                       | Описание                                              |
+| ----------------- | ----------------------------- | ----------------------------------------------------- |
+| `OnlinePage`      | `/online`                     | Создать комнату / войти по коду                       |
+| `WaitingRoomPage` | `/online/room/:code`          | Лобби — имя, эпоха, список игроков, кнопка старта     |
+| `OnlineGamePage`  | `/online/game/:code`          | Ход — карточка, аудиополоска, шкала, 60 с таймер      |
+| `OnlineRevealPage`| `/online/reveal/:code/:idx`   | Результат раунда — таблица всех игроков + итого        |
+| `OnlineEndPage`   | `/online/end/:code`           | Финальный лидерборд, кнопки «домой» и «ещё раз»       |
+
+**Дисконнект-логика:**
+- Таймер 60 с авто-сабмитит за игрока, который отключился во время хода
+- Хост покидает WaitingRoom → `deleteRoom` (cascade на room_players)
+- Хост пропадает на Reveal → 8 с escape-таймер у не-хостов → navigate `/online`
+- «ЕЩЁ РАЗ» (хост) → `resetRoom` → все Realtime-подписчики видят `status=waiting` → navigate `/online/room/:code`
 
 ### `pages/auth` (AuthPage)
 
@@ -511,6 +553,38 @@ placements
   era           text (Era)
   correct       boolean
 ```
+
+```sql
+rooms
+  id                uuid PK
+  code              text UNIQUE CHECK (length=4, upper)
+  host_id           uuid FK → auth.users.id
+  status            text ('waiting' | 'playing' | 'ended')
+  track_ids         text[]
+  current_track_idx integer DEFAULT 0
+  created_at        timestamptz
+  updated_at        timestamptz
+
+room_players
+  id                uuid PK
+  room_id           uuid FK → rooms.id ON DELETE CASCADE
+  player_id         uuid FK → auth.users.id
+  name              text
+  era               text (Era | null)
+  is_host           boolean
+  joined_at         timestamptz
+
+room_guesses
+  id                uuid PK
+  room_id           uuid FK → rooms.id ON DELETE CASCADE
+  track_idx         integer
+  player_id         uuid FK → auth.users.id
+  guess_year        integer
+  submitted_at      timestamptz
+  UNIQUE (room_id, track_idx, player_id)
+```
+
+Все три таблицы: `REPLICA IDENTITY FULL` — обязательно для Realtime UPDATE/DELETE фильтров по не-PK колонкам.
 
 ### RLS-политики (принцип)
 
@@ -800,9 +874,51 @@ return "ru"; // дефолт
   useHistory(userId, 10)     → Supabase (games + game_players)
 ```
 
+### Online-партия
+
+```
+[OnlinePage]
+  createRoom(hostId, name)    → Supabase → room + room_players(host)
+  joinRoom(code, userId, name) → Supabase → room_players(guest)
+
+[WaitingRoomPage]  ← useRoom / useRoomPlayers (Realtime)
+  updateRoomPlayer(name, era) → room_players
+  startGame(roomId, trackIds) → rooms.status = 'playing'
+
+[OnlineGamePage] × totalTracks  ← useRoom / useRoomGuesses (Realtime)
+  useYouTubeAudio(ytId)       → YouTube IFrame API
+  submitGuess(roomId, idx, playerId, year) → room_guesses
+  -- таймер 60 с → авто-сабмит при timeLeft === 0
+  -- все гессы собраны → navigate /online/reveal/:code/:idx
+
+[OnlineRevealPage]
+  useRoomGuesses (текущий трек)  ← Realtime
+  getRoomGuesses (все треки)     → calcScore × каждый игрок → нарастающий итог
+  host: advanceTrack()           → rooms.current_track_idx++ или status='ended'
+  non-host: следит за currentTrackIdx/status
+
+[OnlineEndPage]
+  getRoomGuesses (все)    → calcScore → Placement[]
+  host: saveGame(input)   → games + game_players + placements
+  host: resetRoom()       → room_guesses DELETE + rooms status='waiting', idx=0
+  non-host: room.status='waiting' → navigate /online/room/:code
+```
+
 ---
 
 ## 19. Ключевые технические решения
+
+### `entities/room` — Realtime-хуки
+
+Три хука подписываются на `postgres_changes`:
+
+```ts
+useRoom(code)          // SELECT rooms WHERE code=? + Realtime UPDATE/DELETE
+useRoomPlayers(roomId) // SELECT room_players WHERE room_id=? + INSERT/UPDATE/DELETE
+useRoomGuesses(roomId, trackIdx?) // SELECT room_guesses + INSERT
+```
+
+Каждый хук инициализирует данные через `select()` и патчит локальный массив по Realtime-событиям (не рефетчит). Канал уничтожается при размонтировании через `supabase.removeChannel()`.
 
 ### Guard `beginSave()`
 
