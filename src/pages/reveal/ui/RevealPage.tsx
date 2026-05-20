@@ -10,9 +10,6 @@ export function RevealPage() {
   const navigate = useNavigate();
   const status = useGameStore((s) => s.status);
   const advanceTurn = useGameStore((s) => s.advanceTurn);
-  const cardIdx = useGameStore((s) => s.currentCardIdx);
-  const totalCards = useGameStore((s) => s.totalCards);
-
   const activePlayers = useActivePlayers();
   const player = useCurrentPlayer();
   const last = useLastPlacement();
@@ -38,27 +35,13 @@ export function RevealPage() {
   return (
     <PhoneFrame>
       {variant === "rejected" && (
-        <RevealRejected
-          last={last}
-          player={player}
-          cardIdx={cardIdx}
-          totalCards={totalCards}
-          nextPlayer={nextPlayer}
-          onNext={onNext}
-        />
+        <RevealRejected last={last} nextPlayer={nextPlayer} onNext={onNext} />
       )}
       {variant === "perfect" && (
-        <RevealPerfect
-          last={last}
-          player={player}
-          cardIdx={cardIdx}
-          totalCards={totalCards}
-          nextPlayer={nextPlayer}
-          onNext={onNext}
-        />
+        <RevealPerfect last={last} nextPlayer={nextPlayer} onNext={onNext} />
       )}
       {variant === "standard" && (
-        <RevealStandard last={last} player={player} nextPlayer={nextPlayer} onNext={onNext} />
+        <RevealStandard last={last} nextPlayer={nextPlayer} onNext={onNext} />
       )}
     </PhoneFrame>
   );

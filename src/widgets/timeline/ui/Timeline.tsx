@@ -15,14 +15,14 @@ type TimelineProps = {
 export function Timeline({ playerName, placements, guessYear, onGuessChange }: TimelineProps) {
   const t = useT();
   return (
-    <div className="relative flex flex-1 flex-col justify-end px-[14px] pt-[14px] pb-[6px]">
+    <div className={styles.root}>
       <CatalogLine
         left={t("timeline.title", { name: playerName })}
         right={t("timeline.placed", { n: placements.length })}
         style={{ marginBottom: 10 }}
       />
 
-      <ul className="relative flex items-stretch gap-[6px] overflow-x-auto">
+      <ul className={styles.placements}>
         {placements.map((p, i) => (
           <li
             key={i}
@@ -68,15 +68,15 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
         />
       </div>
 
-      <div className="relative mt-2 h-4">
-        <div className="absolute left-0 right-0 top-[5px] h-px bg-gold opacity-40" />
+      <div className={styles.decadeRuler}>
+        <div className={styles.decadeRulerLine} />
         {DECADE_SCALE.map((y, i, arr) => (
           <div
             key={y}
             className={styles.decadeLabel}
             style={{ left: `${(i / (arr.length - 1)) * 100}%`, transform: "translateX(-50%)" }}
           >
-            <div className="mx-auto mb-px h-1 w-px bg-gold" />
+            <div className={styles.decadeTick} />
             '{String(y).slice(2)}
           </div>
         ))}

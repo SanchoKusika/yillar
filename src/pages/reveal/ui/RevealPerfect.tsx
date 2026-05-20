@@ -20,14 +20,11 @@ function StarShape({ className }: { className?: string }) {
 
 type Props = {
   last: Placement;
-  player: Player;
-  cardIdx: number;
-  totalCards: number;
   nextPlayer: Player;
   onNext: () => void;
 };
 
-export function RevealPerfect({ last, player: _player, cardIdx: _cardIdx, totalCards: _totalCards, nextPlayer, onNext }: Props) {
+export function RevealPerfect({ last, nextPlayer, onNext }: Props) {
   const t = useT();
   const [stage, setStage] = useState(0);
 

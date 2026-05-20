@@ -15,7 +15,7 @@ export function PlayerRoster({ players, onName, onEra, hostLockedAt = null }: Pl
   const activeCount = players.filter((p) => p.name).length;
 
   return (
-    <div className="relative px-4 pt-[14px] pb-4">
+    <div className={styles.root}>
       <CatalogLine
         left={t("roster.heading")}
         right={`${activeCount} / 4`}
@@ -33,7 +33,7 @@ export function PlayerRoster({ players, onName, onEra, hostLockedAt = null }: Pl
             data-filled={filled}
             style={{ borderLeftColor: filled && p.era ? `var(--color-${p.era}-primary)` : undefined }}
           >
-            <div className="mb-[10px] flex items-center gap-[10px]">
+            <div className={styles.playerMeta}>
               <span className={styles.playerLabel}>
                 {isLocked
                   ? t("roster.you")

@@ -138,6 +138,11 @@ export function OnlineRevealPage() {
     playerTotals.set(r.player.playerId, total);
   }
 
+  // Persist for leaderboard strip on next game screen (both host and non-host read this)
+  if (room?.id && playerTotals.size > 0) {
+    sessionStorage.setItem(`yillar:scores:${room.id}`, JSON.stringify(Object.fromEntries(playerTotals)));
+  }
+
   const myResult = roundResults.find((r) => r.player.playerId === user?.id);
   const isPerfect = myResult?.delta === 0;
 
@@ -155,7 +160,7 @@ export function OnlineRevealPage() {
     return (
       <PhoneFrame>
         <div className="flex h-full items-center justify-center">
-          <span className="font-mono text-[13px] text-gold opacity-60">{t("online.waitLoading")}</span>
+          <span className={styles.loadingLabel}>{t("online.waitLoading")}</span>
         </div>
       </PhoneFrame>
     );
@@ -184,7 +189,7 @@ export function OnlineRevealPage() {
           <h1 className={styles.trackTitle} style={{ color: fg }}>
             {track.title}
           </h1>
-          <div className="font-body text-[13px] italic opacity-75 mb-1">{track.artist}</div>
+          <div className={styles.artistLine}>{track.artist}</div>
         </header>
 
         {/* Year reveal — Perfect or Standard */}
@@ -244,7 +249,7 @@ export function OnlineRevealPage() {
               <>
                 {/* Multiplier row */}
                 <div
-                  className="flex items-center justify-between mb-[6px]"
+                  className={styles.multiplierRow}
                   style={{ opacity: stage >= 3 ? 1 : 0, transition: "opacity 200ms linear" }}
                 >
                   <div className={styles.multiplierLabel} style={{ color: surfaceColor }}>
@@ -257,11 +262,10 @@ export function OnlineRevealPage() {
 
                 {/* Stats grid */}
                 <div
-                  className="grid grid-cols-3 items-center gap-2 py-[14px] font-mono tabular-nums"
+                  className={styles.statsGrid}
                   style={{
                     borderTop: `1px solid ${surfaceColor}`,
                     borderBottom: `1px solid ${surfaceColor}`,
-                    letterSpacing: "0.08em",
                     opacity: stage >= 3 ? 1 : 0,
                     transition: "opacity 200ms linear",
                   }}
@@ -273,8 +277,8 @@ export function OnlineRevealPage() {
                     color={surfaceColor}
                     align="center"
                   />
-                  <div className="flex flex-col gap-[2px] text-right">
-                    <span className="text-[9px] uppercase tracking-[0.22em] opacity-70" style={{ color: surfaceColor }}>
+                  <div className={styles.statCellRight}>
+                    <span className={styles.statCellLabel} style={{ color: surfaceColor }}>
                       {t("reveal.points")}
                     </span>
                     <span
@@ -355,16 +359,8 @@ export function OnlineRevealPage() {
                   </>
                 ) : (
                   <span
-                    className={styles.cellMuted}
-                    style={{
-                      gridColumn: "2 / -1",
-                      textAlign: "right",
-                      color: fg,
-                      fontFamily: "var(--font-condensed)",
-                      fontSize: 11,
-                      textTransform: "uppercase" as const,
-                      letterSpacing: "0.1em",
-                    }}
+                    className={`${styles.waitingCell} ${styles.cellMuted} ${styles.waitingPulse}`}
+                    style={{ color: fg }}
                   >
                     {t("online.waitWaiting")}
                   </span>
@@ -382,8 +378,7 @@ export function OnlineRevealPage() {
           {isHost ? (
             isPerfect ? (
               <button
-                className="w-full py-4 px-5 border-0 cursor-pointer font-condensed font-bold text-[13px] tracking-[0.18em] uppercase"
-                style={{ background: "var(--color-ink)", color: "var(--color-gold)" }}
+                className={styles.perfectNextBtn}
                 onClick={handleNext}
               >
                 {isLastTrack ? t("online.revealFinish") : t("online.revealNext")}
@@ -395,7 +390,7 @@ export function OnlineRevealPage() {
             )
           ) : (
             <div
-              className="text-center font-condensed text-[11px] font-bold uppercase tracking-[0.18em] py-2 opacity-60"
+              className={`${styles.nonHostWaiting} ${styles.waitingPulse}`}
               style={{ color: fg }}
             >
               {t("online.revealWaitHost")}
@@ -420,8 +415,8 @@ function StatCell({
 }) {
   return (
     <div className="flex flex-col gap-[2px]" style={{ textAlign: align }}>
-      <span className="text-[9px] uppercase tracking-[0.22em] opacity-70" style={{ color }}>{label}</span>
-      <span className="text-[18px] font-semibold" style={{ color }}>{value}</span>
+      <span className={styles.statCellLabel} style={{ color }}>{label}</span>
+      <span className={styles.statCellValue} style={{ color }}>{value}</span>
     </div>
   );
 }

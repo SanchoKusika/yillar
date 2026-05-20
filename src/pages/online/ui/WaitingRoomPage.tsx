@@ -34,6 +34,7 @@ export function WaitingRoomPage() {
   const [starting, setStarting] = useState(false);
 
   const ensuredRef = useRef(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
 
   useEffect(() => {
     if (!room || !user || ensuredRef.current) return;
@@ -42,12 +43,22 @@ export function WaitingRoomPage() {
     void ensureInRoom(room.id, user.id, localName || (profile?.displayName ?? ""));
   }, [room?.id, room?.status, user?.id]);
 
-  // Navigate when game starts
+  // Trigger countdown when game starts
   useEffect(() => {
-    if (room?.status === "playing") {
-      navigate(`/online/game/${code}`, { replace: true });
+    if (room?.status === "playing" && countdown === null) {
+      setCountdown(3);
     }
-  }, [room?.status, code, navigate]);
+  }, [room?.status, countdown]);
+
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown === 0) {
+      navigate(`/online/game/${code}`, { replace: true });
+      return;
+    }
+    const timer = setTimeout(() => setCountdown((c) => (c ?? 1) - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown, navigate, code]);
 
   // Sync local name once myPlayer loads
   useEffect(() => {
@@ -102,7 +113,7 @@ export function WaitingRoomPage() {
     return (
       <PhoneFrame>
         <div className="flex h-full items-center justify-center">
-          <span className="font-mono text-[13px] text-gold opacity-60">{t("online.waitLoading")}</span>
+          <span className={styles.loadingLabel}>{t("online.waitLoading")}</span>
         </div>
       </PhoneFrame>
     );
@@ -118,18 +129,23 @@ export function WaitingRoomPage() {
   return (
     <PhoneFrame>
       <div className="relative flex h-full flex-col">
+        {countdown !== null && countdown > 0 && (
+          <div className={styles.countOverlay}>
+            <div key={countdown} className={styles.countNum}>{countdown}</div>
+          </div>
+        )}
         <GirihOverlay size={200} opacity={0.05} />
 
         {/* Header — matches LobbyPage */}
         <header className="relative px-5 pt-6 pb-[18px] text-center">
           <div className="mb-2 flex items-center justify-between px-1">
-            <span className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70">
+            <span className={styles.headerBadgeLeft}>
               {env.supabaseUrl ? "● ONLINE" : t("home.demo")}
             </span>
             <button
               type="button"
               onClick={handleLeave}
-              className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40 bg-transparent border-none cursor-pointer"
+              className={styles.leaveBtn}
             >
               {t("online.waitBack")}
             </button>
@@ -169,7 +185,6 @@ export function WaitingRoomPage() {
             {players.map((p, idx) => {
               const isMe = p.playerId === user?.id;
               const filled = !!(p.name && p.era);
-              const isReady = filled;
 
               return (
                 <li
@@ -209,7 +224,7 @@ export function WaitingRoomPage() {
                       <span className={styles.playerNameStatic}>{p.name || "…"}</span>
                     )}
 
-                    <span className={isReady ? styles.readyDot : styles.notReadyDot} />
+                    <span className={filled ? styles.readyDot : styles.notReadyDot} />
                   </div>
 
                   {isMe ? (
@@ -236,7 +251,7 @@ export function WaitingRoomPage() {
               {startLabel}
             </YButton>
           ) : (
-            <div className="text-center font-condensed text-[11px] font-bold uppercase tracking-[0.18em] text-gold opacity-60">
+            <div className={`${styles.waitingFooterText} ${styles.waitingPulse}`}>
               {t("online.waitWaiting")}
             </div>
           )}

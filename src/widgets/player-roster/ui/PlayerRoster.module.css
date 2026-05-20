@@ -1,5 +1,13 @@
 @reference "../../../app/styles/index.css";
 
+.root {
+  @apply relative px-4 pt-[14px] pb-4;
+}
+
+.playerMeta {
+  @apply mb-[10px] flex items-center gap-[10px];
+}
+
 .playerRow {
   @apply mb-[10px] bg-transparent border border-ink-3 px-3 pb-3 pt-[10px];
   border-left: 4px solid var(--color-ink-3);

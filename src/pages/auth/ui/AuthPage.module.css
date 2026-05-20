@@ -36,7 +36,7 @@
 }
 
 .linkBtn {
-  @apply self-start font-mono text-[10px] uppercase tracking-[0.14em] opacity-70 transition-opacity hover:opacity-100;
+  @apply self-start font-mono text-[10px] uppercase tracking-[0.14em] text-gold opacity-70 transition-opacity hover:opacity-100;
 }
 
 .linkBtnMuted {
@@ -49,4 +49,20 @@
 
 .guestHint {
   @apply text-center text-[11px] italic text-cream opacity-55;
+}
+
+.demoContent {
+  @apply flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center;
+}
+
+.scrollBody {
+  @apply relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4;
+}
+
+.form {
+  @apply flex flex-col gap-4;
+}
+
+.field {
+  @apply flex flex-col gap-[6px];
 }

@@ -1,5 +1,10 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Shared loading label ── */
+.loadingLabel {
+  @apply font-mono text-[13px] text-gold opacity-60;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -75,14 +80,51 @@
   transition: width 1s linear, background-color 0.4s linear;
 }
 
-/* ── Timer label in footer ── */
-.timerLabel {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+/* ── Mini leaderboard strip ── */
+.scoresBar {
+  display: flex;
+  gap: 6px;
+  padding: 6px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
   flex-shrink: 0;
-  min-width: 28px;
-  text-align: right;
-  transition: color 0.3s linear;
+  background: var(--color-ink-2);
 }
+.scoresBar::-webkit-scrollbar { display: none; }
+
+.scoreChip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.scoreRank {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--color-gold);
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+}
+
+.scoreName {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-cream);
+}
+
+.scoreValue {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gold);
+  letter-spacing: 0.04em;
+}
+

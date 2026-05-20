@@ -60,10 +60,10 @@ export function OnlinePage() {
 
         <header className="relative px-5 pt-6 pb-[18px] text-center">
           <div className="mb-2 flex items-center justify-between px-1">
-            <span className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70">
+            <span className={styles.headerBadgeLeft}>
               {noSupabase ? t("home.demo") : "● ONLINE"}
             </span>
-            <span className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40">
+            <span className={styles.headerBadgeRight}>
               {t("home.headerLeft")}
             </span>
           </div>
@@ -77,15 +77,9 @@ export function OnlinePage() {
         {noSupabase ? (
           <div className="flex flex-1 items-center justify-center px-6 text-center">
             <div>
-              <div className="font-condensed text-[10px] font-bold uppercase tracking-[0.22em] text-gold opacity-70 mb-3">
-                ● DEMO MODE
-              </div>
-              <div className="font-display text-[40px] font-black leading-none text-gold mb-3">
-                {t("online.soon")}
-              </div>
-              <div className="font-condensed text-[12px] font-semibold uppercase tracking-[0.1em] text-cream opacity-40">
-                {t("online.soonSub")}
-              </div>
+              <div className={styles.demoBadge}>● DEMO MODE</div>
+              <div className={styles.demoTitle}>{t("online.soon")}</div>
+              <div className={styles.demoSub}>{t("online.soonSub")}</div>
             </div>
           </div>
         ) : (

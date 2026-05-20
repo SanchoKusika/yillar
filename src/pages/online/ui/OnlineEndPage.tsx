@@ -36,6 +36,7 @@ export function OnlineEndPage() {
   const [results, setResults] = useState<PlayerResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [rematching, setRematching] = useState(false);
+  const [waitingRematch, setWaitingRematch] = useState(false);
   const savedRef = useRef(false);
 
   const stats = useProfileStats(user?.id);
@@ -149,22 +150,21 @@ export function OnlineEndPage() {
 
           <div className="mb-1 flex items-center justify-between">
             <span className={styles.onlineBadge}>ONLINE</span>
-            <span className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40">
+            <span className={styles.headerBadgeRight}>
               {t("end.headerFinal", { placed: room?.trackIds.length ?? 0, total: room?.trackIds.length ?? 0 })}
             </span>
           </div>
 
           {loading ? (
-            <div className="font-mono text-[13px] text-gold opacity-60 py-4">{t("online.waitLoading")}</div>
+            <div className={styles.loadingLabel}>{t("online.waitLoading")}</div>
           ) : winner ? (
             <>
               <div className={styles.winnerLabel}>{t("end.winner")}</div>
               <div
-                className="mt-1 truncate font-display font-black leading-[0.92] text-cream"
+                className={styles.winnerName}
                 style={{
                   fontSize: winner.name.length <= 6 ? 64 : winner.name.length <= 9 ? 50 : 38,
                   letterSpacing: "-0.02em",
-                  whiteSpace: "nowrap",
                 }}
               >
                 {winner.name}
@@ -205,7 +205,7 @@ export function OnlineEndPage() {
                           <span className={styles.playerName} style={{ opacity: i === 0 ? 1 : 0.85 }}>
                             {r.name}
                             {isMe && (
-                              <span className="ml-1 font-condensed text-[9px] font-bold uppercase tracking-[0.14em] text-gold opacity-70">
+                              <span className={styles.youBadge}>
                                 {t("online.revealYou")}
                               </span>
                             )}
@@ -264,21 +264,27 @@ export function OnlineEndPage() {
           >
             {t("online.endBack")}
           </YButton>
-          <YButton
-            disabled={rematching}
-            onClick={async () => {
-              haptic("medium");
-              if (myPlayer?.isHost && room) {
-                setRematching(true);
-                await resetRoom(room.id);
-                navigate(`/online/room/${code}`, { replace: true });
-              } else {
-                navigate("/online");
-              }
-            }}
-          >
-            {t("online.endPlayAgain")}
-          </YButton>
+          {waitingRematch ? (
+            <div className={`${styles.waitingRematch} ${styles.waitingPulse}`}>
+              {t("online.waitWaiting")}
+            </div>
+          ) : (
+            <YButton
+              disabled={rematching}
+              onClick={async () => {
+                haptic("medium");
+                if (myPlayer?.isHost && room) {
+                  setRematching(true);
+                  await resetRoom(room.id);
+                  navigate(`/online/room/${code}`, { replace: true });
+                } else {
+                  setWaitingRematch(true);
+                }
+              }}
+            >
+              {t("online.endPlayAgain")}
+            </YButton>
+          )}
         </footer>
 
         <BottomNav />

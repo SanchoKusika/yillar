@@ -1,7 +1,12 @@
 @reference "../../../app/styles/index.css";
 
-.tagline {
-  @apply mt-3 font-condensed text-[10px] font-bold uppercase tracking-[0.32em] text-cream opacity-75;
+/* ── Header badges ── */
+.headerBadgeLeft {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70;
+}
+
+.headerBadgeRight {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40;
 }
 
 /* ── Mode blocks ── */

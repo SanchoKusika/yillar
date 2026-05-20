@@ -92,10 +92,10 @@ export function EndPage() {
 
   return (
     <PhoneFrame>
-      <main className="relative flex h-full flex-col overflow-hidden bg-ink text-cream">
+      <main className={styles.pageMain}>
         <GirihOverlay size={200} opacity={0.05} />
 
-        <header className="relative border-b border-gold px-5 pt-[18px] pb-[14px] overflow-hidden">
+        <header className={styles.header}>
           {PARTICLES.map((p, i) => (
             <div
               key={i}
@@ -105,11 +105,10 @@ export function EndPage() {
           ))}
           <div className={styles.winnerLabel}>{t("end.winner")}</div>
           <div
-            className="mt-1 truncate font-display font-black leading-[0.92] text-cream"
+            className={styles.winnerName}
             style={{
               fontSize: winner.name.length <= 6 ? 64 : winner.name.length <= 9 ? 50 : 38,
               letterSpacing: "-0.02em",
-              whiteSpace: "nowrap",
             }}
           >
             {winner.name}
@@ -123,7 +122,7 @@ export function EndPage() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-auto px-4 pb-2 pt-[14px]">
+        <div className={styles.body}>
           <CatalogLine
             left={t("end.perPlayer")}
             right={t("end.playersCount", { n: ranked.length })}
@@ -139,10 +138,10 @@ export function EndPage() {
 
             return (
               <li key={p.id} className={styles.playerCard} data-winner={i === 0}>
-                <div className="mb-2 flex items-start justify-between">
-                  <div className="flex flex-col gap-[2px]">
+                <div className={styles.playerCardTop}>
+                  <div className={styles.playerCardLeft}>
                     <span className={styles.placeBadge}>#{t("end.placeBadge", { n: i + 1 })}</span>
-                    <div className="flex items-baseline gap-2">
+                    <div className={styles.nameRow}>
                       <span className={styles.playerName} style={{ opacity: i === 0 ? 1 : 0.85 }}>
                         {p.name}
                       </span>
@@ -157,14 +156,14 @@ export function EndPage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-1">
+                <div className={styles.eraGrid}>
                   {eraStats.map(({ era, correct, total }) => (
                     <div key={era}>
-                      <div className={`mb-[2px] flex justify-between ${styles.eraLabel}`}>
+                      <div className={`${styles.eraLabelRow} ${styles.eraLabel}`}>
                         <span style={{ color: eraVar(era, "primary") }}>{t(`era.short.${era}` as const)}</span>
                         <span className="opacity-60">{correct}/{total || 0}</span>
                       </div>
-                      <div className="flex h-2 gap-px bg-ink">
+                      <div className={styles.eraBar}>
                         {[...Array(Math.max(total, 1))].map((_, j) => (
                           <div
                             key={j}
@@ -188,7 +187,7 @@ export function EndPage() {
           </ol>
         </div>
 
-        <footer className="flex gap-2 border-t border-gold bg-ink p-3">
+        <footer className={styles.footer}>
           <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }}>{t("end.share")}</YButton>
           <YButton onClick={() => { reset(); navigate("/", { replace: true }); }}>{t("end.replay")}</YButton>
         </footer>

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { PhoneFrame, YButton } from "@shared/ui";
 import { useT, useYouTubeAudio, haptic } from "@shared/lib";
 import { useSessionStore } from "@entities/session";
@@ -16,6 +16,7 @@ const TURN_SECONDS = 60;
 export function OnlineGamePage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const t = useT();
   const user = useSessionStore((s) => s.user);
 
@@ -39,6 +40,22 @@ export function OnlineGamePage() {
   const hasSubmitted = myGuess != null;
 
   const [guess, setGuess] = useState(1990);
+
+  // Previous-round leaderboard: saved by reveal page into sessionStorage
+  const prevScores = useMemo<Record<string, number>>(() => {
+    if (trackIdx === 0 || !room?.id) return {};
+    const stored = sessionStorage.getItem(`yillar:scores:${room.id}`);
+    if (!stored) return (location.state as { scores?: Record<string, number> } | null)?.scores ?? {};
+    try { return JSON.parse(stored) as Record<string, number>; } catch { return {}; }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackIdx, room?.id]);
+
+  const sortedLeaderboard = useMemo(() => {
+    if (!Object.keys(prevScores).length) return [];
+    return [...players]
+      .map((p) => ({ name: p.name, score: prevScores[p.playerId] ?? 0 }))
+      .sort((a, b) => b.score - a.score);
+  }, [players, prevScores]);
 
   // ── Timer ──────────────────────────────────────────────────────────────────
   const [timeLeft, setTimeLeft] = useState(TURN_SECONDS);
@@ -114,7 +131,7 @@ export function OnlineGamePage() {
     <PhoneFrame>
       {(!track || !myPlayer) ? (
         <div className="flex h-full items-center justify-center">
-          <span className="font-mono text-[13px] text-gold opacity-60">{t("online.waitLoading")}</span>
+          <span className={styles.loadingLabel}>{t("online.waitLoading")}</span>
         </div>
       ) : (
         <main className="relative flex h-full flex-col overflow-hidden">
@@ -132,6 +149,18 @@ export function OnlineGamePage() {
                 className={styles.timerBar}
                 style={{ width: `${timerPct}%`, background: timerColor }}
               />
+            </div>
+          )}
+
+          {sortedLeaderboard.length > 0 && (
+            <div className={styles.scoresBar}>
+              {sortedLeaderboard.map((entry, i) => (
+                <div key={entry.name} className={styles.scoreChip}>
+                  <span className={styles.scoreRank}>#{i + 1}</span>
+                  <span className={styles.scoreName}>{entry.name}</span>
+                  <span className={styles.scoreValue}>{entry.score}</span>
+                </div>
+              ))}
             </div>
           )}
 
@@ -172,16 +201,10 @@ export function OnlineGamePage() {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center gap-3 p-3">
+              <div className="p-3">
                 <YButton onClick={onLockIn}>
                   {t("game.lockIn", { year: guess })}
                 </YButton>
-                <span
-                  className={styles.timerLabel}
-                  style={{ color: timerColor }}
-                >
-                  {timeLeft}
-                </span>
               </div>
             )}
           </footer>

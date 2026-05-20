@@ -1,5 +1,27 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Header badges ── */
+.headerBadgeLeft {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70;
+}
+
+.headerBadgeRight {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40;
+}
+
+/* ── Demo mode ── */
+.demoBadge {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.22em] text-gold opacity-70 mb-3;
+}
+
+.demoTitle {
+  @apply font-display text-[40px] font-black leading-none text-gold mb-3;
+}
+
+.demoSub {
+  @apply font-condensed text-[12px] font-semibold uppercase tracking-[0.1em] text-cream opacity-40;
+}
+
 /* ── Create block (top half) ── */
 .createBlock {
   position: relative;
@@ -38,16 +60,6 @@
   letter-spacing: -0.02em;
   color: var(--color-cream);
   margin-bottom: 14px;
-}
-
-.modeSub {
-  font-family: var(--font-condensed);
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-cream);
-  opacity: 0.4;
 }
 
 .modeArrow {

@@ -1,5 +1,48 @@
 @reference "../../../app/styles/index.css";
 
+.root {
+  @apply relative flex h-full flex-col overflow-hidden;
+}
+
+.header {
+  @apply relative px-5 pt-[18px];
+}
+
+.body {
+  @apply relative flex flex-1 flex-col justify-center gap-[14px] px-5;
+}
+
+.multiplierRow {
+  @apply flex items-center justify-between;
+}
+
+.footer {
+  @apply relative border-t p-[14px];
+}
+
+/* ── Stat cell internals ── */
+.statCell {
+  @apply flex flex-col gap-[2px];
+}
+
+.statLabel {
+  @apply text-[9px] uppercase tracking-[0.22em] opacity-70;
+}
+
+.statValue {
+  @apply text-[18px] font-semibold;
+}
+
+.statCellRight {
+  @apply flex flex-col gap-[2px] text-right;
+}
+
+/* ── Stats grid ── */
+.statsGrid {
+  @apply grid grid-cols-3 items-center gap-2 py-[14px] font-mono tabular-nums;
+  letter-spacing: 0.08em;
+}
+
 .eraBadge {
   @apply inline-block px-2 py-1 font-condensed text-[10px] font-bold uppercase tracking-[0.22em];
 }

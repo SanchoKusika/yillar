@@ -26,10 +26,10 @@ export function HomePage() {
 
         <header className="relative px-5 pt-6 pb-[18px] text-center">
           <div className="mb-2 flex items-center justify-between px-1">
-            <span className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70">
+            <span className={styles.headerBadgeLeft}>
               {env.supabaseUrl ? t("home.live") : t("home.demo")}
             </span>
-            <span className="font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40">
+            <span className={styles.headerBadgeRight}>
               {t("home.headerLeft")}
             </span>
           </div>

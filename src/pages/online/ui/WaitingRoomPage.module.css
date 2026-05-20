@@ -1,5 +1,24 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Shared loading label ── */
+.loadingLabel {
+  @apply font-mono text-[13px] text-gold opacity-60;
+}
+
+/* ── Header badges ── */
+.headerBadgeLeft {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70;
+}
+
+.leaveBtn {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40 bg-transparent border-none cursor-pointer;
+}
+
+/* ── Footer waiting text ── */
+.waitingFooterText {
+  @apply text-center font-condensed text-[11px] font-bold uppercase tracking-[0.18em] text-gold;
+}
+
 /* ── Code banner (compact, above roster) ── */
 .codeBanner {
   display: flex;
@@ -132,4 +151,42 @@
 
 .hint {
   @apply mt-2 text-center text-[12px] italic leading-[1.45] text-cream opacity-55;
+}
+
+/* ── Waiting-for-host pulse ── */
+@keyframes waitPulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+.waitingPulse {
+  animation: waitPulse 1.6s ease-in-out infinite;
+}
+
+/* ── Countdown overlay (mirrors LobbyPage) ── */
+@keyframes countTick {
+  0%   { opacity: 0; transform: scale(1.6); }
+  15%  { opacity: 1; transform: scale(1); }
+  75%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.7); }
+}
+
+.countOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  background: rgba(8, 8, 8, 0.93);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.countNum {
+  font-family: var(--font-display);
+  font-size: 128px;
+  font-weight: 900;
+  color: var(--color-gold);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  animation: countTick 1s ease-out forwards;
 }
