@@ -1,5 +1,26 @@
 @reference "../../../app/styles/index.css";
 
+.root {
+  @apply relative flex flex-1 flex-col justify-end px-[14px] pt-[14px] pb-[6px];
+}
+
+.placements {
+  @apply relative flex items-stretch gap-[6px] overflow-x-auto;
+}
+
+/* ── Decade scale ── */
+.decadeRuler {
+  @apply relative mt-2 h-4;
+}
+
+.decadeRulerLine {
+  @apply absolute left-0 right-0 top-[5px] h-px bg-gold opacity-40;
+}
+
+.decadeTick {
+  @apply mx-auto mb-px h-1 w-px bg-gold;
+}
+
 .placementCard {
   @apply relative flex h-[86px] w-[72px] shrink-0 flex-col justify-between p-[6px] pl-2 text-ink;
 }

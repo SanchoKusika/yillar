@@ -32,6 +32,18 @@ function shuffle<T>(arr: readonly T[]): T[] {
 
 const FETCH_TIMEOUT_MS = 8000;
 
+export async function getTrackById(id: string): Promise<Track | null> {
+  if (!supabase) {
+    return DEMO_TRACKS.find((t) => t.id === id) ?? null;
+  }
+  const { data } = await supabase
+    .from("tracks")
+    .select("id, youtube_id, artist, title, year, era")
+    .eq("id", id)
+    .single<TrackRow>();
+  return data ? fromRow(data) : null;
+}
+
 export async function getTracks(limit = 12): Promise<Track[]> {
   if (!supabase) {
     console.warn("[YILLAR] supabase client not initialised — DEMO catalog");

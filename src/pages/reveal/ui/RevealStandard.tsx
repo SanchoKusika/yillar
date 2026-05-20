@@ -9,12 +9,11 @@ type Stage = 0 | 1 | 2 | 3 | 4;
 
 type Props = {
   last: Placement;
-  player: Player;
   nextPlayer: Player;
   onNext: () => void;
 };
 
-export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
+export function RevealStandard({ last, nextPlayer, onNext }: Props) {
   const t = useT();
   const era = last.era;
   const [stage, setStage] = useState<Stage>(0);
@@ -31,13 +30,13 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
 
   return (
     <main
-      className="relative flex h-full flex-col overflow-hidden"
+      className={styles.root}
       style={{ background: eraVar(era, "primary"), color: eraVar(era, "surface") }}
     >
       <PaperGrain opacity={0.4} />
       <GirihOverlay size={220} opacity={0.1} />
 
-      <header className="relative px-5 pt-[18px]">
+      <header className={styles.header}>
         <span
           className={styles.eraBadge}
           style={{ color: eraVar(era, "surface"), border: `1px solid ${eraVar(era, "surface")}` }}
@@ -48,7 +47,7 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
         <div className={styles.trackSub}>{t("reveal.trackNo", { id: last.trackId })}</div>
       </header>
 
-      <div className="relative flex flex-1 flex-col justify-center gap-[14px] px-5">
+      <div className={styles.body}>
         <div className={styles.yearStage} style={{ background: eraVar(era, "primary") }}>
           <div
             className={styles.yearText}
@@ -64,7 +63,7 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className={styles.multiplierRow}>
           <div className={styles.multiplierLabel}>{t("reveal.eraMultiplier")}</div>
           <div className={styles.multiplierDrop} data-shown={stage >= 3}>
             <Multiplier n={last.multiplier} />
@@ -72,17 +71,16 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
         </div>
 
         <div
-          className="grid grid-cols-3 items-center gap-2 py-[14px] font-mono tabular-nums"
+          className={styles.statsGrid}
           style={{
             borderTop: `1px solid ${eraVar(era, "surface")}`,
             borderBottom: `1px solid ${eraVar(era, "surface")}`,
-            letterSpacing: "0.08em",
           }}
         >
           <Stat label={t("reveal.youGuessed")} value={String(last.guess)} />
           <Stat label={t("reveal.offBy")} value={`${last.delta} ${t("reveal.years")}`} align="center" />
-          <div className="flex flex-col gap-[2px] text-right">
-            <span className="text-[9px] uppercase tracking-[0.22em] opacity-70">{t("reveal.points")}</span>
+          <div className={styles.statCellRight}>
+            <span className={styles.statLabel}>{t("reveal.points")}</span>
             <span
               className={styles.pointsValue}
               data-shown={stage >= 4}
@@ -104,7 +102,7 @@ export function RevealStandard({ last, player, nextPlayer, onNext }: Props) {
         </div>
       </div>
 
-      <footer className="relative border-t p-[14px]" style={{ borderColor: eraVar(era, "surface") }}>
+      <footer className={styles.footer} style={{ borderColor: eraVar(era, "surface") }}>
         <YButton variant="era" era={era} onClick={onNext}>
           {t("reveal.nextCard", { name: nextPlayer.name })}
         </YButton>
@@ -123,9 +121,9 @@ function Stat({
   align?: "left" | "center" | "right";
 }) {
   return (
-    <div className="flex flex-col gap-[2px]" style={{ textAlign: align }}>
-      <span className="text-[9px] uppercase tracking-[0.22em] opacity-70">{label}</span>
-      <span className="text-[18px] font-semibold">{value}</span>
+    <div className={styles.statCell} style={{ textAlign: align }}>
+      <span className={styles.statLabel}>{label}</span>
+      <span className={styles.statValue}>{value}</span>
     </div>
   );
 }

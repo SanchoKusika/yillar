@@ -1,5 +1,10 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Active player top indicator ── */
+.activeLine {
+  @apply absolute inset-x-0 top-0 h-[2px] bg-gold;
+}
+
 .header {
   @apply border-b border-gold bg-ink px-[14px] py-[10px];
 }

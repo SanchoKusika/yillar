@@ -25,7 +25,6 @@ export function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const isAuthed = useSessionStore((s) => s.user !== null);
   const isAnon = useSessionStore((s) => s.user?.isAnonymous ?? false);
 
   const onSubmit = async (e: FormEvent) => {
@@ -91,7 +90,7 @@ export function AuthPage() {
     return (
       <PhoneFrame>
         <div className="relative flex h-full flex-col">
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
+          <div className={styles.demoContent}>
             <Wordmark size={48} />
             <div className={styles.demoNotice}>{t("auth.demoNotice")}</div>
           </div>
@@ -106,7 +105,7 @@ export function AuthPage() {
       <div className="relative flex h-full flex-col">
         <GirihOverlay size={200} opacity={0.05} />
 
-        <div className="relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4">
+        <div className={styles.scrollBody}>
           <div className="text-center">
             <Wordmark size={44} />
             <div className={styles.subtitle}>
@@ -139,7 +138,7 @@ export function AuthPage() {
             </div>
           )}
 
-          <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          <form onSubmit={onSubmit} className={styles.form}>
             {mode === "signup" && (
               <Field
                 label={t("auth.fieldName")}
@@ -178,7 +177,7 @@ export function AuthPage() {
               <button
                 type="button"
                 onClick={() => { setMode("forgot"); setError(null); setNotice(null); }}
-                className={`${styles.linkBtn} text-gold`}
+                className={styles.linkBtn}
               >
                 {t("auth.forgotPassword")}
               </button>
@@ -245,7 +244,7 @@ function Field({
   minLength?: number;
 }) {
   return (
-    <label className="flex flex-col gap-[6px]">
+    <label className={styles.field}>
       <FieldLabel>{label}</FieldLabel>
       <input
         type={type}

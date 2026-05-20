@@ -21,7 +21,7 @@ export function AudioStrip({
   const t = useT();
   return (
     <div className={styles.strip}>
-      <div className="mb-2 flex items-center justify-between">
+      <div className={styles.topRow}>
         <div className={styles.label}>
           <span className={styles.redLed} data-on={playing} />
           {t("audio.muted")}
@@ -29,7 +29,7 @@ export function AudioStrip({
         <span className={styles.timeLabel}>{timeLabel}</span>
       </div>
 
-      <div className="flex items-center gap-[10px]">
+      <div className={styles.controls}>
         <button
           type="button"
           onClick={onToggle}
@@ -47,23 +47,19 @@ export function AudioStrip({
           )}
         </button>
 
-        <div className="relative h-[14px] flex-1">
-          <div className="absolute left-0 right-0 top-[6px] h-[2px] bg-ink-3" />
-          <div className="absolute left-0 top-[6px] h-[2px] bg-gold" style={{ width: `${progress * 100}%` }} />
+        <div className={styles.progressWrap}>
+          <div className={styles.progressTrack} />
+          <div className={styles.progressFill} style={{ width: `${progress * 100}%` }} />
           {[0.25, 0.5, 0.75].map((t) => (
             <div
               key={t}
-              className="absolute top-[2px] h-[10px] w-px bg-gold opacity-35"
+              className={styles.progressTick}
               style={{ left: `${t * 100}%` }}
             />
           ))}
           <div
-            className="absolute top-[2px] h-[10px] w-[2px] bg-gold"
-            style={{
-              left: `${progress * 100}%`,
-              transform: "translateX(-50%)",
-              boxShadow: "0 0 0 2px var(--color-ink-2)",
-            }}
+            className={styles.progressThumb}
+            style={{ left: `${progress * 100}%` }}
           />
         </div>
 

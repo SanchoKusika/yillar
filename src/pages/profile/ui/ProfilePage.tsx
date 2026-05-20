@@ -31,7 +31,7 @@ export function ProfilePage() {
   if (loading) {
     return (
       <PhoneFrame>
-        <div className="flex flex-1 items-center justify-center p-6 type-h2 text-cream opacity-60">
+        <div className={styles.loadingState}>
           {t("profile.loadingPage")}
         </div>
       </PhoneFrame>
@@ -43,7 +43,7 @@ export function ProfilePage() {
       <PhoneFrame>
         <div className="relative flex h-full flex-col">
           <GirihOverlay size={200} opacity={0.05} />
-          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+          <div className={styles.signedOutContent}>
             <div className={styles.signedOutTitle}>{t("profile.signedOut.title")}</div>
             <div className={styles.signedOutBody}>{t("profile.signedOut.body")}</div>
             <YButton onClick={() => navigate("/auth")}>{t("profile.signedOut.cta")}</YButton>
@@ -63,7 +63,7 @@ export function ProfilePage() {
 
   return (
     <PhoneFrame>
-      <div className="relative flex h-full flex-col bg-ink text-cream overflow-hidden">
+      <div className={styles.root}>
         <GirihOverlay size={220} opacity={0.05} />
 
         <ProfileHeader
@@ -120,7 +120,7 @@ export function ProfilePage() {
               }}
               onSave={async (name, gen) => {
                 await updateProfile({ displayName: name, generation: gen });
-                if (profile) setProfile({ ...profile, displayName: name ?? undefined, generation: gen ?? undefined });
+                if (profile) setProfile({ ...profile, displayName: name ?? null, generation: gen ?? null });
               }}
               onSignOut={async () => {
                 try { await signOut(); } catch (err) { console.warn("[YILLAR] sign out failed:", err); }

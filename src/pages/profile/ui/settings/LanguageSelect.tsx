@@ -2,7 +2,8 @@ import FlagRU from "@shared/assets/svg/flags/ru.svg?react";
 import FlagUZ from "@shared/assets/svg/flags/uz.svg?react";
 import FlagEN from "@shared/assets/svg/flags/en.svg?react";
 import { FieldLabel } from "@shared/ui";
-import { useT, type Language } from "@shared/lib";
+import { useT } from "@shared/lib";
+import type { Language } from "@entities/preferences";
 import { usePreferencesStore } from "@entities/preferences";
 import styles from "./LanguageSelect.module.css";
 

@@ -1,7 +1,40 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Progress track ── */
+.progressWrap {
+  position: relative;
+  height: 14px;
+  flex: 1;
+}
+
+.progressTrack {
+  @apply absolute left-0 right-0 top-[6px] h-[2px] bg-ink-3;
+}
+
+.progressFill {
+  @apply absolute left-0 top-[6px] h-[2px] bg-gold;
+}
+
+.progressTick {
+  @apply absolute top-[2px] h-[10px] w-px bg-gold opacity-35;
+}
+
+.progressThumb {
+  @apply absolute top-[2px] h-[10px] w-[2px] bg-gold;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 2px var(--color-ink-2);
+}
+
 .strip {
   @apply relative mx-[14px] mt-3 border border-ink-3 bg-ink-2 px-3 pb-3 pt-[10px];
+}
+
+.topRow {
+  @apply mb-2 flex items-center justify-between;
+}
+
+.controls {
+  @apply flex items-center gap-[10px];
 }
 
 .label {

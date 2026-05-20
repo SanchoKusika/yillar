@@ -1,0 +1,130 @@
+@reference "../../../app/styles/index.css";
+
+/* ── Shared loading label ── */
+.loadingLabel {
+  @apply font-mono text-[13px] text-gold opacity-60;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 25%, transparent);
+  flex-shrink: 0;
+}
+
+.cardProgress {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  opacity: 0.7;
+}
+
+.playerName {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-cream);
+  opacity: 0.5;
+}
+
+/* ── Waiting overlay after submit ── */
+.waitingFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+}
+
+.waitingLabel {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-gold);
+}
+
+.waitingPips {
+  display: flex;
+  gap: 6px;
+}
+
+.pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-cream) 20%, transparent);
+}
+
+.pipDone {
+  background: var(--color-gold);
+}
+
+/* ── Timer bar ── */
+.timerBarWrap {
+  height: 3px;
+  background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.timerBar {
+  height: 100%;
+  transition: width 1s linear, background-color 0.4s linear;
+}
+
+/* ── Mini leaderboard strip ── */
+.scoresBar {
+  display: flex;
+  gap: 6px;
+  padding: 6px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 12%, transparent);
+  flex-shrink: 0;
+  background: var(--color-ink-2);
+}
+.scoresBar::-webkit-scrollbar { display: none; }
+
+.scoreChip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.scoreRank {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--color-gold);
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+}
+
+.scoreName {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-cream);
+}
+
+.scoreValue {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gold);
+  letter-spacing: 0.04em;
+}
+

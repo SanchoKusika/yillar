@@ -34,7 +34,7 @@ export function ScoreboardBar({ currentName, cardIdx, totalCards, entries }: Sco
             data-turn={p.turn}
             style={i < entries.length - 1 ? { borderRight: "1px solid var(--color-ink-3)" } : undefined}
           >
-            {p.turn && <div className="absolute inset-x-0 top-0 h-[2px] bg-gold" />}
+            {p.turn && <div className={styles.activeLine} />}
             <div className={styles.scoreName} data-turn={p.turn}>{p.name}</div>
             <div className={styles.scoreVal} data-turn={p.turn}>
               {String(p.score).padStart(3, "0")}

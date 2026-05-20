@@ -7,14 +7,11 @@ import styles from "./RevealRejected.module.css";
 
 type Props = {
   last: Placement;
-  player: Player;
-  cardIdx: number;
-  totalCards: number;
   nextPlayer: Player;
   onNext: () => void;
 };
 
-export function RevealRejected({ last, player, cardIdx, totalCards, nextPlayer, onNext }: Props) {
+export function RevealRejected({ last, nextPlayer, onNext }: Props) {
   const t = useT();
   const [stage, setStage] = useState(0);
 

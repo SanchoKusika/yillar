@@ -61,3 +61,15 @@
 .signedOutBody {
   @apply max-w-[280px] text-[13px] italic text-cream opacity-65;
 }
+
+.loadingState {
+  @apply flex flex-1 items-center justify-center p-6 type-h2 text-cream opacity-60;
+}
+
+.root {
+  @apply relative flex h-full flex-col bg-ink text-cream overflow-hidden;
+}
+
+.signedOutContent {
+  @apply flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center;
+}
