@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { PhoneFrame, YButton } from "@shared/ui";
-import { useT, useYouTubeAudio, haptic } from "@shared/lib";
+import { useT, useYouTubeAudio, haptic, calcScore, eraForYear, CORRECT_THRESHOLD_YEARS } from "@shared/lib";
 import { useSessionStore } from "@entities/session";
 import { getTrackById } from "@entities/track";
 import type { Track } from "@entities/track";
-import { useRoom, useRoomPlayers, useRoomGuesses, submitGuess } from "@entities/room";
+import type { Placement } from "@entities/placement";
+import { useRoom, useRoomPlayers, useRoomGuesses, getRoomGuesses, submitGuess } from "@entities/room";
 import { SongCard } from "@widgets/song-card";
 import { AudioStrip } from "@widgets/audio-strip";
 import { Timeline } from "@widgets/timeline";
@@ -38,6 +39,38 @@ export function OnlineGamePage() {
   const guesses = useRoomGuesses(room?.id ?? null, trackIdx);
   const myGuess = guesses.find((g) => g.playerId === user?.id);
   const hasSubmitted = myGuess != null;
+
+  const [pastPlacements, setPastPlacements] = useState<Placement[]>([]);
+  useEffect(() => {
+    if (!room || !user || !myPlayer || trackIdx === 0) { setPastPlacements([]); return; }
+    let active = true;
+    void (async () => {
+      const allGuesses = await getRoomGuesses(room.id);
+      const mine = allGuesses
+        .filter((g) => g.playerId === user.id && g.trackIdx < trackIdx)
+        .sort((a, b) => a.trackIdx - b.trackIdx);
+      const tracks = await Promise.all(mine.map((g) => getTrackById(room.trackIds[g.trackIdx])));
+      if (!active) return;
+      const playerEra = myPlayer.era ?? "kasseta";
+      setPastPlacements(
+        mine.flatMap((g, i) => {
+          const track = tracks[i];
+          if (!track) return [];
+          const score = calcScore({ guess: g.guessYear, truth: track.year, playerEra });
+          return [{
+            trackId: track.id,
+            guess: g.guessYear,
+            truth: track.year,
+            era: eraForYear(track.year),
+            title: track.title,
+            correct: score.delta <= CORRECT_THRESHOLD_YEARS,
+            ...score,
+          }];
+        })
+      );
+    })();
+    return () => { active = false; };
+  }, [trackIdx, room?.id, user?.id, myPlayer?.era]);
 
   const [guess, setGuess] = useState(1990);
 
@@ -180,7 +213,7 @@ export function OnlineGamePage() {
 
           <Timeline
             playerName={myPlayer.name}
-            placements={[]}
+            placements={pastPlacements}
             guessYear={guess}
             onGuessChange={hasSubmitted ? () => {} : setGuess}
           />

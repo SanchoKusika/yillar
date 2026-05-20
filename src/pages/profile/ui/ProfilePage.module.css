@@ -63,7 +63,12 @@
 }
 
 .loadingState {
-  @apply flex flex-1 items-center justify-center p-6 type-h2 text-cream opacity-60;
+  @apply flex flex-1 items-center justify-center p-6 text-cream opacity-60;
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: var(--text-h2);
+  line-height: var(--leading-tight);
+  text-transform: uppercase;
 }
 
 .root {
