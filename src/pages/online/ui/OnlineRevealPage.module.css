@@ -1,5 +1,22 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Page structure ── */
+.root {
+  @apply relative flex h-full flex-col overflow-hidden;
+}
+
+.onlineHeader {
+  @apply relative flex-shrink-0 px-5 pt-[18px];
+}
+
+.yearSection {
+  @apply relative flex-shrink-0 px-5 pt-2 pb-3;
+}
+
+.footer {
+  @apply relative flex-shrink-0 p-[14px];
+}
+
 /* ── Shared loading label ── */
 .loadingLabel {
   @apply font-mono text-[13px] text-gold opacity-60;
@@ -278,6 +295,10 @@
 }
 
 /* ── Stats grid cells ── */
+.statCell {
+  @apply flex flex-col gap-[2px];
+}
+
 .statCellRight {
   @apply flex flex-col gap-[2px] text-right;
 }
@@ -312,6 +333,9 @@
 
 /* ── Players table ── */
 .tableSection {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
   opacity: 0;
   transition: opacity 250ms linear;
 }

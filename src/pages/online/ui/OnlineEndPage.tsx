@@ -137,10 +137,10 @@ export function OnlineEndPage() {
 
   return (
     <PhoneFrame>
-      <main className="relative flex h-full flex-col overflow-hidden bg-ink text-cream">
+      <main className={styles.root}>
         <GirihOverlay size={200} opacity={0.05} />
 
-        <header className="relative border-b border-gold px-5 pt-[18px] pb-[14px] overflow-hidden">
+        <header className={styles.header}>
           {!loading && winner && PARTICLES.map((p, i) => (
             <div
               key={i}
@@ -182,7 +182,7 @@ export function OnlineEndPage() {
         </header>
 
         {!loading && (
-          <div className="flex-1 overflow-auto px-4 pb-2 pt-[14px]">
+          <div className={styles.scrollBody}>
             <CatalogLine
               left={t("end.perPlayer")}
               right={t("end.playersCount", { n: results.length })}
@@ -225,7 +225,7 @@ export function OnlineEndPage() {
                     <div className="grid grid-cols-3 gap-1">
                       {eraStats.map(({ era, correct, total }) => (
                         <div key={era}>
-                          <div className={`mb-[2px] flex justify-between ${styles.eraLabel}`}>
+                          <div className={styles.eraLabel}>
                             <span style={{ color: eraVar(era, "primary") }}>{t(`era.short.${era}` as const)}</span>
                             <span className="opacity-60">{correct}/{total || 0}</span>
                           </div>
@@ -254,7 +254,7 @@ export function OnlineEndPage() {
           </div>
         )}
 
-        <footer className="flex gap-2 border-t border-gold bg-ink p-3">
+        <footer className={styles.footer}>
           <YButton
             variant="ghost"
             style={{ width: 110, flexShrink: 0 }}

@@ -19,6 +19,15 @@
   @apply text-center font-condensed text-[11px] font-bold uppercase tracking-[0.18em] text-gold;
 }
 
+/* ── Page structure ── */
+.rosterScroll {
+  @apply relative flex-1 overflow-auto px-4 pt-[14px] pb-4;
+}
+
+.footer {
+  @apply border-t border-gold bg-ink p-[14px];
+}
+
 /* ── Code banner (compact, above roster) ── */
 .codeBanner {
   display: flex;

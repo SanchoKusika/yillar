@@ -1,5 +1,9 @@
 @reference "../../../app/styles/index.css";
 
+.emptyMain {
+  @apply flex flex-1 items-center justify-center p-6;
+}
+
 .pageMain {
   @apply relative flex h-full flex-col overflow-hidden bg-ink text-cream;
 }

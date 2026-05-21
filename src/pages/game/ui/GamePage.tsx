@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { PhoneFrame, YButton } from "@shared/ui";
 import { useT, useYouTubeAudio, haptic } from "@shared/lib";
+import styles from "./GamePage.module.css";
 import {
   useGameStore,
   useActivePlayers,
@@ -77,7 +78,7 @@ export function GamePage() {
 
   return (
     <PhoneFrame>
-      <main className="relative flex h-full flex-col overflow-hidden">
+      <main className={styles.main}>
         <ScoreboardBar
           currentName={currentPlayer.name}
           cardIdx={currentCardIdx}
@@ -106,7 +107,7 @@ export function GamePage() {
           onGuessChange={setGuess}
         />
 
-        <footer className="flex gap-2 border-t border-gold bg-ink p-3">
+        <footer className={styles.footer}>
           <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }} onClick={onSkip}>
             {t("game.skip")}
           </YButton>

@@ -62,7 +62,7 @@ export function ResetPasswordPage() {
       <div className="relative flex h-full flex-col">
         <GirihOverlay size={200} opacity={0.05} />
 
-        <div className="relative flex flex-1 flex-col gap-5 overflow-auto px-5 pt-6 pb-4">
+        <div className={styles.body}>
           <div className="text-center">
             <Wordmark size={44} />
             <div className={styles.subtitle}>

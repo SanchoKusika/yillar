@@ -164,11 +164,11 @@ export function OnlineGamePage() {
   return (
     <PhoneFrame>
       {(!track || !myPlayer) ? (
-        <div className="flex h-full items-center justify-center">
+        <div className={styles.loadingCenter}>
           <span className={styles.loadingLabel}>{t("online.waitLoading")}</span>
         </div>
       ) : (
-        <main className="relative flex h-full flex-col overflow-hidden">
+        <main className={styles.main}>
           <div className={styles.header}>
             <span className={styles.cardProgress}>
               {t("game.cardOf", { idx: trackIdx + 1, total: totalTracks })}

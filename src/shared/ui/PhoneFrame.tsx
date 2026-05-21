@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
+import styles from "./PhoneFrame.module.css";
 
 type PhoneFrameProps = { children: ReactNode };
 
 export function PhoneFrame({ children }: PhoneFrameProps) {
   return (
-    <div className="mx-auto flex h-dvh w-full max-w-[430px] flex-col overflow-hidden bg-ink md:max-w-[640px] lg:max-w-[960px]">
+    <div className={styles.frame}>
       {children}
     </div>
   );
