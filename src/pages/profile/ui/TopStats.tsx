@@ -10,7 +10,7 @@ type TopStatsProps = {
 export function TopStats({ bestScore, averageScore, gamesPlayed }: TopStatsProps) {
   const t = useT();
   return (
-    <div className="relative grid grid-cols-3 border-b border-gold">
+    <div className={styles.topStats}>
       <StatCell label={t("profile.statBest")} value={bestScore} />
       <StatCell label={t("profile.statAvg")} value={averageScore} bordered />
       <StatCell label={t("profile.statPlayed")} value={gamesPlayed} bordered />
@@ -28,7 +28,7 @@ function StatCell({
   bordered?: boolean;
 }) {
   return (
-    <div className={`px-[10px] py-3 text-center ${bordered ? "border-l border-ink-3" : ""}`}>
+    <div className={`${styles.statCell} ${bordered ? styles.statCellBordered : ""}`}>
       <div className={styles.statLabel}>{label}</div>
       <div className={styles.statValue}>{value == null ? "—" : value}</div>
     </div>

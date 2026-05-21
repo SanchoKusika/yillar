@@ -21,7 +21,7 @@
 }
 
 .cardBigNum {
-  @apply mt-1 font-display text-[36px] font-black leading-none tracking-tight text-cream;
+  @apply mt-1 font-mono text-[36px] font-bold leading-none tracking-tight text-cream;
 }
 
 .cardSub {

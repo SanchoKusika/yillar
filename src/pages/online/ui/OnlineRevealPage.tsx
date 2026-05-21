@@ -172,14 +172,14 @@ export function OnlineRevealPage() {
   return (
     <PhoneFrame>
       <main
-        className="relative flex h-full flex-col overflow-hidden"
+        className={styles.root}
         style={{ background: bg, color: fg }}
       >
         {isPerfect ? null : <PaperGrain opacity={0.4} />}
         <GirihOverlay size={220} opacity={isPerfect ? 0.08 : 0.1} />
 
         {/* Header */}
-        <header className="relative px-5 pt-[18px] flex-shrink-0">
+        <header className={styles.onlineHeader}>
           <span
             className={styles.eraBadge}
             style={{ color: fg, border: `1px solid ${borderColor}` }}
@@ -193,7 +193,7 @@ export function OnlineRevealPage() {
         </header>
 
         {/* Year reveal — Perfect or Standard */}
-        <div className="relative px-5 pt-2 pb-3 flex-shrink-0">
+        <div className={styles.yearSection}>
           {isPerfect ? (
             <div className={styles.perfectYearStage}>
               <div className={styles.perfectBgLayer} aria-hidden>
@@ -308,7 +308,7 @@ export function OnlineRevealPage() {
 
         {/* Players table */}
         <div
-          className={`${styles.tableSection} relative flex-1 overflow-y-auto`}
+          className={styles.tableSection}
           data-shown={isPerfect ? stage >= 3 : stage >= 4}
         >
           <div
@@ -372,7 +372,7 @@ export function OnlineRevealPage() {
 
         {/* Footer */}
         <footer
-          className="relative p-[14px] flex-shrink-0"
+          className={styles.footer}
           style={{ borderTop: `1px solid ${borderColor}` }}
         >
           {isHost ? (
@@ -414,7 +414,7 @@ function StatCell({
   align?: "left" | "center" | "right";
 }) {
   return (
-    <div className="flex flex-col gap-[2px]" style={{ textAlign: align }}>
+    <div className={styles.statCell} style={{ textAlign: align }}>
       <span className={styles.statCellLabel} style={{ color }}>{label}</span>
       <span className={styles.statCellValue} style={{ color }}>{value}</span>
     </div>

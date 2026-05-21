@@ -75,7 +75,6 @@ export type TranslationKey =
   | "audio.muted"
   | "reveal.declassified"
   | "reveal.cardLabel"
-  | "reveal.trackNo"
   | "reveal.eraMultiplier"
   | "reveal.youGuessed"
   | "reveal.offBy"
@@ -307,7 +306,6 @@ const ru: TranslationDict = {
   "audio.muted": "ТОЛЬКО ЗВУК · ИСТОЧНИК СКРЫТ",
   "reveal.declassified": "РАССЕКРЕЧЕНО",
   "reveal.cardLabel": "КАРТА · {name}",
-  "reveal.trackNo": "Трек #{id}",
   "reveal.eraMultiplier": "МНОЖИТЕЛЬ ЭПОХИ",
   "reveal.youGuessed": "ВАШ ОТВЕТ",
   "reveal.offBy": "РАЗНИЦА",
@@ -541,7 +539,6 @@ const uz: TranslationDict = {
   "audio.muted": "FAQAT AUDIO · MANBA YASHIRIN",
   "reveal.declassified": "OSHKOR ETILDI",
   "reveal.cardLabel": "KARTA · {name}",
-  "reveal.trackNo": "Trek #{id}",
   "reveal.eraMultiplier": "AVLOD KO'PAYTIRGICHI",
   "reveal.youGuessed": "SIZNING JAVOB",
   "reveal.offBy": "FARQ",
@@ -777,7 +774,6 @@ const en: TranslationDict = {
   "audio.muted": "AUDIO ONLY · SOURCE MUTED",
   "reveal.declassified": "DECLASSIFIED",
   "reveal.cardLabel": "CARD · {name}",
-  "reveal.trackNo": "Track #{id}",
   "reveal.eraMultiplier": "ERA MULTIPLIER",
   "reveal.youGuessed": "YOU GUESSED",
   "reveal.offBy": "OFF BY",

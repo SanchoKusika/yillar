@@ -109,6 +109,7 @@ export const useGameStore = create<State & Actions>((set, get) => ({
       points: result.points,
       era: track.era,
       title: track.title,
+      artist: track.artist,
       correct: result.delta <= CORRECT_THRESHOLD_YEARS,
     };
 
@@ -137,6 +138,7 @@ export const useGameStore = create<State & Actions>((set, get) => ({
       points: 0,
       era: track.era,
       title: track.title,
+      artist: track.artist,
       correct: false,
       skipped: true,
     };

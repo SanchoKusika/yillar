@@ -19,6 +19,23 @@
   @apply text-center font-condensed text-[11px] font-bold uppercase tracking-[0.18em] text-gold;
 }
 
+/* ── Page structure ── */
+.pageHeader {
+  @apply relative px-5 pt-6 pb-[18px] text-center;
+}
+
+.headerTopRow {
+  @apply mb-2 flex items-center justify-between px-1;
+}
+
+.rosterScroll {
+  @apply relative flex-1 overflow-auto px-4 pt-[14px] pb-4;
+}
+
+.footer {
+  @apply border-t border-gold bg-ink p-[14px];
+}
+
 /* ── Code banner (compact, above roster) ── */
 .codeBanner {
   display: flex;
@@ -46,8 +63,8 @@
 }
 
 .codeValue {
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 28px;
   line-height: 1;
   letter-spacing: 0.12em;

@@ -1,0 +1,9 @@
+@reference "../../../app/styles/index.css";
+
+.main {
+  @apply relative flex h-full flex-col overflow-hidden;
+}
+
+.footer {
+  @apply flex gap-2 border-t border-gold bg-ink p-3;
+}

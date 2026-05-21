@@ -76,8 +76,8 @@ export function LobbyPage() {
         )}
         <GirihOverlay size={200} opacity={0.05} />
 
-        <header className="relative px-5 pt-6 pb-[18px] text-center">
-          <div className="mb-2 flex items-center justify-between px-1">
+        <header className={styles.pageHeader}>
+          <div className={styles.headerTopRow}>
             <span className={styles.headerBadgeLeft}>
               {env.supabaseUrl ? t("home.live") : t("home.demo")}
             </span>
@@ -96,7 +96,7 @@ export function LobbyPage() {
           <PlayerRoster players={players} onName={setPlayerName} onEra={setPlayerEra} hostLockedAt={hostLockedAt} />
         </div>
 
-        <footer className="border-t border-gold bg-ink p-[14px]">
+        <footer className={styles.footer}>
           <YButton disabled={!canStart} onClick={onBegin}>
             {buttonLabel}
           </YButton>

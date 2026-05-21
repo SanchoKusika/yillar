@@ -40,7 +40,7 @@
 }
 
 .statValue {
-  @apply mt-1 font-display text-[28px] font-black leading-none tracking-tight text-cream;
+  @apply mt-1 font-mono text-[28px] font-bold leading-none tracking-tight text-cream;
 }
 
 .tabBtn {
@@ -77,4 +77,20 @@
 
 .signedOutContent {
   @apply flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center;
+}
+
+.tabContent {
+  @apply relative flex-1 overflow-auto px-[14px] pb-2 pt-[14px];
+}
+
+.topStats {
+  @apply relative grid grid-cols-3 border-b border-gold;
+}
+
+.statCell {
+  @apply px-[10px] py-3 text-center;
+}
+
+.statCellBordered {
+  @apply border-l border-ink-3;
 }

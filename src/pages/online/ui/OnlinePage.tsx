@@ -58,8 +58,8 @@ export function OnlinePage() {
       <div className="relative flex h-full flex-col">
         <GirihOverlay size={220} opacity={0.04} />
 
-        <header className="relative px-5 pt-6 pb-[18px] text-center">
-          <div className="mb-2 flex items-center justify-between px-1">
+        <header className={styles.pageHeader}>
+          <div className={styles.headerTopRow}>
             <span className={styles.headerBadgeLeft}>
               {noSupabase ? t("home.demo") : "● ONLINE"}
             </span>
@@ -75,7 +75,7 @@ export function OnlinePage() {
         <div className="h-px bg-gold/50" />
 
         {noSupabase ? (
-          <div className="flex flex-1 items-center justify-center px-6 text-center">
+          <div className={styles.demoCenter}>
             <div>
               <div className={styles.demoBadge}>● DEMO MODE</div>
               <div className={styles.demoTitle}>{t("online.soon")}</div>

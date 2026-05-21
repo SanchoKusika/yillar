@@ -52,7 +52,7 @@ export function RevealPerfect({ last, nextPlayer, onNext }: Props) {
           {t(`era.${last.era}` as const)} · {ERA_LABEL[last.era]}
         </span>
         <h1 className={styles.title}>{last.title}</h1>
-        <div className={styles.subtitle}>{t("reveal.trackNo", { id: last.trackId })}</div>
+        <div className={styles.subtitle}>{last.artist}</div>
       </div>
 
       <div className={styles.body}>
@@ -83,7 +83,7 @@ export function RevealPerfect({ last, nextPlayer, onNext }: Props) {
         </div>
       </div>
 
-      <div className={styles.footer}>
+      <div className={styles.footer} data-shown={stage >= 3}>
         <button className={styles.nextBtn} onClick={onNext}>
           {t("reveal.nextCard", { name: nextPlayer.name })}
         </button>

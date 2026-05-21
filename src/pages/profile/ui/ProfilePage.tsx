@@ -95,7 +95,7 @@ export function ProfilePage() {
           ))}
         </nav>
 
-        <section className="relative flex-1 overflow-auto px-[14px] pb-2 pt-[14px]">
+        <section className={styles.tabContent}>
           {tab === "stats" && (
             <StatsTab
               eraBreakdown={stats.data?.eraBreakdown}

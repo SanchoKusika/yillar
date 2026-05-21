@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { HomePage } from "@pages/home";
 import { LobbyPage } from "@pages/lobby";
 import { OnlinePage, WaitingRoomPage, OnlineGamePage, OnlineRevealPage, OnlineEndPage } from "@pages/online";
@@ -10,10 +10,12 @@ import { ProfilePage } from "@pages/profile";
 import { ResetPasswordPage } from "@pages/reset-password";
 import { PWAPrompt } from "@widgets/pwa-prompt";
 
-export function App() {
+function AnimatedRoutes() {
+  const location = useLocation();
+  const pageKey = location.pathname.startsWith('/online') ? 'online' : location.key;
   return (
-    <div className="min-h-dvh bg-ink text-cream font-body">
-      <Routes>
+    <div key={pageKey} className="page-enter">
+      <Routes location={location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/lobby" element={<LobbyPage />} />
         <Route path="/online" element={<OnlinePage />} />
@@ -29,6 +31,14 @@ export function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </div>
+  );
+}
+
+export function App() {
+  return (
+    <div className="min-h-dvh bg-ink text-cream font-body">
+      <AnimatedRoutes />
       <PWAPrompt />
     </div>
   );

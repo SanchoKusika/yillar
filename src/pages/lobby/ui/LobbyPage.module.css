@@ -1,5 +1,18 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Page structure ── */
+.pageHeader {
+  @apply relative px-5 pt-6 pb-[18px] text-center;
+}
+
+.headerTopRow {
+  @apply mb-2 flex items-center justify-between px-1;
+}
+
+.footer {
+  @apply border-t border-gold bg-ink p-[14px];
+}
+
 /* ── Header badges ── */
 .headerBadgeLeft {
   @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70;

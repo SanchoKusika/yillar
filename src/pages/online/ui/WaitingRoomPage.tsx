@@ -137,8 +137,8 @@ export function WaitingRoomPage() {
         <GirihOverlay size={200} opacity={0.05} />
 
         {/* Header — matches LobbyPage */}
-        <header className="relative px-5 pt-6 pb-[18px] text-center">
-          <div className="mb-2 flex items-center justify-between px-1">
+        <header className={styles.pageHeader}>
+          <div className={styles.headerTopRow}>
             <span className={styles.headerBadgeLeft}>
               {env.supabaseUrl ? "● ONLINE" : t("home.demo")}
             </span>
@@ -174,7 +174,7 @@ export function WaitingRoomPage() {
         </div>
 
         {/* Players roster — same style as PlayerRoster */}
-        <div className="relative flex-1 overflow-auto px-4 pt-[14px] pb-4">
+        <div className={styles.rosterScroll}>
           <CatalogLine
             left={t("online.waitPlayers", { n: players.length })}
             right={`${players.filter((p) => p.name && p.era).length} / ${players.length}`}
@@ -245,7 +245,7 @@ export function WaitingRoomPage() {
           <div className={styles.hint}>{t("roster.hint")}</div>
         </div>
 
-        <footer className="border-t border-gold bg-ink p-[14px]">
+        <footer className={styles.footer}>
           {myPlayer?.isHost ? (
             <YButton disabled={!allReady || starting} onClick={handleStart}>
               {startLabel}

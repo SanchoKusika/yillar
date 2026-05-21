@@ -25,12 +25,26 @@
   @apply relative flex h-[86px] w-[72px] shrink-0 flex-col justify-between p-[6px] pl-2 text-ink;
 }
 
+@media (min-width: 768px) {
+  .placementCard { @apply h-[106px] w-[88px]; }
+}
+@media (min-width: 1024px) {
+  .placementCard { @apply h-[128px] w-[106px]; }
+}
+
 .placementEra {
   @apply font-mono text-[7px] uppercase tracking-[0.2em];
 }
 
 .placementYear {
-  @apply font-display text-[24px] font-black leading-[0.95] tracking-tight;
+  @apply font-mono text-[24px] font-bold leading-[0.95] tracking-tight;
+}
+
+@media (min-width: 768px) {
+  .placementYear { @apply text-[30px]; }
+}
+@media (min-width: 1024px) {
+  .placementYear { @apply text-[36px]; }
 }
 
 .placementTitle {
@@ -47,12 +61,26 @@
   background: rgba(212, 168, 71, 0.08);
 }
 
+@media (min-width: 768px) {
+  .dropZone { @apply w-[88px] h-[106px]; }
+}
+@media (min-width: 1024px) {
+  .dropZone { @apply w-[106px] h-[128px]; }
+}
+
 .dropHint {
   @apply text-center font-mono text-[7px] uppercase tracking-[0.22em] text-gold;
 }
 
 .dropYear {
-  @apply font-display text-[22px] font-black leading-none tracking-tight text-gold;
+  @apply font-mono text-[22px] font-bold leading-none tracking-tight text-gold;
+}
+
+@media (min-width: 768px) {
+  .dropYear { @apply text-[26px]; }
+}
+@media (min-width: 1024px) {
+  .dropYear { @apply text-[32px]; }
 }
 
 .dropIdx {

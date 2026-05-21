@@ -11,6 +11,7 @@ export type Placement = {
   points: number;
   era: Era;
   title: string;
+  artist: string;
   correct: boolean;
   skipped?: boolean;
 };

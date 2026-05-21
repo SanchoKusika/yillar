@@ -2,6 +2,23 @@
 
 /* Reuses EndPage design — same token names */
 
+/* ── Page structure ── */
+.root {
+  @apply relative flex h-full flex-col overflow-hidden bg-ink text-cream;
+}
+
+.header {
+  @apply relative border-b border-gold px-5 pt-[18px] pb-[14px] overflow-hidden;
+}
+
+.scrollBody {
+  @apply flex-1 overflow-auto px-4 pb-2 pt-[14px];
+}
+
+.footer {
+  @apply flex gap-2 border-t border-gold bg-ink p-3;
+}
+
 /* ── Shared loading label ── */
 .loadingLabel {
   @apply font-mono text-[13px] text-gold opacity-60 py-4;
@@ -53,11 +70,11 @@
 }
 
 .playerScore {
-  @apply font-display text-[26px] font-black leading-none tracking-tight;
+  @apply font-mono text-[26px] font-bold leading-none tracking-tight;
 }
 
 .eraLabel {
-  @apply font-mono text-[8px] uppercase tracking-era;
+  @apply mb-[2px] flex justify-between font-mono text-[8px] uppercase tracking-era;
 }
 
 .bonusGen {

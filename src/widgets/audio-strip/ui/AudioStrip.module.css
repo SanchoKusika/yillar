@@ -49,6 +49,17 @@
   @apply flex h-9 w-9 shrink-0 items-center justify-center border-0 bg-gold text-ink;
 }
 
+@media (min-width: 768px) {
+  .playBtn { @apply h-11 w-11; }
+  .strip { @apply mx-[20px] mt-4 pb-4 pt-[14px] px-4; }
+  .waveStack { height: 28px; }
+}
+@media (min-width: 1024px) {
+  .playBtn { @apply h-12 w-12; }
+  .strip { @apply mx-[28px] mt-5 pb-5 pt-4 px-5; }
+  .waveStack { height: 34px; }
+}
+
 .redLed {
   width: 6px;
   height: 6px;

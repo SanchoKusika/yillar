@@ -24,8 +24,8 @@ export function HomePage() {
       <div className="relative flex h-full flex-col">
         <GirihOverlay size={220} opacity={0.04} />
 
-        <header className="relative px-5 pt-6 pb-[18px] text-center">
-          <div className="mb-2 flex items-center justify-between px-1">
+        <header className={styles.pageHeader}>
+          <div className={styles.headerTopRow}>
             <span className={styles.headerBadgeLeft}>
               {env.supabaseUrl ? t("home.live") : t("home.demo")}
             </span>

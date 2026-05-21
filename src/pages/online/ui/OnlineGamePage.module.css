@@ -1,5 +1,14 @@
 @reference "../../../app/styles/index.css";
 
+/* ── Page structure ── */
+.main {
+  @apply relative flex h-full flex-col overflow-hidden;
+}
+
+.loadingCenter {
+  @apply flex h-full items-center justify-center;
+}
+
 /* ── Shared loading label ── */
 .loadingLabel {
   @apply font-mono text-[13px] text-gold opacity-60;
