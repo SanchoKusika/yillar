@@ -223,7 +223,9 @@ export type TranslationKey =
   | "online.revealTotal"
   | "online.endTitle"
   | "online.endBack"
-  | "online.endPlayAgain";
+  | "online.endPlayAgain"
+  | "share.copied"
+  | "share.cards";
 
 type TranslationDict = Record<TranslationKey, string>;
 
@@ -457,6 +459,8 @@ const ru: TranslationDict = {
   "online.endTitle": "ФИНАЛ",
   "online.endBack": "НА ГЛАВНУЮ",
   "online.endPlayAgain": "ЕЩЁ РАЗ",
+  "share.copied": "СКОПИРОВАНО ✓",
+  "share.cards": "КАРТОЧЕК",
 };
 
 const uz: TranslationDict = {
@@ -691,6 +695,8 @@ const uz: TranslationDict = {
   "online.endTitle": "FINAL",
   "online.endBack": "BOSH SAHIFA",
   "online.endPlayAgain": "YANA O'YNASH",
+  "share.copied": "NUSXALANDI ✓",
+  "share.cards": "KARTA",
 };
 
 const en: TranslationDict = {
@@ -923,6 +929,8 @@ const en: TranslationDict = {
   "online.endTitle": "FINAL",
   "online.endBack": "HOME",
   "online.endPlayAgain": "PLAY AGAIN",
+  "share.copied": "COPIED ✓",
+  "share.cards": "CARDS",
 };
 
 export const TRANSLATIONS: Record<Language, TranslationDict> = { ru, uz, en };
