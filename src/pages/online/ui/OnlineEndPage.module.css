@@ -53,7 +53,7 @@
 }
 
 .playerScore {
-  @apply font-display text-[26px] font-black leading-none tracking-tight;
+  @apply font-mono text-[26px] font-bold leading-none tracking-tight;
 }
 
 .eraLabel {

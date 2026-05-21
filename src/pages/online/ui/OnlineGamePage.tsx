@@ -63,6 +63,7 @@ export function OnlineGamePage() {
             truth: track.year,
             era: eraForYear(track.year),
             title: track.title,
+            artist: track.artist,
             correct: score.delta <= CORRECT_THRESHOLD_YEARS,
             ...score,
           }];

@@ -1,5 +1,6 @@
+import { useRef } from "react";
 import { CatalogLine } from "@shared/ui";
-import { eraVar, useT } from "@shared/lib";
+import { eraVar, haptic, useT } from "@shared/lib";
 import type { Placement } from "@entities/placement";
 import styles from "./Timeline.module.css";
 
@@ -14,6 +15,18 @@ type TimelineProps = {
 
 export function Timeline({ playerName, placements, guessYear, onGuessChange }: TimelineProps) {
   const t = useT();
+  const prevDecadeRef = useRef(Math.floor(guessYear / 10));
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const next = parseInt(e.target.value, 10);
+    const nextDecade = Math.floor(next / 10);
+    if (nextDecade !== prevDecadeRef.current) {
+      haptic("light");
+      prevDecadeRef.current = nextDecade;
+    }
+    onGuessChange(next);
+  };
+
   return (
     <div className={styles.root}>
       <CatalogLine
@@ -63,7 +76,7 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
           min={1960}
           max={2025}
           value={guessYear}
-          onChange={(e) => onGuessChange(parseInt(e.target.value, 10))}
+          onChange={handleSliderChange}
           className={styles.yearSlider}
         />
       </div>

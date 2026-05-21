@@ -17,7 +17,28 @@
 }
 
 .footer {
-  @apply relative border-t p-[14px];
+  @apply relative border-t p-[14px] opacity-0 translate-y-2;
+  transition: opacity 200ms linear, transform 220ms var(--ease-print);
+}
+.footer[data-shown="true"] { @apply opacity-100 translate-y-0; }
+
+@media (min-width: 768px) {
+  .header { @apply px-8 pt-6; }
+  .body { @apply px-8 gap-5; }
+  .footer { @apply p-5; }
+  .trackTitle { @apply text-[40px]; }
+  .trackSub { @apply text-[15px]; }
+  .statValue { @apply text-[22px]; }
+  .yearStage { height: 140px; }
+}
+@media (min-width: 1024px) {
+  .header { @apply px-12 pt-8; }
+  .body { @apply px-12 gap-7; }
+  .footer { @apply p-6; }
+  .trackTitle { @apply text-[52px]; }
+  .trackSub { @apply text-[17px]; }
+  .statValue { @apply text-[26px]; }
+  .yearStage { height: 180px; }
 }
 
 /* ── Stat cell internals ── */
@@ -73,8 +94,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 104px;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -83,6 +104,13 @@
   transition: transform 220ms var(--ease-print), opacity 180ms linear;
 }
 .yearText[data-shown="true"] { transform: scale(1); opacity: 1; }
+
+@media (min-width: 768px) {
+  .yearText { font-size: 128px; }
+}
+@media (min-width: 1024px) {
+  .yearText { font-size: 160px; }
+}
 
 .redactCover {
   position: absolute;

@@ -64,6 +64,17 @@
   opacity: 0.78;
 }
 
+@media (min-width: 768px) {
+  .card { padding: 20px 24px; }
+  .title { font-size: 34px; }
+  .artist { font-size: 16px; }
+}
+@media (min-width: 1024px) {
+  .card { padding: 28px 32px; }
+  .title { font-size: 44px; }
+  .artist { font-size: 18px; }
+}
+
 .redactBar {
   position: relative;
   margin-top: 12px;

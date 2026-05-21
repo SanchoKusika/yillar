@@ -83,6 +83,7 @@ export function OnlineEndPage() {
             points: score.points,
             era: track.era,
             title: track.title,
+            artist: track.artist,
             correct: score.delta <= CORRECT_THRESHOLD_YEARS,
             skipped: false,
           });

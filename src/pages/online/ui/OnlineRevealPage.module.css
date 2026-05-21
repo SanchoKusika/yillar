@@ -29,8 +29,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 104px;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -39,6 +39,15 @@
   transition: transform 220ms var(--ease-print), opacity 180ms linear;
 }
 .yearText[data-shown="true"] { transform: scale(1); opacity: 1; }
+
+@media (min-width: 768px) {
+  .yearText { font-size: 128px; }
+  .perfectYear { font-size: 128px; }
+}
+@media (min-width: 1024px) {
+  .yearText { font-size: 160px; }
+  .perfectYear { font-size: 160px; }
+}
 
 .redactCover {
   position: absolute;
@@ -141,8 +150,8 @@
 .perfectYear {
   position: relative;
   z-index: 2;
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 104px;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -233,8 +242,8 @@
 }
 
 .perfectPoints {
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 24px;
   letter-spacing: -0.02em;
   color: var(--color-gold);

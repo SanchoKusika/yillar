@@ -44,7 +44,7 @@ export function RevealStandard({ last, nextPlayer, onNext }: Props) {
           {t(`era.${era}` as const)} · {ERA_LABEL[era]}
         </span>
         <h1 className={styles.trackTitle}>{last.title}</h1>
-        <div className={styles.trackSub}>{t("reveal.trackNo", { id: last.trackId })}</div>
+        <div className={styles.trackSub}>{last.artist}</div>
       </header>
 
       <div className={styles.body}>
@@ -102,7 +102,7 @@ export function RevealStandard({ last, nextPlayer, onNext }: Props) {
         </div>
       </div>
 
-      <footer className={styles.footer} style={{ borderColor: eraVar(era, "surface") }}>
+      <footer className={styles.footer} data-shown={stage >= 4} style={{ borderColor: eraVar(era, "surface") }}>
         <YButton variant="era" era={era} onClick={onNext}>
           {t("reveal.nextCard", { name: nextPlayer.name })}
         </YButton>

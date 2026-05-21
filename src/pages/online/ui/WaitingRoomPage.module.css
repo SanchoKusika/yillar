@@ -46,8 +46,8 @@
 }
 
 .codeValue {
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 28px;
   line-height: 1;
   letter-spacing: 0.12em;

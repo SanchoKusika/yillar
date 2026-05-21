@@ -49,9 +49,16 @@ export function GamePage() {
     [activePlayers, scores, currentPlayer?.id],
   );
 
+  const defaultYear = useMemo(
+    () => Math.floor(Math.random() * (2025 - 1960 + 1)) + 1960,
+    // new random position each card
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentCardIdx],
+  );
+
   if (!currentTrack || !currentPlayer) return null;
 
-  const guessYear = guess ?? 1978;
+  const guessYear = guess ?? defaultYear;
 
   const onLock = () => {
     audio.pause();

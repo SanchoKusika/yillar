@@ -164,8 +164,8 @@
 }
 
 .pointsValue {
-  font-family: var(--font-display);
-  font-weight: 900;
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 22px;
   letter-spacing: -0.02em;
   display: inline-block;
@@ -195,4 +195,8 @@
   padding: 14px;
   border-top: 1px solid var(--color-gold);
   background: var(--color-ink);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 200ms linear, transform 220ms var(--ease-print);
 }
+.footer[data-shown="true"] { opacity: 1; transform: translateY(0); }
