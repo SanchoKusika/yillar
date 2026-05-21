@@ -12,8 +12,9 @@ import { PWAPrompt } from "@widgets/pwa-prompt";
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const pageKey = location.pathname.startsWith('/online') ? 'online' : location.key;
   return (
-    <div key={location.key} className="page-enter">
+    <div key={pageKey} className="page-enter">
       <Routes location={location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/lobby" element={<LobbyPage />} />
