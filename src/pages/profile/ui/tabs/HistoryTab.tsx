@@ -20,6 +20,7 @@ type HistoryTabProps = {
 
 export function HistoryTab({ entries, loading }: HistoryTabProps) {
   const t = useT();
+
   return (
     <div>
       <CatalogLine

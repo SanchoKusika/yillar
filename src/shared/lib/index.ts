@@ -3,5 +3,6 @@ export * from "./cn";
 export * from "./scoring";
 export * from "./formatTime";
 export * from "./haptic";
+export * from "./share";
 export * from "./useYouTubeAudio";
 export * from "./i18n";

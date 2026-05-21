@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CatalogLine, GirihOverlay, PhoneFrame, YButton } from "@shared/ui";
-import { ERAS, eraVar, useT } from "@shared/lib";
+import { ERAS, eraVar, useT, shareResult } from "@shared/lib";
 import { useGameStore, useActivePlayers } from "@entities/game";
 import { useSessionStore } from "@entities/session";
 import { useSaveGame } from "@features/save-game";
@@ -27,6 +27,7 @@ export function EndPage() {
 
   const hostPlayerId = activePlayers[0]?.id ?? null;
   const stats = useProfileStats(user?.id);
+  const [shareLabel, setShareLabel] = useState<string | null>(null);
 
   const ranked = useMemo(
     () =>
@@ -50,6 +51,22 @@ export function EndPage() {
     { left: "82%", top: "62%", dur: "2.0s", delay: "0.25s" },
     { left: "38%", top: "80%", dur: "1.7s", delay: "0.4s" },
   ];
+
+  function handleShare() {
+    const lines = [
+      "YILLAR",
+      ...ranked.map((p, i) =>
+        `${i === 0 ? "★" : `${i + 1}.`} ${p.name} — ${p.total} ${t("end.points")}`
+      ),
+      `${totalCards} ${t("share.cards")}`,
+    ];
+    shareResult(lines.join("\n")).then((outcome) => {
+      if (outcome === "copied") {
+        setShareLabel(t("share.copied"));
+        setTimeout(() => setShareLabel(null), 2000);
+      }
+    });
+  }
 
   useEffect(() => {
     if (savedGameId) return;
@@ -188,7 +205,7 @@ export function EndPage() {
         </div>
 
         <footer className={styles.footer}>
-          <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }}>{t("end.share")}</YButton>
+          <YButton variant="ghost" style={{ width: 110, flexShrink: 0 }} onClick={handleShare}>{shareLabel ?? t("end.share")}</YButton>
           <YButton onClick={() => { reset(); navigate("/", { replace: true }); }}>{t("end.replay")}</YButton>
         </footer>
       </main>
