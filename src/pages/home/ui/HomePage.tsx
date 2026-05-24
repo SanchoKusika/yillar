@@ -25,14 +25,6 @@ export function HomePage() {
         <GirihOverlay size={220} opacity={0.04} />
 
         <header className={styles.pageHeader}>
-          <div className={styles.headerTopRow}>
-            <span className={styles.headerBadgeLeft}>
-              {env.supabaseUrl ? t("home.live") : t("home.demo")}
-            </span>
-            <span className={styles.headerBadgeRight}>
-              {t("home.headerLeft")}
-            </span>
-          </div>
           <div className="inline-block">
             <Wordmark color="var(--color-gold)" size={48} />
           </div>

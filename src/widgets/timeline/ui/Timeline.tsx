@@ -4,7 +4,9 @@ import { eraVar, haptic, useT } from "@shared/lib";
 import type { Placement } from "@entities/placement";
 import styles from "./Timeline.module.css";
 
-const DECADE_SCALE = [1960, 1970, 1980, 1990, 2000, 2010, 2020];
+const MIN_YEAR = 1960;
+const MAX_YEAR = 2025;
+const DECADE_SCALE = [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025];
 
 type TimelineProps = {
   playerName: string;
@@ -83,14 +85,14 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
 
       <div className={styles.decadeRuler}>
         <div className={styles.decadeRulerLine} />
-        {DECADE_SCALE.map((y, i, arr) => (
+        {DECADE_SCALE.map((y) => (
           <div
             key={y}
             className={styles.decadeLabel}
-            style={{ left: `${(i / (arr.length - 1)) * 100}%`, transform: "translateX(-50%)" }}
+            style={{ left: `${((y - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100}%`, transform: "translateX(-50%)" }}
           >
             <div className={styles.decadeTick} />
-            '{String(y).slice(2)}
+            {String(y).slice(2)}
           </div>
         ))}
       </div>

@@ -14,6 +14,10 @@
 }
 
 /* ── Header badges ── */
+.leaveBtn {
+  @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-cream opacity-40 bg-transparent border-none cursor-pointer;
+}
+
 .headerBadgeLeft {
   @apply font-condensed text-[10px] font-bold uppercase tracking-[0.18em] text-gold opacity-70;
 }

@@ -149,12 +149,7 @@ export function OnlineEndPage() {
             />
           ))}
 
-          <div className="mb-1 flex items-center justify-between">
-            <span className={styles.onlineBadge}>ONLINE</span>
-            <span className={styles.headerBadgeRight}>
-              {t("end.headerFinal", { placed: room?.trackIds.length ?? 0, total: room?.trackIds.length ?? 0 })}
-            </span>
-          </div>
+
 
           {loading ? (
             <div className={styles.loadingLabel}>{t("online.waitLoading")}</div>
@@ -181,8 +176,9 @@ export function OnlineEndPage() {
           ) : null}
         </header>
 
-        {!loading && (
-          <div className={styles.scrollBody}>
+        <div className={styles.scrollBody}>
+          {!loading && (
+            <>
             <CatalogLine
               left={t("end.perPlayer")}
               right={t("end.playersCount", { n: results.length })}
@@ -251,8 +247,9 @@ export function OnlineEndPage() {
                 );
               })}
             </ol>
-          </div>
-        )}
+            </>
+          )}
+        </div>
 
         <footer className={styles.footer}>
           <YButton

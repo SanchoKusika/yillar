@@ -78,12 +78,9 @@ export function LobbyPage() {
 
         <header className={styles.pageHeader}>
           <div className={styles.headerTopRow}>
-            <span className={styles.headerBadgeLeft}>
-              {env.supabaseUrl ? t("home.live") : t("home.demo")}
-            </span>
-            <span className={styles.headerBadgeRight}>
-              {t("home.headerLeft")}
-            </span>
+            <button type="button" onClick={() => navigate("/")} className={styles.leaveBtn}>
+              {t("online.waitBack")}
+            </button>
           </div>
           <div className="inline-block">
             <Wordmark color="var(--color-gold)" size={48} />
