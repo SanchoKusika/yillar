@@ -139,9 +139,6 @@ export function WaitingRoomPage() {
         {/* Header — matches LobbyPage */}
         <header className={styles.pageHeader}>
           <div className={styles.headerTopRow}>
-            <span className={styles.headerBadgeLeft}>
-              {env.supabaseUrl ? "● ONLINE" : t("home.demo")}
-            </span>
             <button
               type="button"
               onClick={handleLeave}

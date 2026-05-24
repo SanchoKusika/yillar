@@ -60,12 +60,9 @@ export function OnlinePage() {
 
         <header className={styles.pageHeader}>
           <div className={styles.headerTopRow}>
-            <span className={styles.headerBadgeLeft}>
-              {noSupabase ? t("home.demo") : "● ONLINE"}
-            </span>
-            <span className={styles.headerBadgeRight}>
-              {t("home.headerLeft")}
-            </span>
+            <button type="button" onClick={() => navigate("/")} className={styles.leaveBtn}>
+              {t("online.waitBack")}
+            </button>
           </div>
           <div className="inline-block">
             <Wordmark color="var(--color-gold)" size={48} />
