@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { EraSelect, GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
 import { CatalogLine } from "@shared/ui";
 import { useT, haptic, type Era } from "@shared/lib";
-import { env } from "@shared/config";
 import { useSessionStore } from "@entities/session";
 import { getTracks } from "@entities/track";
 import {

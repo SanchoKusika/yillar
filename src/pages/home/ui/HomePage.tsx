@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { GirihOverlay, PhoneFrame, Wordmark } from "@shared/ui";
-import { env } from "@shared/config";
 import { useT, haptic } from "@shared/lib";
 import { BottomNav } from "@widgets/bottom-nav";
 import styles from "./HomePage.module.css";

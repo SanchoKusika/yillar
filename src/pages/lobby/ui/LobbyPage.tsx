@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GirihOverlay, PhoneFrame, Wordmark, YButton } from "@shared/ui";
-import { env } from "@shared/config";
 import { useT, haptic } from "@shared/lib";
 import { useGameStore } from "@entities/game";
 import { useSessionStore } from "@entities/session";
