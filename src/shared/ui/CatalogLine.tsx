@@ -1,30 +1,37 @@
-import type { CSSProperties, ReactNode } from "react";
+import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
+import type { ReactNode } from "react";
+import { useTheme } from "@theme";
+import { fonts } from "@theme/tokens";
 
 type CatalogLineProps = {
   left: ReactNode;
   right: ReactNode;
   color?: string;
-  style?: CSSProperties;
-  className?: string;
+  style?: StyleProp<ViewStyle>;
 };
 
-export function CatalogLine({ left, right, color = "var(--color-gold)", style, className }: CatalogLineProps) {
+export function CatalogLine({ left, right, color, style }: CatalogLineProps) {
+  const { colors } = useTheme();
+  const resolvedColor = color ?? colors.gold;
+
   return (
-    <div
-      className={className}
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        fontFamily: "var(--font-mono)",
-        fontSize: 10,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color,
-        ...style,
-      }}
-    >
-      <span>{left}</span>
-      <span>{right}</span>
-    </div>
+    <View style={[styles.row, style]}>
+      <Text style={[styles.text, { color: resolvedColor }]}>{left}</Text>
+      <Text style={[styles.text, { color: resolvedColor }]}>{right}</Text>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  text: {
+    fontFamily: fonts.mono,
+    fontSize: 10,
+    letterSpacing: 10 * 0.22,
+    textTransform: "uppercase",
+    includeFontPadding: false,
+  },
+});

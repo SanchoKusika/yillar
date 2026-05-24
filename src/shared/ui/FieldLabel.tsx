@@ -1,6 +1,22 @@
+import { StyleSheet, Text } from "react-native";
 import type { ReactNode } from "react";
-import styles from "./FieldLabel.module.css";
+import { useTheme } from "@theme";
+import { fonts } from "@theme/tokens";
 
 export function FieldLabel({ children }: { children: ReactNode }) {
-  return <span className={styles.label}>{children}</span>;
+  const { colors } = useTheme();
+  return (
+    <Text style={[styles.label, { color: colors.gold }]}>{children}</Text>
+  );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: fonts.mono,
+    fontSize: 9,
+    letterSpacing: 9 * 0.22,
+    textTransform: "uppercase",
+    marginBottom: 6,
+    includeFontPadding: false,
+  },
+});

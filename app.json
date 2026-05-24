@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "YILLAR",
+    "slug": "yillar",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "scheme": "yillar",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.aleksandr.yillar",
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1A1208"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "yillar"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-sharing",
+      [
+        "expo-status-bar",
+        {
+          "style": "light"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#1A1208",
+          "image": "./assets/splash.png",
+          "imageWidth": 200
+        }
+      ],
+      "expo-localization"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "supabaseUrl": null,
+      "supabaseAnonKey": null
+    }
+  }
+}
