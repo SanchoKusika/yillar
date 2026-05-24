@@ -2,14 +2,23 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Branch context:** `chore/mobile` — React Native + Expo SDK 56 (Android). The web version (React + Vite + PWA) lives on the `dev` branch. Both branches share the same Supabase backend.
+
 ## Commands
 
 ```bash
-npm run dev          # Vite dev server at localhost:5173
-npm run build        # tsc -b && vite build
-npm run lint         # ESLint
+# Development
+npx expo start --android          # start Metro bundler + open in Android emulator
+npx expo start                    # start with platform selector
 
-# Track data management (Supabase)
+# Bundle check (no device needed)
+npx expo export --platform android --no-minify   # verify Hermes compilation
+
+# EAS Build
+eas build --profile preview --platform android   # internal APK
+eas build --profile production --platform android # AAB for Play Store
+
+# Track data management (Supabase — shared with web)
 npm run import:tracks         # import tracks to Supabase
 npm run import:tracks:reset   # reset & reimport
 npm run import:tracks:dry     # dry run
@@ -19,18 +28,18 @@ There are no test commands — the project has no test suite.
 
 ## Environment
 
-Copy `.env.example` → `.env.local` and fill in:
+Copy `.env.example` → `.env` and fill in:
 
 ```
-VITE_SUPABASE_URL=https://xxxx.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJ...
+EXPO_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 ```
 
 Without these keys the app runs in **DEMO MODE** (no auth, no history saving). `supabase` client is `null` in demo mode — all DB calls guard with `if (!supabase) return`.
 
 ## Architecture
 
-**Feature-Sliced Design (FSD)** — imports flow strictly downward: `app → pages → widgets → features → entities → shared`. Each slice exposes a public API through its `index.ts`.
+**Feature-Sliced Design (FSD)** adapted for expo-router: `app/` holds file-based routes, `src/features/` holds UI logic, `src/entities/` holds business logic, `src/shared/` holds the design system and utilities. Imports flow strictly downward.
 
 ### Path aliases
 
@@ -39,42 +48,42 @@ Without these keys the app runs in **DEMO MODE** (no auth, no history saving). `
 | `@shared`   | `src/shared`   |
 | `@entities` | `src/entities` |
 | `@features` | `src/features` |
-| `@widgets`  | `src/widgets`  |
-| `@pages`    | `src/pages`    |
-| `@app`      | `src/app`      |
+| `@theme`    | `src/theme`    |
+| `@theme/*`  | `src/theme/*`  |
+
+Configured in `tsconfig.json` (paths) and `babel.config.js` (module-resolver).
 
 ### State management
 
-- **`useGameStore`** (Zustand, not persisted) — the primary game state: players, tracks, current turn, placements, scores. All game mutations go through this store's actions (`startGame`, `lockIn`, `skipTurn`, `advanceTurn`, `beginSave`).
+- **`useGameStore`** (Zustand, not persisted) — primary game state: players, tracks, current turn, placements, scores. Actions: `startGame`, `lockIn`, `skipTurn`, `advanceTurn`, `beginSave`.
 - **`useSessionStore`** (Zustand, not persisted) — auth user + profile. Populated by `SessionProvider` on mount.
-- **`usePreferencesStore`** (Zustand + `persist` → `localStorage["yillar.preferences"]`) — theme and language.
+- **`usePreferencesStore`** (Zustand + `persist` → `AsyncStorage["yillar.preferences"]`) — theme and language. Initial language detected via `expo-localization`.
 
-### Routes
+### Routes (expo-router, file-based)
 
-| Path                          | Component            | Notes                                         |
-| ----------------------------- | -------------------- | --------------------------------------------- |
-| `/`                           | `HomePage`           | Mode select — Pass & Play vs Online           |
-| `/lobby`                      | `LobbyPage`          | Pass & Play player setup                      |
-| `/game`                       | `GamePage`           | Active turn                                   |
-| `/reveal`                     | `RevealPage`         | Post-guess reveal (Standard/Perfect/Rejected) |
-| `/end`                        | `EndPage`            | Score summary, save to Supabase               |
-| `/online`                     | `OnlinePage`         | Online mode — create or join room             |
-| `/online/room/:code`          | `WaitingRoomPage`    | Lobby — players set name/era, host starts     |
-| `/online/game/:code`          | `OnlineGamePage`     | Active online turn (60 s timer)               |
-| `/online/reveal/:code/:idx`   | `OnlineRevealPage`   | Online reveal with per-player scores table    |
-| `/online/end/:code`           | `OnlineEndPage`      | Online final leaderboard, rematch/home        |
-| `/auth`                       | `AuthPage`           | Sign-in / sign-up / forgot-password           |
-| `/profile`                    | `ProfilePage`        | Stats, history, friends, settings             |
-| `/reset-password`             | `ResetPasswordPage`  | Handles `PASSWORD_RECOVERY` Supabase event    |
-| `*`                           | redirect → `/`       |                                               |
+| File                                      | Screen               | Notes                                          |
+| ----------------------------------------- | -------------------- | ---------------------------------------------- |
+| `app/index.tsx`                           | `HomePage`           | Mode select — Pass & Play vs Online            |
+| `app/lobby.tsx`                           | `LobbyPage`          | Pass & Play player setup                       |
+| `app/game.tsx`                            | `GamePage`           | Active turn                                    |
+| `app/reveal.tsx`                          | `RevealPage`         | Post-guess reveal (Standard/Perfect/Rejected)  |
+| `app/end.tsx`                             | `EndPage`            | Score summary, save to Supabase                |
+| `app/online/index.tsx`                    | `OnlinePage`         | Online — create or join room                   |
+| `app/online/room/[code].tsx`              | `WaitingRoomPage`    | Lobby — name, era, player list, host starts    |
+| `app/online/game/[code].tsx`              | `OnlineGamePage`     | Active online turn (60 s timer)                |
+| `app/online/reveal/[code]/[idx].tsx`      | `OnlineRevealPage`   | Online reveal with per-player scores table     |
+| `app/online/end/[code].tsx`               | `OnlineEndPage`      | Online final leaderboard, rematch/home         |
+| `app/auth.tsx`                            | `AuthPage`           | Sign-in / sign-up / forgot-password            |
+| `app/profile.tsx`                         | `ProfilePage`        | Stats, settings                                |
+| `app/reset-password.tsx`                  | `ResetPasswordPage`  | Handles `PASSWORD_RECOVERY` deep link          |
 
 ### Game flow
 
-`/` → `/game` → `/reveal` → back to `/game` or `/end`
+`/` → `/lobby` → `/game` → `/reveal` → back to `/game` or `/end`
 
-Each turn: player guesses year via `<input type="range" min=1960 max=2025>` in the Timeline widget → `lockIn()` or `skipTurn()` → Placement is created → reveal screen → `advanceTurn()`.
+Each turn: player guesses year via `@react-native-community/slider` (min=1960 max=2025) in `Timeline` → `lockIn()` or `skipTurn()` → Placement created → reveal screen → `advanceTurn()`.
 
-Reveal variants are chosen from the last placement: `skipped` → `RevealRejected`, `delta === 0` → `RevealPerfect`, otherwise → `RevealStandard`.
+Reveal variants from the last placement: `skipped` → `RevealRejected`, `delta === 0` → `RevealPerfect`, otherwise → `RevealStandard`.
 
 Saving happens once on EndPage via `useEffect` + `beginSave()` guard (prevents double-save on re-renders).
 
@@ -90,30 +99,34 @@ correct = delta ≤ 5
 
 ### Audio
 
-`useYouTubeAudio(videoId)` hook wraps the YouTube IFrame API. The player mounts inside a hidden div positioned at `left: -9999px` (not `display:none` — the SDK won't initialize inside hidden elements). `PlayerHost` component is rendered in `GamePage`.
+`useYouTubeAudio(videoId)` wraps `react-native-youtube-iframe`. Key design decision: `InnerPlayer` is a `forwardRef` component that holds its own `play` and `videoId` state and exposes an imperative API via `useImperativeHandle`. This makes `PlayerHost` stable with zero deps — the YouTube WebView never remounts during gameplay (remounting destroys the WebView). The hook controls the player imperatively via the ref.
+
+`<audio.PlayerHost />` is rendered in `GamePage` and `OnlineGamePage`.
 
 ### Haptic
 
-`haptic(type)` in `src/shared/lib/haptic.ts` calls `navigator.vibrate` (Web Vibration API — no Capacitor). Used on button presses in `HomePage` and `GamePage`. Silently no-ops where the API is absent.
+`haptic(type)` in `src/shared/lib/haptic.ts` calls `expo-haptics`. Silently no-ops on devices without haptic engines.
 
 ### Eras
 
-Three eras defined in `src/shared/lib/era.ts`:
+Three eras in `src/shared/lib/era.ts`:
 
 - `klassika` — 1960–1989
 - `kasseta` — 1990–1999
 - `tsifra` — 2000+
 
+`eraColor(era, key)` returns hex strings from the palette (replaces web's `eraVar()` which returned CSS variables). `ERA_COLORS` in `src/theme/tokens.ts` is the canonical palette used in components.
+
 ### Styling
 
-- **Tailwind CSS v4** with `@theme` tokens in `src/app/styles/index.css`
-- CSS Modules for component-level styles
-- Dark/light themes via `data-theme="dark/light"` on `<html>`, managed by `ThemeProvider`
-- `SongCard` uses hardcoded `color: #1A1208` (not a CSS var) so it stays dark-text-on-cream in both themes — intentional
+- **`StyleSheet.create()` + `src/theme/tokens.ts`** — all styles are static objects with explicit pixel values
+- **`ThemeProvider`** (React Context) — exposes `{ theme, colors }`. `colors` is the resolved `DARK_COLORS` or `LIGHT_COLORS` object. Components call `useTheme()`.
+- `SongCard` uses hardcoded `#1A1208` / `#F5EFE0` (not theme colors) so it stays dark-text-on-cream in both themes — intentional, mirrors the web version.
+- No CSS Modules, no Tailwind, no CSS variables.
 
 ### i18n
 
-`useT()` hook → returns `t(key, params?)`. All translation keys are a union type — typos cause compile errors. Translations: `src/shared/lib/i18n/translations.ts`. Language stored in `usePreferencesStore`.
+`useT()` hook → returns `t(key, params?)`. All translation keys are a union type — typos cause compile errors. Translations: `src/shared/lib/i18n/translations.ts`. Language stored in `usePreferencesStore`. Initial language detected via `expo-localization` (`Localization.getLocales()[0].languageCode`).
 
 ### Supabase schema
 
@@ -135,4 +148,12 @@ Key API functions in `src/entities/room/api/roomsApi.ts`:
 
 Realtime hooks: `useRoom`, `useRoomPlayers`, `useRoomGuesses` subscribe via postgres_changes. All three tables have `REPLICA IDENTITY FULL` so UPDATE/DELETE filters work correctly.
 
+Cross-screen score passing (reveal → game): `sessionStore` in `src/shared/lib/sessionStore.ts` — an in-memory Map that replaces web's `sessionStorage`.
+
 Disconnect handling: 60 s turn timer auto-submits for any player who disconnects during a round. Host dropping in waiting room deletes the room (cascade). Host dropping during reveal triggers an 8 s escape timer that redirects others to `/online`.
+
+### Metro / bundler notes
+
+**Critical:** `metro.config.js` sets `unstable_enablePackageExports: false`. This forces Metro to use the `main` (CJS) field of `@supabase/supabase-js` instead of the ESM `exports` entry. The ESM build uses `import(OTEL_PKG)` (variable dynamic import) that Hermes cannot compile. Without this flag the bundle fails.
+
+SVG files are transformed to React components via `react-native-svg-transformer` (configured in `metro.config.js` — removes `svg` from `assetExts`, adds it to `sourceExts`).
