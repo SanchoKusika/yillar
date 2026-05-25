@@ -9,7 +9,7 @@ import { ERA_COLORS, fonts } from "@theme/tokens";
 
 const MIN_YEAR = 1960;
 const MAX_YEAR = 2025;
-const DECADE_SCALE = [1960, 1970, 1980, 1990, 2000, 2010, 2020, 2025];
+const DECADE_SCALE = [1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025];
 
 type TimelineProps = {
   playerName: string;
@@ -73,14 +73,14 @@ export function Timeline({ playerName, placements, guessYear, onGuessChange }: T
         })}
 
         {/* Drop zone for current guess */}
-        <View style={[styles.placementCard, styles.dropZone, { borderColor: colors.gold }]}>
-          <Text style={[styles.dropHint, { color: colors.cream3 }]}>
+        <View style={[styles.dropZone, { borderColor: colors.gold }]}>
+          <Text style={[styles.dropIdx, { color: colors.gold }]}>
+            {String(placements.length + 1).padStart(2, "0")}
+          </Text>
+          <Text style={[styles.dropHint, { color: colors.gold }]}>
             {t("timeline.drop")}{"\n"}{t("timeline.here")}
           </Text>
           <Text style={[styles.dropYear, { color: colors.gold }]}>{guessYear}</Text>
-          <Text style={[styles.dropIdx, { color: colors.cream3 }]}>
-            {String(placements.length + 1).padStart(2, "0")}
-          </Text>
         </View>
       </ScrollView>
 
@@ -160,30 +160,42 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
   dropZone: {
-    borderWidth: 1,
-    borderLeftWidth: 1,
+    width: 72,
+    height: 86,
+    marginRight: 6,
+    borderWidth: 2,
+    borderStyle: "dashed",
+    backgroundColor: "rgba(212,168,71,0.08)",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 70,
+    gap: 4,
+    position: "relative",
   },
   dropHint: {
     fontFamily: fonts.mono,
     fontSize: 7,
-    letterSpacing: 7 * 0.12,
+    letterSpacing: 7 * 0.22,
     textTransform: "uppercase",
     textAlign: "center",
     includeFontPadding: false,
   },
   dropYear: {
     fontFamily: fonts.monoBold,
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "700",
-    letterSpacing: 18 * -0.02,
+    lineHeight: 22,
+    letterSpacing: 22 * -0.02,
     includeFontPadding: false,
   },
   dropIdx: {
+    position: "absolute",
+    top: 4,
+    left: 4,
     fontFamily: fonts.mono,
-    fontSize: 8,
+    fontSize: 7,
+    letterSpacing: 7 * 0.18,
+    textTransform: "uppercase",
+    opacity: 0.6,
     includeFontPadding: false,
   },
   slider: {

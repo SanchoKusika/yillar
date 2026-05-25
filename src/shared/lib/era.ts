@@ -14,9 +14,9 @@ export function eraForYear(year: number): Era {
   return "tsifra";
 }
 
-type EraKey = "primary" | "deep" | "surface" | "surface-2" | "ink" | "accent";
+export type EraKey = "primary" | "deep" | "surface" | "surface-2" | "ink" | "accent";
 
-const ERA_FALLBACKS: Record<Era, Record<EraKey, string>> = {
+const ERA_PALETTE: Record<Era, Record<EraKey, string>> = {
   klassika: {
     primary: "#7B3F2A",
     deep: "#4E271B",
@@ -43,5 +43,5 @@ const ERA_FALLBACKS: Record<Era, Record<EraKey, string>> = {
   },
 };
 
-export const eraVar = (era: Era, key: EraKey) =>
-  `var(--color-${era}-${key}, ${ERA_FALLBACKS[era][key]})`;
+// Returns a hex color for the given era token. Replaces web's `eraVar()` which returned CSS variables.
+export const eraColor = (era: Era, key: EraKey): string => ERA_PALETTE[era][key];

@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { usePathname, useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useSessionStore } from "@entities/session";
 import { IconHome, IconProfile, IconAuth } from "@shared/ui";
 import { useTheme } from "@theme";
@@ -10,6 +11,7 @@ export function BottomNav() {
   const { colors } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
+  const insets = useSafeAreaInsets();
   const isRegistered = useSessionStore((s) => s.user !== null && !s.user?.isAnonymous);
 
   const tabs: Tab[] = [
@@ -21,12 +23,21 @@ export function BottomNav() {
   ];
 
   return (
-    <View style={[styles.nav, { backgroundColor: colors.ink, borderTopColor: colors.gold }]}>
+    <View
+      style={[
+        styles.nav,
+        {
+          backgroundColor: colors.ink,
+          borderTopColor: colors.gold,
+          paddingBottom: insets.bottom,
+        },
+      ]}
+    >
       {tabs.map(({ path, key, icon: Icon }, i) => {
         const active = pathname === path;
         const color = active ? colors.gold : colors.cream;
-        const opacity = active ? 1 : 0.55;
-        const borderRight = i < tabs.length - 1 ? { borderRightWidth: 1, borderRightColor: colors.ink3 } : {};
+        const borderRight =
+          i < tabs.length - 1 ? { borderRightWidth: 1, borderRightColor: colors.ink3 } : {};
         return (
           <Pressable
             key={key}
@@ -34,6 +45,7 @@ export function BottomNav() {
             style={[
               styles.tab,
               borderRight,
+              { opacity: active ? 1 : 0.55 },
               active && { backgroundColor: colors.ink2 },
             ]}
           >
@@ -54,6 +66,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 14,
+    paddingTop: 12,
+    paddingBottom: 14,
+    paddingHorizontal: 4,
   },
 });

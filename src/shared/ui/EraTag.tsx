@@ -1,28 +1,42 @@
-import type { Era } from "@shared/lib";
-import { eraVar, useT } from "@shared/lib";
+import { StyleSheet, Text } from "react-native";
+import type { Era } from "@shared/lib/era";
+import { useT } from "@shared/lib/i18n";
+import { ERA_COLORS, fonts } from "@theme/tokens";
 
 type EraTagProps = {
   era?: Era;
   boxed?: boolean;
   size?: "sm" | "lg";
-  onDark?: boolean;
 };
 
-export function EraTag({ era = "klassika", boxed = false, size = "sm", onDark: _onDark = false }: EraTagProps) {
+export function EraTag({ era = "klassika", boxed = false, size = "sm" }: EraTagProps) {
   const t = useT();
-  const fg = eraVar(era, "primary");
+  const eraColors = ERA_COLORS[era];
+  const fontSize = size === "lg" ? 14 : 11;
+
   return (
-    <span
-      className="inline-block font-condensed font-bold uppercase"
-      style={{
-        color: fg,
-        fontSize: size === "lg" ? 14 : 11,
-        letterSpacing: "0.22em",
-        padding: boxed ? "5px 9px 4px" : 0,
-        border: boxed ? `1px solid ${fg}` : 0,
-      }}
+    <Text
+      style={[
+        styles.base,
+        { color: eraColors.primary, fontSize, letterSpacing: fontSize * 0.22 },
+        boxed && {
+          paddingVertical: 5,
+          paddingHorizontal: 9,
+          borderWidth: 1,
+          borderColor: eraColors.primary,
+        },
+      ]}
     >
       {t(`era.${era}` as const)}
-    </span>
+    </Text>
   );
 }
+
+const styles = StyleSheet.create({
+  base: {
+    fontFamily: fonts.condensedBold,
+    fontWeight: "700",
+    textTransform: "uppercase",
+    includeFontPadding: false,
+  },
+});

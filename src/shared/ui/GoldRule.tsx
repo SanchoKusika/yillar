@@ -1,7 +1,9 @@
-import type { CSSProperties } from "react";
+import { View, type StyleProp, type ViewStyle } from "react-native";
+import { useTheme } from "@theme";
 
-type GoldRuleProps = { style?: CSSProperties; className?: string };
+type GoldRuleProps = { style?: StyleProp<ViewStyle> };
 
-export function GoldRule({ style, className }: GoldRuleProps) {
-  return <div className={className} style={{ height: 1, background: "var(--color-gold)", width: "100%", ...style }} />;
+export function GoldRule({ style }: GoldRuleProps) {
+  const { colors } = useTheme();
+  return <View style={[{ height: 1, backgroundColor: colors.gold, width: "100%" }, style]} />;
 }

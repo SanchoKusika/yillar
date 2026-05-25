@@ -1,15 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import { GirihOverlay, PaperGrain } from "@shared/ui";
 import { useT } from "@shared/lib";
-import { useTheme } from "@theme";
 import { fonts } from "@theme/tokens";
 
 // SongCard always shows dark ink-on-cream, independent of app theme (same as web)
 const CARD_INK = "#1A1208";
-const CARD_CREAM = "#F5EFE0";
-const CARD_SURFACE2 = "#E8DFCA";
+const CARD_PAPER = "#F5EFE0";
 const CARD_REDACT = "#0E0804";
 const CARD_GOLD = "#D4A847";
+const PAPER_EDGE = "rgba(26,18,8,0.18)";
 
 type SongCardProps = {
   title: string;
@@ -29,23 +28,30 @@ export function SongCard({ title, artist, cardIdx, totalCards }: SongCardProps) 
 
   return (
     <View style={styles.wrap}>
-      <View style={[styles.card, { backgroundColor: CARD_CREAM }]}>
+      <View style={styles.card}>
         <GirihOverlay size={140} opacity={0.06} />
         <PaperGrain opacity={0.32} />
 
+        {/* Inner dashed border (mirrors web ::before inset 6px) */}
+        <View style={styles.innerDashed} pointerEvents="none" />
+
         <View style={styles.header}>
-          <Text style={[styles.dossier, { color: CARD_GOLD }]}>{t("song.dossier")}</Text>
-          <Text style={[styles.caseNo, { color: CARD_GOLD }]}>{caseNo}</Text>
+          <Text style={styles.dossier}>{t("song.dossier")}</Text>
+          <Text style={styles.caseNo}>{caseNo}</Text>
         </View>
 
-        <Text style={[styles.title, { color: CARD_INK }]} numberOfLines={2}>{title}</Text>
-        <Text style={[styles.artist, { color: CARD_INK }]} numberOfLines={1}>{artist}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          {title}
+        </Text>
+        <Text style={styles.artist} numberOfLines={1}>
+          {artist}
+        </Text>
 
-        <View style={[styles.redactBar, { backgroundColor: CARD_REDACT, borderTopColor: CARD_GOLD }]}>
+        <View style={styles.redactBar}>
+          <Text style={styles.redactLabel}>{t("song.classified")}</Text>
           {[0, 1, 2, 3].map((i) => (
-            <View key={i} style={[styles.redactBlock, { borderRightColor: CARD_SURFACE2 }]} />
+            <View key={i} style={styles.redactBlock} />
           ))}
-          <Text style={[styles.redactLabel, { color: CARD_GOLD }]}>{t("song.classified")}</Text>
         </View>
       </View>
     </View>
@@ -58,77 +64,112 @@ const styles = StyleSheet.create({
     paddingTop: 14,
   },
   card: {
-    overflow: "hidden",
     position: "relative",
-    paddingTop: 12,
-    paddingHorizontal: 14,
-    paddingBottom: 0,
-    ...{
-      shadowColor: "#1A1208",
-      shadowOffset: { width: 2, height: 2 },
-      shadowOpacity: 1,
-      shadowRadius: 0,
-      elevation: 4,
-    },
+    overflow: "hidden",
+    paddingTop: 14,
+    paddingHorizontal: 16,
+    paddingBottom: 14,
+    backgroundColor: CARD_PAPER,
+    borderLeftWidth: 4,
+    borderLeftColor: CARD_INK,
+    borderRightWidth: 1,
+    borderRightColor: PAPER_EDGE,
+    borderTopWidth: 1,
+    borderTopColor: PAPER_EDGE,
+    borderBottomWidth: 1,
+    borderBottomColor: PAPER_EDGE,
+    // Hard 2px constructivist offset shadow
+    shadowColor: CARD_INK,
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 0,
+    elevation: 4,
+  },
+  innerDashed: {
+    position: "absolute",
+    top: 6,
+    left: 6,
+    right: 6,
+    bottom: 6,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: PAPER_EDGE,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    alignItems: "baseline",
+    gap: 12,
+    marginBottom: 8,
   },
   dossier: {
     fontFamily: fonts.mono,
     fontSize: 9,
     letterSpacing: 9 * 0.22,
     textTransform: "uppercase",
+    color: CARD_INK,
+    opacity: 0.7,
     includeFontPadding: false,
   },
   caseNo: {
     fontFamily: fonts.mono,
     fontSize: 9,
-    letterSpacing: 9 * 0.12,
+    letterSpacing: 9 * 0.18,
+    textTransform: "uppercase",
+    color: CARD_INK,
+    opacity: 0.75,
     includeFontPadding: false,
   },
   title: {
-    fontFamily: fonts.display,
-    fontWeight: "900",
-    fontSize: 28,
-    lineHeight: 28 * 1.0,
-    letterSpacing: 28 * -0.02,
-    marginBottom: 6,
+    fontFamily: fonts.condensedExtraBold,
+    fontWeight: "800",
+    fontSize: 26,
+    lineHeight: 26,
+    letterSpacing: 26 * -0.005,
+    textTransform: "uppercase",
+    color: CARD_INK,
+    marginTop: 4,
+    marginBottom: 2,
     includeFontPadding: false,
   },
   artist: {
-    fontFamily: fonts.condensedSemiBold,
+    fontFamily: fonts.bodyItalic,
+    fontStyle: "italic",
     fontSize: 13,
-    fontWeight: "600",
-    textTransform: "uppercase",
-    letterSpacing: 13 * 0.1,
-    opacity: 0.65,
-    marginBottom: 14,
+    color: CARD_INK,
+    opacity: 0.78,
     includeFontPadding: false,
   },
   redactBar: {
+    position: "relative",
+    marginTop: 12,
+    backgroundColor: CARD_REDACT,
+    borderTopWidth: 1.5,
+    borderTopColor: CARD_GOLD,
+    borderBottomWidth: 1.5,
+    borderBottomColor: CARD_GOLD,
+    height: 55,
+    paddingHorizontal: 10,
     flexDirection: "row",
     alignItems: "center",
-    borderTopWidth: 1,
-    paddingVertical: 7,
-    position: "relative",
+    justifyContent: "center",
+    gap: 8,
   },
   redactBlock: {
-    flex: 1,
-    height: 10,
-    borderRightWidth: 1,
+    width: 22,
+    height: 24,
+    backgroundColor: CARD_GOLD,
   },
   redactLabel: {
     position: "absolute",
-    left: 0,
-    right: 0,
-    textAlign: "center",
+    top: 3,
+    left: 6,
     fontFamily: fonts.mono,
     fontSize: 8,
     letterSpacing: 8 * 0.22,
     textTransform: "uppercase",
+    color: CARD_GOLD,
+    opacity: 0.7,
     includeFontPadding: false,
   },
 });

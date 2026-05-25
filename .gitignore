@@ -1,10 +1,22 @@
 # Dependencies
 node_modules
 
-# Build output
+# Expo / EAS
+.expo
+.expo-shared
 dist
-dist-ssr
-dev-dist
+web-build
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+expo-env.d.ts
+
+# Native
+android
+ios
 
 # Environment
 .env
@@ -14,14 +26,21 @@ dev-dist
 *.tsbuildinfo
 
 # Tooling
-.vite
 .claude
 
 # Logs
 *.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
 
 # OS
 .DS_Store
+Thumbs.db
+
+# IDE
+.idea
+.vscode
 
 # Project-specific
 design

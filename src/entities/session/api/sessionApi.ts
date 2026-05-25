@@ -101,7 +101,7 @@ export async function signUpWithEmail(args: {
   const current = await sb.auth.getUser();
   const isAnon = current.data.user?.is_anonymous === true;
   const metadata = args.displayName ? { display_name: args.displayName } : undefined;
-  const emailRedirectTo = typeof window !== "undefined" ? window.location.origin : undefined;
+  const emailRedirectTo = "yillar://confirm";
 
   if (isAnon) {
     const { data, error } = await sb.auth.updateUser({
@@ -148,9 +148,7 @@ export async function signOut(): Promise<void> {
 
 export async function resetPasswordForEmail(email: string): Promise<void> {
   const sb = requireSupabase();
-  const redirectTo =
-    typeof window !== "undefined" ? `${window.location.origin}/reset-password` : undefined;
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: "yillar://reset-password" });
   if (error) throw error;
 }
 
@@ -160,23 +158,27 @@ export async function updatePassword(newPassword: string): Promise<void> {
   if (error) throw error;
 }
 
-const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 const AVATAR_MIME: Record<string, string> = {
   "image/png": "png",
   "image/jpeg": "jpg",
   "image/webp": "webp",
 };
 
-export async function uploadAvatar(userId: string, file: File): Promise<string> {
+export type AvatarFile = { uri: string; type: string; name: string };
+
+export async function uploadAvatar(userId: string, file: AvatarFile): Promise<string> {
   const sb = requireSupabase();
   const ext = AVATAR_MIME[file.type];
   if (!ext) throw new Error("Поддерживаются только PNG, JPEG, WEBP");
-  if (file.size > AVATAR_MAX_BYTES) throw new Error("Файл больше 2 МБ");
 
   const path = `${userId}/avatar.${ext}`;
+  const form = new FormData();
+  // React Native FormData accepts { uri, type, name } as a file entry
+  form.append("file", file as unknown as Blob);
+
   const { error: uploadErr } = await sb.storage
     .from("avatars")
-    .upload(path, file, { upsert: true, contentType: file.type, cacheControl: "3600" });
+    .upload(path, form, { upsert: true, contentType: file.type, cacheControl: "3600" });
   if (uploadErr) throw uploadErr;
 
   const { data } = sb.storage.from("avatars").getPublicUrl(path);

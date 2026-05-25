@@ -12,4 +12,5 @@ export {
   resetPasswordForEmail,
   updatePassword,
 } from "./api/sessionApi";
+export type { AvatarFile } from "./api/sessionApi";
 export { useIsAuthenticated, useIsAnonymous, useDisplayName } from "./lib/selectors";

@@ -1,17 +1,17 @@
-import HomeSvg from "@shared/assets/svg/home.svg?react";
-import ProfileSvg from "@shared/assets/svg/profile.svg?react";
-import LoginSvg from "@shared/assets/svg/login.svg?react";
+import HomeSvg from "@shared/assets/svg/home.svg";
+import ProfileSvg from "@shared/assets/svg/profile.svg";
+import LoginSvg from "@shared/assets/svg/login.svg";
 
-type IconProps = { className?: string };
+type IconProps = { size?: number; color?: string };
 
-export function IconHome({ className }: IconProps) {
-	return <HomeSvg className={className} aria-hidden />;
+export function IconHome({ size = 24, color = "#F5EFE0" }: IconProps) {
+  return <HomeSvg width={size} height={size} color={color} />;
 }
 
-export function IconProfile({ className }: IconProps) {
-	return <ProfileSvg className={className} aria-hidden />;
+export function IconProfile({ size = 24, color = "#F5EFE0" }: IconProps) {
+  return <ProfileSvg width={size} height={size} color={color} />;
 }
 
-export function IconAuth({ className }: IconProps) {
-	return <LoginSvg className={className} aria-hidden />;
+export function IconAuth({ size = 24, color = "#F5EFE0" }: IconProps) {
+  return <LoginSvg width={size} height={size} color={color} />;
 }

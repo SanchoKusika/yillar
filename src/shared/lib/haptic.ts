@@ -1,5 +1,13 @@
+import * as Haptics from "expo-haptics";
+
 export function haptic(type: "light" | "medium" | "heavy" = "medium") {
-  if (typeof navigator === "undefined" || !("vibrate" in navigator)) return;
-  const ms = type === "light" ? 18 : type === "medium" ? 45 : 90;
-  navigator.vibrate(ms);
+  const style =
+    type === "light"
+      ? Haptics.ImpactFeedbackStyle.Light
+      : type === "heavy"
+        ? Haptics.ImpactFeedbackStyle.Heavy
+        : Haptics.ImpactFeedbackStyle.Medium;
+  void Haptics.impactAsync(style).catch(() => {
+    // Silently ignore on devices without haptic engines.
+  });
 }

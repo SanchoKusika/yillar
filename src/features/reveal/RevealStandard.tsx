@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { GirihOverlay, Multiplier, PaperGrain, YButton } from "@shared/ui";
-import { ERA_LABEL, eraColor, useT } from "@shared/lib";
+import { ERA_LABEL, useT } from "@shared/lib";
 import type { Placement } from "@entities/placement";
 import type { Player } from "@entities/player";
 import { ERA_COLORS, fonts } from "@theme/tokens";
+
+const GOLD = "#D4A847";
 
 type Stage = 0 | 1 | 2 | 3 | 4;
 
@@ -47,12 +49,17 @@ export function RevealStandard({ last, nextPlayer, onNext }: Props) {
 
       <View style={styles.body}>
         {/* Year reveal with redact cover */}
-        <View style={[styles.yearStage, { backgroundColor: eraColors.primary }]}>
+        <View
+          style={[
+            styles.yearStage,
+            { backgroundColor: eraColors.primary, borderTopColor: GOLD, borderBottomColor: GOLD },
+          ]}
+        >
           {stage >= 2 && (
             <Text style={[styles.yearText, { color: eraColors.surface }]}>{last.truth}</Text>
           )}
           {stage < 2 && (
-            <View style={styles.redactCover}>
+            <View style={[styles.redactCover, { backgroundColor: "#0E0804" }]}>
               {[0, 1, 2, 3].map((i) => (
                 <View key={i} style={[styles.redactBlock, { backgroundColor: "#0E0804" }]} />
               ))}
@@ -138,18 +145,17 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
   trackTitle: {
-    fontFamily: fonts.display,
-    fontWeight: "900",
+    fontFamily: fonts.condensedExtraBold,
+    fontWeight: "800",
     fontSize: 32,
-    lineHeight: 32 * 1.0,
-    letterSpacing: 32 * -0.02,
+    lineHeight: 32,
+    textTransform: "uppercase",
     includeFontPadding: false,
   },
   trackSub: {
-    fontFamily: fonts.condensedSemiBold,
+    fontFamily: fonts.bodyItalic,
+    fontStyle: "italic",
     fontSize: 13,
-    textTransform: "uppercase",
-    letterSpacing: 13 * 0.1,
     includeFontPadding: false,
   },
   body: {
@@ -158,25 +164,37 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   yearStage: {
+    height: 112,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 20,
-    minHeight: 100,
+    overflow: "hidden",
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    position: "relative",
   },
   yearText: {
     fontFamily: fonts.monoBold,
-    fontSize: 80,
-    letterSpacing: 80 * -0.02,
+    fontWeight: "700",
+    fontSize: 96,
+    lineHeight: 96,
+    letterSpacing: 96 * -0.02,
     includeFontPadding: false,
   },
   redactCover: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     flexDirection: "row",
-    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 4,
+    paddingHorizontal: 4,
   },
   redactBlock: {
     flex: 1,
-    height: 60,
+    height: "70%",
   },
   multiplierRow: {
     flexDirection: "row",

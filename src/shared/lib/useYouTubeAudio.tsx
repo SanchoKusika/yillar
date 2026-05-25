@@ -1,79 +1,224 @@
-import { useCallback, useEffect, useRef, useState, type JSX } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  type JSX,
+} from "react";
+import { View } from "react-native";
+import { WebView, type WebViewMessageEvent } from "react-native-webview";
 import { formatTimeRange } from "./formatTime";
 
-type PlayerInstance = {
-  cueVideoById: (id: string) => void;
-  playVideo: () => void;
-  pauseVideo: () => void;
-  seekTo: (seconds: number, allowSeekAhead: boolean) => void;
-  getCurrentTime: () => number;
-  getDuration: () => number;
-  destroy: () => void;
+// Custom YouTube iframe host implemented directly on top of react-native-webview.
+// We previously used react-native-youtube-iframe but on Android the library's
+// postMessage-based playVideo() command never reached the iframe player — the
+// player initialised (onReady fired) but play() was a no-op.
+// This implementation injects `player.playVideo()` directly via
+// WebView.injectJavaScript which works reliably on Android.
+
+type InternalApi = {
+  setPlaying: (v: boolean) => void;
+  setVideoId: (id: string | undefined) => void;
+  seekTo: (seconds: number) => void;
+  getCurrentTime: () => Promise<number | undefined>;
+  getDuration: () => Promise<number | undefined>;
 };
 
-type ReadyEvent = { target: PlayerInstance };
-type StateChangeEvent = { target: PlayerInstance; data: number };
+type InnerProps = {
+  onStateChange: (state: string) => void;
+  onReady: () => void;
+  onError: (err: string) => void;
+};
 
-type PlayerCtor = new (
-  host: HTMLElement,
-  opts: {
-    width: string | number;
-    height: string | number;
-    videoId?: string;
-    host?: string;
-    playerVars?: Record<string, unknown>;
-    events?: {
-      onReady?: (e: ReadyEvent) => void;
-      onStateChange?: (e: StateChangeEvent) => void;
+// HTML scaffold loaded once. The video is set/changed via injectJavaScript.
+const PLAYER_HTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <style>
+    html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+    #player { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    var player = null;
+    var pending = null;
+    var post = function(type, data) {
+      if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: type, data: data }));
+      }
     };
+
+    // Translate YouTube state ints into strings we expect.
+    var STATE = {
+      "-1": "unstarted",
+      0: "ended",
+      1: "playing",
+      2: "paused",
+      3: "buffering",
+      5: "cued"
+    };
+
+    // Load YouTube IFrame API.
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = function() {
+      player = new YT.Player('player', {
+        width: '100%',
+        height: '100%',
+        playerVars: {
+          playsinline: 1,
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          autoplay: 0
+        },
+        events: {
+          onReady: function() {
+            post('ready', null);
+            if (pending) {
+              player.cueVideoById(pending);
+              pending = null;
+            }
+          },
+          onStateChange: function(e) {
+            post('state', STATE[e.data] || String(e.data));
+          },
+          onError: function(e) {
+            post('error', String(e.data));
+          }
+        }
+      });
+    };
+
+    // Public commands invoked via injectJavaScript from RN.
+    window.YT_setVideoId = function(id) {
+      if (!player) { pending = id; return; }
+      if (id) { player.cueVideoById(id); }
+      else { player.stopVideo(); }
+    };
+    window.YT_play = function() { if (player && player.playVideo) player.playVideo(); };
+    window.YT_pause = function() { if (player && player.pauseVideo) player.pauseVideo(); };
+    window.YT_seek = function(s) { if (player && player.seekTo) player.seekTo(s, true); };
+    window.YT_currentTime = function(token) {
+      var t = player && player.getCurrentTime ? player.getCurrentTime() : 0;
+      post('currentTime', { token: token, value: t });
+    };
+    window.YT_duration = function(token) {
+      var d = player && player.getDuration ? player.getDuration() : 0;
+      post('duration', { token: token, value: d });
+    };
+    true;
+  </script>
+</body>
+</html>
+`.trim();
+
+const InnerPlayer = forwardRef<InternalApi, InnerProps>(
+  ({ onStateChange, onReady, onError }, ref) => {
+    const webRef = useRef<WebView>(null);
+    const tokenRef = useRef(0);
+    const pendingTimes = useRef(new Map<number, (v: number) => void>());
+    const pendingDurations = useRef(new Map<number, (v: number) => void>());
+
+    const inject = useCallback((js: string) => {
+      webRef.current?.injectJavaScript(js + " true;");
+    }, []);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        setPlaying: (v) => {
+          inject(v ? "window.YT_play();" : "window.YT_pause();");
+        },
+        setVideoId: (id) => {
+          if (!id) inject("window.YT_setVideoId(null);");
+          else inject(`window.YT_setVideoId(${JSON.stringify(id)});`);
+        },
+        seekTo: (s) => inject(`window.YT_seek(${s});`),
+        getCurrentTime: () =>
+          new Promise<number | undefined>((resolve) => {
+            const token = ++tokenRef.current;
+            pendingTimes.current.set(token, resolve);
+            inject(`window.YT_currentTime(${token});`);
+            // Safety: clear pending after 2s to avoid leak.
+            setTimeout(() => {
+              if (pendingTimes.current.delete(token)) resolve(undefined);
+            }, 2000);
+          }),
+        getDuration: () =>
+          new Promise<number | undefined>((resolve) => {
+            const token = ++tokenRef.current;
+            pendingDurations.current.set(token, resolve);
+            inject(`window.YT_duration(${token});`);
+            setTimeout(() => {
+              if (pendingDurations.current.delete(token)) resolve(undefined);
+            }, 2000);
+          }),
+      }),
+      [inject],
+    );
+
+    const onMessage = useCallback(
+      (event: WebViewMessageEvent) => {
+        let msg: { type: string; data: unknown };
+        try {
+          msg = JSON.parse(event.nativeEvent.data) as { type: string; data: unknown };
+        } catch {
+          return;
+        }
+        if (msg.type === "ready") onReady();
+        else if (msg.type === "state") onStateChange(String(msg.data));
+        else if (msg.type === "error") onError(String(msg.data));
+        else if (msg.type === "currentTime") {
+          const { token, value } = msg.data as { token: number; value: number };
+          const resolve = pendingTimes.current.get(token);
+          if (resolve) {
+            pendingTimes.current.delete(token);
+            resolve(value);
+          }
+        } else if (msg.type === "duration") {
+          const { token, value } = msg.data as { token: number; value: number };
+          const resolve = pendingDurations.current.get(token);
+          if (resolve) {
+            pendingDurations.current.delete(token);
+            resolve(value);
+          }
+        }
+      },
+      [onReady, onStateChange, onError],
+    );
+
+    // baseUrl MUST NOT be youtube.com — YouTube refuses to embed videos when
+    // the embedder origin is youtube.com itself (error 152 "embed not
+    // allowed"). Using a non-youtube https origin works (same as how
+    // react-native-youtube-iframe uses github.io as its host page).
+    const source = useMemo(() => ({ html: PLAYER_HTML, baseUrl: "https://yillar.app" }), []);
+
+    return (
+      <WebView
+        ref={webRef}
+        source={source}
+        originWhitelist={["*"]}
+        javaScriptEnabled
+        domStorageEnabled
+        allowsInlineMediaPlayback
+        mediaPlaybackRequiresUserAction={false}
+        onMessage={onMessage}
+        style={{ flex: 1, backgroundColor: "transparent" }}
+      />
+    );
   },
-) => PlayerInstance;
-
-type YTApi = { Player: PlayerCtor };
-
-declare global {
-  interface Window {
-    YT?: YTApi;
-    onYouTubeIframeAPIReady?: () => void;
-  }
-}
-
-const POLL_INTERVAL_MS = 250;
-const API_SRC = "https://www.youtube.com/iframe_api";
-
-const HOST_STYLE: React.CSSProperties = {
-  position: "absolute",
-  width: 1,
-  height: 1,
-  left: -9999,
-  top: -9999,
-  opacity: 0,
-  pointerEvents: "none",
-  overflow: "hidden",
-};
-
-let apiPromise: Promise<YTApi> | null = null;
-
-function loadYouTubeApi(): Promise<YTApi> {
-  if (typeof window === "undefined") return Promise.reject(new Error("no window"));
-  if (window.YT?.Player) return Promise.resolve(window.YT);
-  if (apiPromise) return apiPromise;
-
-  apiPromise = new Promise((resolve) => {
-    const prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      prev?.();
-      if (window.YT) resolve(window.YT);
-    };
-    if (!document.querySelector(`script[src="${API_SRC}"]`)) {
-      const tag = document.createElement("script");
-      tag.src = API_SRC;
-      tag.async = true;
-      document.head.appendChild(tag);
-    }
-  });
-  return apiPromise;
-}
+);
+InnerPlayer.displayName = "YTInnerPlayer";
 
 export type YouTubeAudioApi = {
   isReady: boolean;
@@ -89,164 +234,113 @@ export type YouTubeAudioApi = {
   PlayerHost: () => JSX.Element;
 };
 
+const POLL_INTERVAL_MS = 250;
+
 export function useYouTubeAudio(videoId: string | undefined): YouTubeAudioApi {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const playerRef = useRef<PlayerInstance | null>(null);
-  const videoIdRef = useRef<string | undefined>(videoId);
+  const innerRef = useRef<InternalApi>(null);
   const [isReady, setReady] = useState(false);
   const [isPlaying, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  videoIdRef.current = videoId;
-
+  const isPlayingRef = useRef(isPlaying);
   useEffect(() => {
-    let mounted = true;
-    let player: PlayerInstance | null = null;
-
-    loadYouTubeApi().then((YTApi) => {
-      if (!mounted || !hostRef.current) return;
-      player = new YTApi.Player(hostRef.current, {
-        width: "1",
-        height: "1",
-        // videoId intentionally omitted: SDK stringifies undefined → "Invalid video id".
-        // Video is loaded via cueVideoById once the player is ready.
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          modestbranding: 1,
-          rel: 0,
-          playsinline: 1,
-          origin: window.location.origin,
-        },
-        events: {
-          onReady: (e) => {
-            if (!mounted) return;
-            playerRef.current = e.target;
-            setReady(true);
-            try {
-              const d = e.target.getDuration();
-              if (typeof d === "number") setDuration(d);
-            } catch {
-              /* not loaded yet */
-            }
-          },
-          onStateChange: (e) => {
-            if (!mounted) return;
-            if (e.data === 1) {
-              setPlaying(true);
-            } else if (e.data === 0 || e.data === 2) {
-              setPlaying(false);
-            }
-            if (e.data === 1 || e.data === 5) {
-              try {
-                const d = e.target.getDuration();
-                if (typeof d === "number" && d > 0) setDuration(d);
-              } catch {
-                /* ignore */
-              }
-            }
-          },
-        },
-      });
-    });
-
-    return () => {
-      mounted = false;
-      try {
-        player?.destroy();
-      } catch {
-        /* SDK throws on unmount race; safe to ignore */
-      }
-      playerRef.current = null;
-      setReady(false);
-      setPlaying(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    const player = playerRef.current;
-    if (!isReady || !player || !videoId) return;
-    setCurrentTime(0);
-    setPlaying(false);
-    setDuration(0);
-    try {
-      player.cueVideoById(videoId);
-    } catch (err) {
-      console.warn("[YILLAR] cueVideoById failed:", err);
-    }
-  }, [videoId, isReady]);
-
-  useEffect(() => {
-    if (!isPlaying) return;
-    const id = window.setInterval(() => {
-      const p = playerRef.current;
-      if (!p) return;
-      try {
-        const t = p.getCurrentTime();
-        if (typeof t === "number") setCurrentTime(t);
-      } catch {
-        /* ignore */
-      }
-    }, POLL_INTERVAL_MS);
-    return () => window.clearInterval(id);
+    isPlayingRef.current = isPlaying;
   }, [isPlaying]);
 
+  // Push new videoId into the inner player.
+  const lastVideoIdRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (lastVideoIdRef.current === videoId) return;
+    lastVideoIdRef.current = videoId;
+    innerRef.current?.setVideoId(videoId);
+    setCurrentTime(0);
+    setDuration(0);
+    setPlaying(false);
+  }, [videoId]);
+
+  // Poll currentTime while playing.
+  useEffect(() => {
+    if (!isPlaying || !isReady) return;
+    const id = setInterval(async () => {
+      const t = await innerRef.current?.getCurrentTime();
+      if (typeof t === "number") setCurrentTime(t);
+    }, POLL_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [isPlaying, isReady]);
+
+  // Poll duration after ready until we have it.
   useEffect(() => {
     if (!isReady || duration > 0) return;
-    const id = window.setInterval(() => {
-      const p = playerRef.current;
-      if (!p) return;
-      try {
-        const d = p.getDuration();
-        if (typeof d === "number" && d > 0) {
-          setDuration(d);
-          window.clearInterval(id);
-        }
-      } catch {
-        /* ignore */
+    const id = setInterval(async () => {
+      const d = await innerRef.current?.getDuration();
+      if (typeof d === "number" && d > 0) {
+        setDuration(d);
+        clearInterval(id);
       }
-    }, 300);
-    return () => window.clearInterval(id);
-  }, [isReady, duration, videoId]);
+    }, 400);
+    return () => clearInterval(id);
+  }, [isReady, duration]);
+
+  const onStateChange = useCallback((state: string) => {
+    if (state === "playing") setPlaying(true);
+    else if (state === "paused" || state === "ended") setPlaying(false);
+  }, []);
+
+  const onReady = useCallback(() => {
+    setReady(true);
+  }, []);
+
+  const onError = useCallback((err: string) => {
+    console.warn("[YT] error", err);
+  }, []);
 
   const play = useCallback(() => {
-    try {
-      playerRef.current?.playVideo();
-    } catch {
-      /* ignore */
-    }
+    setPlaying(true);
+    innerRef.current?.setPlaying(true);
   }, []);
 
   const pause = useCallback(() => {
-    try {
-      playerRef.current?.pauseVideo();
-    } catch {
-      /* ignore */
-    }
+    setPlaying(false);
+    innerRef.current?.setPlaying(false);
   }, []);
 
   const toggle = useCallback(() => {
-    if (isPlaying) pause();
-    else play();
-  }, [isPlaying, pause, play]);
-
-  const seek = useCallback((seconds: number) => {
-    try {
-      playerRef.current?.seekTo(seconds, true);
-    } catch {
-      /* ignore */
-    }
+    const next = !isPlayingRef.current;
+    setPlaying(next);
+    innerRef.current?.setPlaying(next);
   }, []);
 
-  // Outer wrapper is stable for React reconciliation; inner div is replaced by YouTube SDK.
+  const seek = useCallback((seconds: number) => {
+    innerRef.current?.seekTo(seconds);
+  }, []);
+
+  // PlayerHost is mounted once. WebView never unmounts during gameplay.
+  // It must occupy real layout dimensions (not 1×1) so YouTube doesn't treat
+  // it as a bot. We hide it visually via translate + opacity.
   const PlayerHost = useCallback(
-    () => (
-      <div aria-hidden style={HOST_STYLE}>
-        <div ref={hostRef} />
-      </div>
+    (): JSX.Element => (
+      <View
+        style={{
+          position: "absolute",
+          width: 280,
+          height: 160,
+          left: 0,
+          top: 0,
+          opacity: 0,
+          transform: [{ translateX: -9999 }],
+        }}
+        pointerEvents="none"
+      >
+        <InnerPlayer
+          ref={innerRef}
+          onStateChange={onStateChange}
+          onReady={onReady}
+          onError={onError}
+        />
+      </View>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

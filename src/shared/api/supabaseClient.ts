@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { env } from "@shared/config/env";
 
 function init(): SupabaseClient | null {
@@ -6,9 +7,11 @@ function init(): SupabaseClient | null {
   try {
     return createClient(env.supabaseUrl, env.supabaseAnonKey, {
       auth: {
+        storage: AsyncStorage,
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true,
+        // detectSessionInUrl: false — на RN сессии прилетают через deep link (yillar://reset-password),
+        // не через URL hash на странице. Раздаём через expo-router useLocalSearchParams.
       },
     });
   } catch (err) {

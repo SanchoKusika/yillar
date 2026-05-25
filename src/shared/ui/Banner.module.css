@@ -1,9 +1,0 @@
-@reference "../../app/styles/index.css";
-
-.error {
-  @apply border border-danger px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-danger;
-}
-
-.gold {
-  @apply border border-gold px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-gold;
-}

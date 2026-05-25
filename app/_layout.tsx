@@ -1,3 +1,4 @@
+import "react-native-url-polyfill/auto";
 import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -23,7 +24,7 @@ import { ThemeProvider } from "@theme";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
+  const [loaded, fontError] = useFonts({
     // Playfair Display (display/wordmark)
     "PlayfairDisplay-Black": PlayfairDisplay_900Black,
     "PlayfairDisplay-Bold": PlayfairDisplay_700Bold,
@@ -54,10 +55,10 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded) SplashScreen.hideAsync();
-  }, [loaded]);
+    if (loaded || fontError) SplashScreen.hideAsync();
+  }, [loaded, fontError]);
 
-  if (!loaded) return null;
+  if (!loaded && !fontError) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

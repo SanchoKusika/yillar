@@ -1,5 +1,7 @@
-const rawUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
-const rawKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
+// Expo экспонирует переменные с префиксом EXPO_PUBLIC_* в client-бандле
+// (см. https://docs.expo.dev/guides/environment-variables/).
+const rawUrl = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim();
+const rawKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY?.trim();
 
 function normalizeSupabaseUrl(value: string | undefined): string | null {
   if (!value) return null;
